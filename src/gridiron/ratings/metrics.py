@@ -6,7 +6,9 @@ import polars as pl
 
 REQUIRED_COLUMNS = frozenset(
     {
+        "game_id",
         "team",
+        "opponent",
         "offensive_plays",
         "offensive_yards",
         "offensive_epa",
@@ -22,7 +24,7 @@ REQUIRED_COLUMNS = frozenset(
 
 
 def build_team_metrics(feature_store: pl.DataFrame) -> pl.DataFrame:
-    """Aggregate season-level metrics for each team."""
+    """Aggregate play-weighted season metrics for each team."""
     missing = REQUIRED_COLUMNS.difference(feature_store.columns)
 
     if missing:
@@ -31,11 +33,19 @@ def build_team_metrics(feature_store: pl.DataFrame) -> pl.DataFrame:
             f"Feature store is missing required columns: {missing_text}"
         )
 
+    if feature_store.filter(pl.col("offensive_plays") <= 0).height:
+        raise ValueError(
+            "Feature store contains non-positive offensive play counts."
+        )
+
+    weighted_store = _add_defensive_plays(feature_store)
+
     return (
-        feature_store.group_by("team")
+        weighted_store.group_by("team")
         .agg(
             pl.len().alias("games_played"),
             pl.col("offensive_plays").sum().alias("offensive_plays"),
+            pl.col("defensive_plays").sum().alias("defensive_plays"),
             pl.col("offensive_yards").sum().alias("offensive_yards"),
             pl.col("offensive_epa").sum().alias("offensive_epa"),
             (
@@ -54,15 +64,27 @@ def build_team_metrics(feature_store: pl.DataFrame) -> pl.DataFrame:
             ).alias("explosive_play_rate"),
             pl.col("turnovers").sum().alias("turnovers"),
             pl.col("takeaways").sum().alias("takeaways"),
-            pl.col("defensive_epa_allowed_per_play")
-            .mean()
-            .alias("defensive_epa_allowed_per_play"),
-            pl.col("defensive_success_rate_allowed")
-            .mean()
-            .alias("defensive_success_rate_allowed"),
-            pl.col("defensive_explosive_play_rate_allowed")
-            .mean()
-            .alias("defensive_explosive_play_rate_allowed"),
+            (
+                (
+                    pl.col("defensive_epa_allowed_per_play")
+                    * pl.col("defensive_plays")
+                ).sum()
+                / pl.col("defensive_plays").sum()
+            ).alias("defensive_epa_allowed_per_play"),
+            (
+                (
+                    pl.col("defensive_success_rate_allowed")
+                    * pl.col("defensive_plays")
+                ).sum()
+                / pl.col("defensive_plays").sum()
+            ).alias("defensive_success_rate_allowed"),
+            (
+                (
+                    pl.col("defensive_explosive_play_rate_allowed")
+                    * pl.col("defensive_plays")
+                ).sum()
+                / pl.col("defensive_plays").sum()
+            ).alias("defensive_explosive_play_rate_allowed"),
         )
         .with_columns(
             (
@@ -80,3 +102,32 @@ def build_team_metrics(feature_store: pl.DataFrame) -> pl.DataFrame:
         )
         .sort("team")
     )
+
+
+def _add_defensive_plays(
+    feature_store: pl.DataFrame,
+) -> pl.DataFrame:
+    """Derive defensive plays from the opponent's offensive plays."""
+    opponent_plays = feature_store.select(
+        "game_id",
+        pl.col("team").alias("opponent"),
+        pl.col("offensive_plays").alias("defensive_plays"),
+    )
+
+    result = feature_store.join(
+        opponent_plays,
+        on=["game_id", "opponent"],
+        how="left",
+    )
+
+    if result["defensive_plays"].null_count():
+        raise ValueError(
+            "Could not derive defensive plays for every team-game row."
+        )
+
+    if result.filter(pl.col("defensive_plays") <= 0).height:
+        raise ValueError(
+            "Feature store contains non-positive defensive play counts."
+        )
+
+    return result

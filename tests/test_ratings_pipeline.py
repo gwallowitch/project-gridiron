@@ -17,7 +17,9 @@ from gridiron.pipelines.ratings import (
 def sample_feature_store() -> pl.DataFrame:
     return pl.DataFrame(
         {
+            "game_id": ["g1", "g2", "g1", "g3", "g2", "g3"],
             "team": ["A", "A", "B", "B", "C", "C"],
+            "opponent": ["B", "C", "A", "C", "A", "B"],
             "offensive_plays": [50, 70, 60, 60, 55, 65],
             "offensive_yards": [
                 350.0,

@@ -9,8 +9,10 @@ from gridiron.ratings.metrics import build_team_metrics
 def sample_feature_store() -> pl.DataFrame:
     return pl.DataFrame(
         {
+            "game_id": ["game_1", "game_2", "game_1", "game_2"],
             "team": ["A", "A", "B", "B"],
-            "offensive_plays": [50, 70, 60, 60],
+            "opponent": ["B", "B", "A", "A"],
+            "offensive_plays": [50, 70, 80, 40],
             "offensive_yards": [300.0, 490.0, 330.0, 390.0],
             "offensive_epa": [5.0, 14.0, 3.0, 9.0],
             "offensive_success_rate": [0.40, 0.50, 0.45, 0.55],
@@ -19,9 +21,9 @@ def sample_feature_store() -> pl.DataFrame:
             "takeaways": [2, 1, 1, 2],
             "defensive_epa_allowed_per_play": [
                 -0.10,
-                0.00,
-                0.10,
                 0.20,
+                0.10,
+                -0.20,
             ],
             "defensive_success_rate_allowed": [
                 0.35,
@@ -82,3 +84,13 @@ def test_build_team_metrics_rejects_missing_columns() -> None:
         match="missing required columns: offensive_epa",
     ):
         build_team_metrics(incomplete)
+
+
+def test_build_team_metrics_weights_defense_by_plays() -> None:
+    result = build_team_metrics(sample_feature_store())
+    team_a = result.filter(pl.col("team") == "A").row(0, named=True)
+
+    assert team_a["defensive_plays"] == 120
+    assert team_a["defensive_epa_allowed_per_play"] == pytest.approx(
+        (-0.10 * 80 + 0.20 * 40) / 120
+    )
