@@ -1,0 +1,38 @@
+# Virtual environments
+.venv/
+venv/
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Packaging artifacts
+*.egg-info/
+build/
+dist/
+
+# Local datasets and generated outputs
+data/raw/
+data/curated/
+output/
+
+# Local databases
+database/*.duckdb
+database/*.duckdb.wal
+
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# IDE and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
