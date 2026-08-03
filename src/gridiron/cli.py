@@ -6,10 +6,12 @@ import argparse
 from collections.abc import Sequence
 from pathlib import Path
 
-from gridiron.data.metadata import read_ingestion_log, record_ingestion
+from gridiron.data.metadata import read_ingestion_log
 from gridiron.data.nflverse import NFLVerseGateway
-from gridiron.data.persistence import persist_play_by_play
 from gridiron.pipelines.features import build_team_game_feature_store
+from gridiron.pipelines.play_by_play import (
+    run_play_by_play_pipeline,
+)
 from gridiron.pipelines.schedules import run_schedule_pipeline
 from gridiron.validation.schedules import validate_schedule
 
@@ -31,49 +33,19 @@ def build_parser() -> argparse.ArgumentParser:
         "persist-schedule",
         description="Download and save an NFL schedule.",
     )
-    schedule.add_argument("--season", type=int, required=True)
-    schedule.add_argument(
-        "--project-root",
-        type=Path,
-        default=Path("."),
-    )
-    schedule.add_argument(
-        "--database-path",
-        type=Path,
-        default=None,
-    )
+    _add_pipeline_arguments(schedule)
 
     play_by_play = subparsers.add_parser(
         "persist-play-by-play",
         description="Download and save NFL play-by-play.",
     )
-    play_by_play.add_argument("--season", type=int, required=True)
-    play_by_play.add_argument(
-        "--data-root",
-        type=Path,
-        default=Path("data"),
-    )
-    play_by_play.add_argument(
-        "--database-path",
-        type=Path,
-        default=Path("database/gridiron.duckdb"),
-    )
+    _add_pipeline_arguments(play_by_play)
 
     features = subparsers.add_parser(
         "build-team-game-features",
         description="Build the curated team-game feature store.",
     )
-    features.add_argument("--season", type=int, required=True)
-    features.add_argument(
-        "--project-root",
-        type=Path,
-        default=Path("."),
-    )
-    features.add_argument(
-        "--database-path",
-        type=Path,
-        default=None,
-    )
+    _add_pipeline_arguments(features)
 
     history = subparsers.add_parser(
         "ingestion-history",
@@ -87,6 +59,22 @@ def build_parser() -> argparse.ArgumentParser:
     history.add_argument("--limit", type=int, default=10)
 
     return parser
+
+
+def _add_pipeline_arguments(
+    parser: argparse.ArgumentParser,
+) -> None:
+    parser.add_argument("--season", type=int, required=True)
+    parser.add_argument(
+        "--project-root",
+        type=Path,
+        default=Path("."),
+    )
+    parser.add_argument(
+        "--database-path",
+        type=Path,
+        default=None,
+    )
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -105,7 +93,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "persist-play-by-play":
         return run_persist_play_by_play(
             season=args.season,
-            data_root=args.data_root,
+            project_root=args.project_root,
             database_path=args.database_path,
         )
 
@@ -158,51 +146,30 @@ def run_persist_schedule(
         gateway=gateway,
     )
 
-    print(f"Schedule pipeline completed for {season}.")
-    print(f"Schedule rows: {result.artifact.row_count}")
-    print(f"Columns: {result.artifact.column_count}")
-    print(
-        f"File size: "
-        f"{result.artifact.file_size_bytes:,} bytes"
+    _print_pipeline_result(
+        label="Schedule",
+        result=result,
     )
-    print(f"Saved to: {result.artifact.output_path}")
-    print(f"Elapsed: {result.elapsed_seconds:.3f} seconds")
-    print(f"Ingestion run: {result.run_id}")
     return 0
 
 
 def run_persist_play_by_play(
     season: int,
-    data_root: Path = Path("data"),
-    database_path: Path = Path("database/gridiron.duckdb"),
+    project_root: Path = Path("."),
+    database_path: Path | None = None,
     gateway: NFLVerseGateway | None = None,
 ) -> int:
-    gateway = gateway or NFLVerseGateway()
-    play_by_play = gateway.play_by_play([season])
-    output_path = persist_play_by_play(
-        play_by_play,
+    result = run_play_by_play_pipeline(
         season,
-        data_root,
-    )
-    season_rows = play_by_play.filter(
-        play_by_play["season"] == season
-    )
-
-    run_id = _record_file_ingestion(
+        project_root=project_root,
         database_path=database_path,
-        dataset="play_by_play",
-        season=season,
-        row_count=season_rows.height,
-        column_count=len(season_rows.columns),
-        output_path=output_path,
+        gateway=gateway,
     )
 
-    print(f"Play-by-play persistence completed for {season}.")
-    print(f"Play rows: {season_rows.height}")
-    print(f"Columns: {len(season_rows.columns)}")
-    print(f"File size: {output_path.stat().st_size:,} bytes")
-    print(f"Saved to: {output_path}")
-    print(f"Ingestion run: {run_id}")
+    _print_pipeline_result(
+        label="Play-by-play",
+        result=result,
+    )
     return 0
 
 
@@ -217,8 +184,20 @@ def run_build_team_game_features(
         database_path=database_path,
     )
 
-    print(f"Team-game feature build completed for {season}.")
-    print(f"Feature rows: {result.artifact.row_count}")
+    _print_pipeline_result(
+        label="Team-game feature",
+        result=result,
+    )
+    return 0
+
+
+def _print_pipeline_result(
+    *,
+    label: str,
+    result: object,
+) -> None:
+    print(f"{label} pipeline completed for {result.season}.")
+    print(f"Rows: {result.artifact.row_count}")
     print(f"Columns: {result.artifact.column_count}")
     print(
         f"File size: "
@@ -226,28 +205,11 @@ def run_build_team_game_features(
     )
     print(f"Saved to: {result.artifact.output_path}")
     print(f"Elapsed: {result.elapsed_seconds:.3f} seconds")
-    print(f"Ingestion run: {result.run_id}")
-    return 0
-
-
-def _record_file_ingestion(
-    *,
-    database_path: Path,
-    dataset: str,
-    season: int,
-    row_count: int,
-    column_count: int,
-    output_path: Path,
-) -> str:
-    return record_ingestion(
-        database_path=database_path,
-        dataset=dataset,
-        season=season,
-        row_count=row_count,
-        column_count=column_count,
-        file_path=output_path,
-        file_size_bytes=output_path.stat().st_size,
+    print(
+        f"Throughput: "
+        f"{result.rows_per_second:,.1f} rows/second"
     )
+    print(f"Ingestion run: {result.run_id}")
 
 
 def run_ingestion_history(
