@@ -1,0 +1,13 @@
+"""Configurable weights for the Project Gridiron rating engine."""
+
+OFFENSE_WEIGHT = 0.40
+DEFENSE_WEIGHT = 0.35
+DISCIPLINE_WEIGHT = 0.15
+SITUATIONAL_WEIGHT = 0.10
+
+TOTAL_WEIGHT = (
+    OFFENSE_WEIGHT
+    + DEFENSE_WEIGHT
+    + DISCIPLINE_WEIGHT
+    + SITUATIONAL_WEIGHT
+)
