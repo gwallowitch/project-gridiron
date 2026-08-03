@@ -1,0 +1,88 @@
+"""Centralized filesystem paths for Project Gridiron."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
+
+
+@dataclass(frozen=True, slots=True)
+class ProjectPaths:
+    """Resolve canonical project paths from one repository root."""
+
+    root: Path
+
+    @classmethod
+    def from_root(cls, root: Path | str = Path(".")) -> ProjectPaths:
+        return cls(Path(root).resolve())
+
+    @property
+    def data(self) -> Path:
+        return self.root / "data"
+
+    @property
+    def raw(self) -> Path:
+        return self.data / "raw"
+
+    @property
+    def curated(self) -> Path:
+        return self.data / "curated"
+
+    @property
+    def schedules(self) -> Path:
+        return self.raw / "schedules"
+
+    @property
+    def play_by_play(self) -> Path:
+        return self.raw / "play_by_play"
+
+    @property
+    def team_game_features(self) -> Path:
+        return self.curated / "team_game_features"
+
+    @property
+    def database(self) -> Path:
+        return self.root / "database"
+
+    @property
+    def metadata_database(self) -> Path:
+        return self.database / "gridiron.duckdb"
+
+    @property
+    def output(self) -> Path:
+        return self.root / "output"
+
+    @property
+    def docs(self) -> Path:
+        return self.root / "docs"
+
+    def schedule_file(self, season: int) -> Path:
+        _validate_season(season)
+        return self.schedules / f"schedules_{season}.parquet"
+
+    def play_by_play_file(self, season: int) -> Path:
+        _validate_season(season)
+        return self.play_by_play / f"play_by_play_{season}.parquet"
+
+    def team_game_features_file(self, season: int) -> Path:
+        _validate_season(season)
+        return (
+            self.team_game_features
+            / f"team_game_features_{season}.parquet"
+        )
+
+    def create_runtime_directories(self) -> None:
+        """Create directories used by local pipelines."""
+        for path in (
+            self.schedules,
+            self.play_by_play,
+            self.team_game_features,
+            self.database,
+            self.output,
+        ):
+            path.mkdir(parents=True, exist_ok=True)
+
+
+def _validate_season(season: int) -> None:
+    if season < 1999 or season > 2100:
+        raise ValueError("NFL seasons must be between 1999 and 2100.")
