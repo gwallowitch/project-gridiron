@@ -12,12 +12,16 @@ from gridiron.data.persistence import (
     persist_play_by_play,
     persist_schedule,
 )
+from gridiron.pipelines.features import build_team_game_feature_store
 from gridiron.validation.schedules import validate_schedule
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="gridiron")
-    subparsers = parser.add_subparsers(dest="command", required=True)
+    subparsers = parser.add_subparsers(
+        dest="command",
+        required=True,
+    )
 
     smoke = subparsers.add_parser(
         "smoke-test",
@@ -27,19 +31,35 @@ def build_parser() -> argparse.ArgumentParser:
 
     schedule = subparsers.add_parser(
         "persist-schedule",
-        description="Download, validate, and save an NFL schedule as Parquet.",
+        description="Download and save an NFL schedule.",
     )
     _add_persistence_arguments(schedule)
 
     play_by_play = subparsers.add_parser(
         "persist-play-by-play",
-        description="Download, validate, and save NFL play-by-play as Parquet.",
+        description="Download and save NFL play-by-play.",
     )
     _add_persistence_arguments(play_by_play)
 
+    features = subparsers.add_parser(
+        "build-team-game-features",
+        description="Build the curated team-game feature store.",
+    )
+    features.add_argument("--season", type=int, required=True)
+    features.add_argument(
+        "--project-root",
+        type=Path,
+        default=Path("."),
+    )
+    features.add_argument(
+        "--database-path",
+        type=Path,
+        default=None,
+    )
+
     history = subparsers.add_parser(
         "ingestion-history",
-        description="Display recent dataset-ingestion records.",
+        description="Display recent ingestion records.",
     )
     history.add_argument(
         "--database-path",
@@ -51,19 +71,19 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _add_persistence_arguments(parser: argparse.ArgumentParser) -> None:
+def _add_persistence_arguments(
+    parser: argparse.ArgumentParser,
+) -> None:
     parser.add_argument("--season", type=int, required=True)
     parser.add_argument(
         "--data-root",
         type=Path,
         default=Path("data"),
-        help="Root directory for persisted datasets.",
     )
     parser.add_argument(
         "--database-path",
         type=Path,
         default=Path("database/gridiron.duckdb"),
-        help="DuckDB metadata catalog path.",
     )
 
 
@@ -87,6 +107,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             database_path=args.database_path,
         )
 
+    if args.command == "build-team-game-features":
+        return run_build_team_game_features(
+            season=args.season,
+            project_root=args.project_root,
+            database_path=args.database_path,
+        )
+
     if args.command == "ingestion-history":
         return run_ingestion_history(
             database_path=args.database_path,
@@ -104,9 +131,13 @@ def run_smoke_test(
     schedule = gateway.schedules([season])
     validate_schedule(schedule)
 
-    season_rows = schedule.filter(schedule["season"] == season)
+    season_rows = schedule.filter(
+        schedule["season"] == season
+    )
 
-    print(f"Project Gridiron data connection passed for {season}.")
+    print(
+        f"Project Gridiron data connection passed for {season}."
+    )
     print(f"Schedule rows: {season_rows.height}")
     print(f"Available columns: {len(schedule.columns)}")
     return 0
@@ -120,21 +151,27 @@ def run_persist_schedule(
 ) -> int:
     gateway = gateway or NFLVerseGateway()
     schedule = gateway.schedules([season])
-    output_path = persist_schedule(schedule, season, data_root)
-    season_rows = schedule.filter(schedule["season"] == season)
+    output_path = persist_schedule(
+        schedule,
+        season,
+        data_root,
+    )
+    season_rows = schedule.filter(
+        schedule["season"] == season
+    )
 
     run_id = _record_file_ingestion(
         database_path=database_path,
         dataset="schedules",
         season=season,
-        frame=season_rows,
+        row_count=season_rows.height,
+        column_count=len(season_rows.columns),
         output_path=output_path,
     )
 
     print(f"Schedule persistence completed for {season}.")
     print(f"Schedule rows: {season_rows.height}")
     print(f"Saved to: {output_path}")
-    print(f"Metadata catalog: {database_path}")
     print(f"Ingestion run: {run_id}")
     return 0
 
@@ -160,7 +197,8 @@ def run_persist_play_by_play(
         database_path=database_path,
         dataset="play_by_play",
         season=season,
-        frame=season_rows,
+        row_count=season_rows.height,
+        column_count=len(season_rows.columns),
         output_path=output_path,
     )
 
@@ -169,8 +207,27 @@ def run_persist_play_by_play(
     print(f"Columns: {len(season_rows.columns)}")
     print(f"File size: {output_path.stat().st_size:,} bytes")
     print(f"Saved to: {output_path}")
-    print(f"Metadata catalog: {database_path}")
     print(f"Ingestion run: {run_id}")
+    return 0
+
+
+def run_build_team_game_features(
+    season: int,
+    project_root: Path = Path("."),
+    database_path: Path | None = None,
+) -> int:
+    result = build_team_game_feature_store(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
+
+    print(f"Team-game feature build completed for {season}.")
+    print(f"Feature rows: {result.row_count}")
+    print(f"Columns: {result.column_count}")
+    print(f"File size: {result.file_size_bytes:,} bytes")
+    print(f"Saved to: {result.output_path}")
+    print(f"Ingestion run: {result.run_id}")
     return 0
 
 
@@ -179,15 +236,16 @@ def _record_file_ingestion(
     database_path: Path,
     dataset: str,
     season: int,
-    frame: object,
+    row_count: int,
+    column_count: int,
     output_path: Path,
 ) -> str:
     return record_ingestion(
         database_path=database_path,
         dataset=dataset,
         season=season,
-        row_count=frame.height,
-        column_count=len(frame.columns),
+        row_count=row_count,
+        column_count=column_count,
         file_path=output_path,
         file_size_bytes=output_path.stat().st_size,
     )
@@ -197,7 +255,10 @@ def run_ingestion_history(
     database_path: Path,
     limit: int = 10,
 ) -> int:
-    records = read_ingestion_log(database_path, limit=limit)
+    records = read_ingestion_log(
+        database_path,
+        limit=limit,
+    )
 
     if not records:
         print("No ingestion records found.")
