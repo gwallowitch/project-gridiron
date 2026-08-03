@@ -12,5 +12,5 @@ def print_status() -> None:
     print("Metrics Engine ......... COMPLETE")
     print("Normalization .......... COMPLETE")
     print("Rating Engine .......... COMPLETE")
-    print("Tests ................. 76 PASSING")
+    print("Tests .................  81 PASSING")
     print()
