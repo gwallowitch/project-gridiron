@@ -2,29 +2,86 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
 
 import polars as pl
 
 from gridiron.core.paths import ProjectPaths
-from gridiron.data.metadata import record_ingestion
 from gridiron.features.team_game import build_team_game_features
+from gridiron.pipelines.base import (
+    BasePipeline,
+    PipelineArtifact,
+    PipelineRunResult,
+)
 from gridiron.validation.team_game_features import (
     validate_team_game_features,
 )
 
 
-@dataclass(frozen=True, slots=True)
-class FeaturePipelineResult:
-    """Summary of one completed feature-store build."""
+class TeamGameFeaturePipeline(BasePipeline):
+    """Build the curated team-game feature dataset for one season."""
 
-    season: int
-    output_path: Path
-    row_count: int
-    column_count: int
-    file_size_bytes: int
-    run_id: str
+    def __init__(
+        self,
+        *,
+        season: int,
+        project_root: Path | str = Path("."),
+        database_path: Path | str | None = None,
+    ) -> None:
+        self.paths = ProjectPaths.from_root(project_root)
+
+        catalog_path = (
+            Path(database_path)
+            if database_path is not None
+            else self.paths.metadata_database
+        )
+
+        super().__init__(
+            season=season,
+            database_path=catalog_path,
+        )
+
+    @property
+    def pipeline_name(self) -> str:
+        return "Team-Game Feature Pipeline"
+
+    @property
+    def dataset_name(self) -> str:
+        return "team_game_features"
+
+    @property
+    def expected_output_path(self) -> Path:
+        return self.paths.team_game_features_file(self.season)
+
+    def execute(self) -> PipelineArtifact:
+        self.set_stage("input validation")
+        input_path = self.paths.play_by_play_file(self.season)
+
+        if not input_path.exists():
+            raise FileNotFoundError(
+                f"Play-by-play file does not exist: {input_path}"
+            )
+
+        self.set_stage("loading")
+        play_by_play = pl.read_parquet(input_path)
+
+        self.set_stage("feature engineering")
+        features = build_team_game_features(play_by_play)
+
+        self.set_stage("feature validation")
+        validate_team_game_features(features)
+
+        self.set_stage("persistence")
+        _write_parquet_atomically(
+            features,
+            self.expected_output_path,
+        )
+
+        return PipelineArtifact(
+            output_path=self.expected_output_path,
+            row_count=features.height,
+            column_count=len(features.columns),
+        )
 
 
 def build_team_game_feature_store(
@@ -32,49 +89,15 @@ def build_team_game_feature_store(
     *,
     project_root: Path | str = Path("."),
     database_path: Path | str | None = None,
-) -> FeaturePipelineResult:
-    """Build, validate, persist, and register team-game features."""
-    paths = ProjectPaths.from_root(project_root)
-    input_path = paths.play_by_play_file(season)
-
-    if not input_path.exists():
-        raise FileNotFoundError(
-            f"Play-by-play file does not exist: {input_path}"
-        )
-
-    play_by_play = pl.read_parquet(input_path)
-    features = build_team_game_features(play_by_play)
-    validate_team_game_features(features)
-
-    output_path = paths.team_game_features_file(season)
-    _write_parquet_atomically(features, output_path)
-
-    catalog_path = (
-        Path(database_path)
-        if database_path is not None
-        else paths.metadata_database
-    )
-
-    file_size = output_path.stat().st_size
-
-    run_id = record_ingestion(
-        database_path=catalog_path,
-        dataset="team_game_features",
+) -> PipelineRunResult:
+    """Run the team-game feature pipeline."""
+    pipeline = TeamGameFeaturePipeline(
         season=season,
-        row_count=features.height,
-        column_count=len(features.columns),
-        file_path=output_path,
-        file_size_bytes=file_size,
+        project_root=project_root,
+        database_path=database_path,
     )
 
-    return FeaturePipelineResult(
-        season=season,
-        output_path=output_path,
-        row_count=features.height,
-        column_count=len(features.columns),
-        file_size_bytes=file_size,
-        run_id=run_id,
-    )
+    return pipeline.run()
 
 
 def _write_parquet_atomically(

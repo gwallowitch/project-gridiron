@@ -223,10 +223,10 @@ def run_build_team_game_features(
     )
 
     print(f"Team-game feature build completed for {season}.")
-    print(f"Feature rows: {result.row_count}")
-    print(f"Columns: {result.column_count}")
-    print(f"File size: {result.file_size_bytes:,} bytes")
-    print(f"Saved to: {result.output_path}")
+    print(f"Feature rows: {result.artifact.row_count}")
+    print(f"Columns: {result.artifact.column_count}")
+    print(f"File size: {result.artifact.file_size_bytes:,} bytes")
+    print(f"Saved to: {result.artifact.output_path}")
     print(f"Ingestion run: {result.run_id}")
     return 0
 
