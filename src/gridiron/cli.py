@@ -8,10 +8,12 @@ from pathlib import Path
 
 from gridiron.data.metadata import read_ingestion_log
 from gridiron.data.nflverse import NFLVerseGateway
+from gridiron.pipelines.base import PipelineRunResult
 from gridiron.pipelines.features import build_team_game_feature_store
 from gridiron.pipelines.play_by_play import (
     run_play_by_play_pipeline,
 )
+from gridiron.pipelines.ratings import run_team_ratings_pipeline
 from gridiron.pipelines.schedules import run_schedule_pipeline
 from gridiron.pipelines.season import run_season_pipeline
 from gridiron.validation.schedules import validate_schedule
@@ -47,6 +49,12 @@ def build_parser() -> argparse.ArgumentParser:
         description="Build the curated team-game feature store.",
     )
     _add_pipeline_arguments(features)
+
+    ratings = subparsers.add_parser(
+        "build-team-ratings",
+        description="Build the curated team-ratings dataset.",
+    )
+    _add_pipeline_arguments(ratings)
 
     season = subparsers.add_parser(
         "run-season",
@@ -122,6 +130,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         return run_ingestion_history(
             database_path=args.database_path,
             limit=args.limit,
+        )
+    if args.command == "build-team-ratings":
+        return run_build_team_ratings(
+            season=args.season,
+            project_root=args.project_root,
+            database_path=args.database_path,
         )
 
     raise RuntimeError(f"Unsupported command: {args.command}")
@@ -203,7 +217,22 @@ def run_build_team_game_features(
         result=result,
     )
     return 0
+def run_build_team_ratings(
+    season: int,
+    project_root: Path = Path("."),
+    database_path: Path | None = None,
+) -> int:
+    result = run_team_ratings_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
 
+    _print_pipeline_result(
+        label="Team ratings",
+        result=result,
+    )
+    return 0
 
 def run_complete_season(
     season: int,
@@ -225,6 +254,7 @@ def run_complete_season(
     print("✓ Schedule")
     print("✓ Play-by-Play")
     print("✓ Team Game Features")
+    print("✓ Team Ratings")
     print()
     print(f"Completed in {result.elapsed_seconds:.2f} seconds.")
     return 0
@@ -233,7 +263,7 @@ def run_complete_season(
 def _print_pipeline_result(
     *,
     label: str,
-    result: object,
+    result: PipelineRunResult
 ) -> None:
     print(f"{label} pipeline completed for {result.season}.")
     print(f"Rows: {result.artifact.row_count}")

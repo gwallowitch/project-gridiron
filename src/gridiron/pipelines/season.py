@@ -10,6 +10,7 @@ from gridiron.data.nflverse import NFLVerseGateway
 from gridiron.pipelines.base import PipelineRunResult
 from gridiron.pipelines.features import build_team_game_feature_store
 from gridiron.pipelines.play_by_play import run_play_by_play_pipeline
+from gridiron.pipelines.ratings import run_team_ratings_pipeline
 from gridiron.pipelines.schedules import run_schedule_pipeline
 
 
@@ -21,6 +22,7 @@ class SeasonPipelineResult:
     schedule: PipelineRunResult
     play_by_play: PipelineRunResult
     features: PipelineRunResult
+    ratings: PipelineRunResult
     elapsed_seconds: float
 
 
@@ -31,7 +33,7 @@ def run_season_pipeline(
     database_path: Path | str | None = None,
     gateway: NFLVerseGateway | None = None,
 ) -> SeasonPipelineResult:
-    """Run schedule, play-by-play, and feature pipelines in order."""
+    """Run all current season pipelines in dependency order."""
     started_at = perf_counter()
     gateway = gateway or NFLVerseGateway()
 
@@ -55,10 +57,17 @@ def run_season_pipeline(
         database_path=database_path,
     )
 
+    ratings = run_team_ratings_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
+
     return SeasonPipelineResult(
         season=season,
         schedule=schedule,
         play_by_play=play_by_play,
         features=features,
+        ratings=ratings,
         elapsed_seconds=perf_counter() - started_at,
     )

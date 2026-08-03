@@ -41,6 +41,10 @@ class ProjectPaths:
         return self.curated / "team_game_features"
 
     @property
+    def team_ratings(self) -> Path:
+        return self.curated / "team_ratings"
+
+    @property
     def database(self) -> Path:
         return self.root / "database"
 
@@ -71,12 +75,17 @@ class ProjectPaths:
             / f"team_game_features_{season}.parquet"
         )
 
+    def team_ratings_file(self, season: int) -> Path:
+        _validate_season(season)
+        return self.team_ratings / f"team_ratings_{season}.parquet"
+
     def create_runtime_directories(self) -> None:
         """Create directories used by local pipelines."""
         for path in (
             self.schedules,
             self.play_by_play,
             self.team_game_features,
+            self.team_ratings,
             self.database,
             self.output,
         ):

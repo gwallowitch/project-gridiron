@@ -1,70 +1,92 @@
 # Project Gridiron
 
-Project Gridiron is an NFL analytics and decision-support platform. Its first
-milestone is a reproducible data pipeline built on the open-source nflverse
-ecosystem. It does not place wagers or promise profitable outcomes.
+**Professional Football Analytics Platform**
 
-## Step 1: verify the data connection
+Project Gridiron is an open, test-driven NFL analytics platform focused on reproducible data engineering, transparent rating models, and predictive analytics. The project emphasizes modular pipelines, validated datasets, and explainable algorithms rather than black-box predictions.
 
-Use Python 3.12 or 3.13 for the broadest data-science package compatibility.
+> **Current status:** Alpha 0.1 (Active Development)
+
+## Current Capabilities
+
+- Automated NFL schedule ingestion
+- Automated play-by-play ingestion
+- Curated team-game feature store
+- Team metrics engine
+- Metric normalization (league average = 100)
+- Team rating engine
+- Ratings pipeline
+- Season orchestration pipeline
+- DuckDB metadata catalog
+- Mission Control (`ship.py`)
+- Comprehensive automated test suite (currently 76 passing tests)
+
+## Architecture
+
+```text
+NFLVerse
+    ↓
+Schedule Pipeline
+    ↓
+Play-by-Play Pipeline
+    ↓
+Team Game Feature Store
+    ↓
+Team Metrics
+    ↓
+Normalization
+    ↓
+Team Ratings
+    ↓
+Power Ratings (In Development)
+```
+
+## Technology
+
+- Python 3.13
+- Polars
+- DuckDB
+- Pytest
+- Ruff
+- nflverse / nflreadpy
+
+## Quick Start
 
 ```powershell
-git clone <your-repository-url>
+git clone https://github.com/gwallowitch/project-gridiron.git
 cd project-gridiron
 py -3.13 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
-python -m gridiron.cli smoke-test --season 2025
 python -m pytest
+python ship.py
 ```
 
-Before installing development dependencies, the core tests can also run with:
+## Engineering Principles
 
-```powershell
-$env:PYTHONPATH = "src"
-python -m unittest discover -s tests
-```
+- Reproducible pipelines
+- Modular architecture
+- Test-driven development
+- Explainable ratings
+- Preserve raw data and build curated datasets
+- Never use information unavailable before kickoff
 
-The smoke test downloads the selected season's schedule through `nflreadpy`,
-checks its schema, and prints a compact summary. It does not train a model.
+## Roadmap
 
-## Design rules
+### Alpha 0.2
+- Power Ratings
+- Strength of Schedule
+- Opponent Adjustments
 
-- Prefer maintained open-source packages over custom scrapers.
-- Preserve raw source data; transform into separate curated datasets.
-- Use only information that existed before kickoff.
-- Test chronologically; never randomly mix future games into training data.
-- Require timestamped odds before calculating historical betting performance.
-- Paper-test before considering real-money use.
+### Alpha 0.3
+- Prediction Engine
+- Weekly Ratings
 
-## Initial layout
+### Beta
+- Monte Carlo Simulation
+- Dashboard
+- Reporting
 
-```text
-project-gridiron/
-|-- pyproject.toml
-|-- README.md
-|-- src/gridiron/
-|   |-- cli.py
-|   |-- data/nflverse.py
-|   `-- validation/schedules.py
-`-- tests/
-    `-- test_schedule_validation.py
-```
-
-## Next increment
-
-After the smoke test passes, Step 3 will persist schedules and play-by-play data
-as Parquet files, add DuckDB metadata, and validate row counts and game IDs.
-
-## Hybrid development policy
-
-Project Gridiron uses maintained packages directly and selectively ports small,
-audited ideas from compatible open-source repositories. Every imported or
-adapted component must have a compatible license, attribution, focused tests,
-and no unavailable private dependencies. See `docs/UPSTREAMS.md` and
-`THIRD_PARTY_NOTICES.md`.
-
-Version 0.2 adds a dependency-free market-math core for odds conversion,
-two-outcome margin removal, expected value, and capped fractional Kelly sizing.
-These functions support research and paper testing; they do not select bets.
+### Version 1.0
+- End-to-end analytics platform
+- One-command workflow
+- Stable public release
