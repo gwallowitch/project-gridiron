@@ -13,6 +13,7 @@ from gridiron.pipelines.play_by_play import (
     run_play_by_play_pipeline,
 )
 from gridiron.pipelines.schedules import run_schedule_pipeline
+from gridiron.pipelines.season import run_season_pipeline
 from gridiron.validation.schedules import validate_schedule
 
 
@@ -46,6 +47,12 @@ def build_parser() -> argparse.ArgumentParser:
         description="Build the curated team-game feature store.",
     )
     _add_pipeline_arguments(features)
+
+    season = subparsers.add_parser(
+        "run-season",
+        description="Run the complete Project Gridiron season pipeline.",
+    )
+    _add_pipeline_arguments(season)
 
     history = subparsers.add_parser(
         "ingestion-history",
@@ -99,6 +106,13 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.command == "build-team-game-features":
         return run_build_team_game_features(
+            season=args.season,
+            project_root=args.project_root,
+            database_path=args.database_path,
+        )
+
+    if args.command == "run-season":
+        return run_complete_season(
             season=args.season,
             project_root=args.project_root,
             database_path=args.database_path,
@@ -188,6 +202,31 @@ def run_build_team_game_features(
         label="Team-game feature",
         result=result,
     )
+    return 0
+
+
+def run_complete_season(
+    season: int,
+    project_root: Path = Path("."),
+    database_path: Path | None = None,
+) -> int:
+    result = run_season_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
+
+    print()
+    print("=" * 60)
+    print("PROJECT GRIDIRON SEASON PIPELINE")
+    print("=" * 60)
+    print(f"Season: {result.season}")
+    print()
+    print("✓ Schedule")
+    print("✓ Play-by-Play")
+    print("✓ Team Game Features")
+    print()
+    print(f"Completed in {result.elapsed_seconds:.2f} seconds.")
     return 0
 
 
