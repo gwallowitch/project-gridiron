@@ -8,11 +8,9 @@ from pathlib import Path
 
 from gridiron.data.metadata import read_ingestion_log, record_ingestion
 from gridiron.data.nflverse import NFLVerseGateway
-from gridiron.data.persistence import (
-    persist_play_by_play,
-    persist_schedule,
-)
+from gridiron.data.persistence import persist_play_by_play
 from gridiron.pipelines.features import build_team_game_feature_store
+from gridiron.pipelines.schedules import run_schedule_pipeline
 from gridiron.validation.schedules import validate_schedule
 
 
@@ -33,13 +31,33 @@ def build_parser() -> argparse.ArgumentParser:
         "persist-schedule",
         description="Download and save an NFL schedule.",
     )
-    _add_persistence_arguments(schedule)
+    schedule.add_argument("--season", type=int, required=True)
+    schedule.add_argument(
+        "--project-root",
+        type=Path,
+        default=Path("."),
+    )
+    schedule.add_argument(
+        "--database-path",
+        type=Path,
+        default=None,
+    )
 
     play_by_play = subparsers.add_parser(
         "persist-play-by-play",
         description="Download and save NFL play-by-play.",
     )
-    _add_persistence_arguments(play_by_play)
+    play_by_play.add_argument("--season", type=int, required=True)
+    play_by_play.add_argument(
+        "--data-root",
+        type=Path,
+        default=Path("data"),
+    )
+    play_by_play.add_argument(
+        "--database-path",
+        type=Path,
+        default=Path("database/gridiron.duckdb"),
+    )
 
     features = subparsers.add_parser(
         "build-team-game-features",
@@ -71,22 +89,6 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _add_persistence_arguments(
-    parser: argparse.ArgumentParser,
-) -> None:
-    parser.add_argument("--season", type=int, required=True)
-    parser.add_argument(
-        "--data-root",
-        type=Path,
-        default=Path("data"),
-    )
-    parser.add_argument(
-        "--database-path",
-        type=Path,
-        default=Path("database/gridiron.duckdb"),
-    )
-
-
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
 
@@ -96,7 +98,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "persist-schedule":
         return run_persist_schedule(
             season=args.season,
-            data_root=args.data_root,
+            project_root=args.project_root,
             database_path=args.database_path,
         )
 
@@ -145,34 +147,27 @@ def run_smoke_test(
 
 def run_persist_schedule(
     season: int,
-    data_root: Path = Path("data"),
-    database_path: Path = Path("database/gridiron.duckdb"),
+    project_root: Path = Path("."),
+    database_path: Path | None = None,
     gateway: NFLVerseGateway | None = None,
 ) -> int:
-    gateway = gateway or NFLVerseGateway()
-    schedule = gateway.schedules([season])
-    output_path = persist_schedule(
-        schedule,
+    result = run_schedule_pipeline(
         season,
-        data_root,
-    )
-    season_rows = schedule.filter(
-        schedule["season"] == season
-    )
-
-    run_id = _record_file_ingestion(
+        project_root=project_root,
         database_path=database_path,
-        dataset="schedules",
-        season=season,
-        row_count=season_rows.height,
-        column_count=len(season_rows.columns),
-        output_path=output_path,
+        gateway=gateway,
     )
 
-    print(f"Schedule persistence completed for {season}.")
-    print(f"Schedule rows: {season_rows.height}")
-    print(f"Saved to: {output_path}")
-    print(f"Ingestion run: {run_id}")
+    print(f"Schedule pipeline completed for {season}.")
+    print(f"Schedule rows: {result.artifact.row_count}")
+    print(f"Columns: {result.artifact.column_count}")
+    print(
+        f"File size: "
+        f"{result.artifact.file_size_bytes:,} bytes"
+    )
+    print(f"Saved to: {result.artifact.output_path}")
+    print(f"Elapsed: {result.elapsed_seconds:.3f} seconds")
+    print(f"Ingestion run: {result.run_id}")
     return 0
 
 
@@ -225,8 +220,12 @@ def run_build_team_game_features(
     print(f"Team-game feature build completed for {season}.")
     print(f"Feature rows: {result.artifact.row_count}")
     print(f"Columns: {result.artifact.column_count}")
-    print(f"File size: {result.artifact.file_size_bytes:,} bytes")
+    print(
+        f"File size: "
+        f"{result.artifact.file_size_bytes:,} bytes"
+    )
     print(f"Saved to: {result.artifact.output_path}")
+    print(f"Elapsed: {result.elapsed_seconds:.3f} seconds")
     print(f"Ingestion run: {result.run_id}")
     return 0
 
