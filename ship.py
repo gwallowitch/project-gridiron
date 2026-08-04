@@ -106,6 +106,7 @@ def run_season_command(
     print("✓ Play-by-Play")
     print("✓ Team Game Features")
     print("✓ Team Ratings")
+    print("✓ Weekly Team Ratings")
     print(f"Runtime: {elapsed:.2f} seconds")
 
     return 0

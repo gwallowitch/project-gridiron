@@ -10,12 +10,13 @@ from gridiron.data.metadata import read_ingestion_log
 from gridiron.data.nflverse import NFLVerseGateway
 from gridiron.pipelines.base import PipelineRunResult
 from gridiron.pipelines.features import build_team_game_feature_store
-from gridiron.pipelines.play_by_play import (
-    run_play_by_play_pipeline,
-)
+from gridiron.pipelines.play_by_play import run_play_by_play_pipeline
 from gridiron.pipelines.ratings import run_team_ratings_pipeline
 from gridiron.pipelines.schedules import run_schedule_pipeline
 from gridiron.pipelines.season import run_season_pipeline
+from gridiron.pipelines.weekly_ratings import (
+    run_weekly_team_ratings_pipeline,
+)
 from gridiron.validation.schedules import validate_schedule
 
 
@@ -55,6 +56,12 @@ def build_parser() -> argparse.ArgumentParser:
         description="Build the curated team-ratings dataset.",
     )
     _add_pipeline_arguments(ratings)
+
+    weekly_ratings = subparsers.add_parser(
+        "build-weekly-ratings",
+        description="Build cumulative weekly team ratings.",
+    )
+    _add_pipeline_arguments(weekly_ratings)
 
     season = subparsers.add_parser(
         "run-season",
@@ -119,6 +126,20 @@ def main(argv: Sequence[str] | None = None) -> int:
             database_path=args.database_path,
         )
 
+    if args.command == "build-team-ratings":
+        return run_build_team_ratings(
+            season=args.season,
+            project_root=args.project_root,
+            database_path=args.database_path,
+        )
+
+    if args.command == "build-weekly-ratings":
+        return run_build_weekly_team_ratings(
+            season=args.season,
+            project_root=args.project_root,
+            database_path=args.database_path,
+        )
+
     if args.command == "run-season":
         return run_complete_season(
             season=args.season,
@@ -130,12 +151,6 @@ def main(argv: Sequence[str] | None = None) -> int:
         return run_ingestion_history(
             database_path=args.database_path,
             limit=args.limit,
-        )
-    if args.command == "build-team-ratings":
-        return run_build_team_ratings(
-            season=args.season,
-            project_root=args.project_root,
-            database_path=args.database_path,
         )
 
     raise RuntimeError(f"Unsupported command: {args.command}")
@@ -149,13 +164,9 @@ def run_smoke_test(
     schedule = gateway.schedules([season])
     validate_schedule(schedule)
 
-    season_rows = schedule.filter(
-        schedule["season"] == season
-    )
+    season_rows = schedule.filter(schedule["season"] == season)
 
-    print(
-        f"Project Gridiron data connection passed for {season}."
-    )
+    print(f"Project Gridiron data connection passed for {season}.")
     print(f"Schedule rows: {season_rows.height}")
     print(f"Available columns: {len(schedule.columns)}")
     return 0
@@ -173,11 +184,7 @@ def run_persist_schedule(
         database_path=database_path,
         gateway=gateway,
     )
-
-    _print_pipeline_result(
-        label="Schedule",
-        result=result,
-    )
+    _print_pipeline_result(label="Schedule", result=result)
     return 0
 
 
@@ -193,11 +200,7 @@ def run_persist_play_by_play(
         database_path=database_path,
         gateway=gateway,
     )
-
-    _print_pipeline_result(
-        label="Play-by-play",
-        result=result,
-    )
+    _print_pipeline_result(label="Play-by-play", result=result)
     return 0
 
 
@@ -211,12 +214,10 @@ def run_build_team_game_features(
         project_root=project_root,
         database_path=database_path,
     )
-
-    _print_pipeline_result(
-        label="Team-game feature",
-        result=result,
-    )
+    _print_pipeline_result(label="Team-game feature", result=result)
     return 0
+
+
 def run_build_team_ratings(
     season: int,
     project_root: Path = Path("."),
@@ -227,12 +228,23 @@ def run_build_team_ratings(
         project_root=project_root,
         database_path=database_path,
     )
-
-    _print_pipeline_result(
-        label="Team ratings",
-        result=result,
-    )
+    _print_pipeline_result(label="Team ratings", result=result)
     return 0
+
+
+def run_build_weekly_team_ratings(
+    season: int,
+    project_root: Path = Path("."),
+    database_path: Path | None = None,
+) -> int:
+    result = run_weekly_team_ratings_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
+    _print_pipeline_result(label="Weekly team ratings", result=result)
+    return 0
+
 
 def run_complete_season(
     season: int,
@@ -255,6 +267,7 @@ def run_complete_season(
     print("✓ Play-by-Play")
     print("✓ Team Game Features")
     print("✓ Team Ratings")
+    print("✓ Weekly Team Ratings")
     print()
     print(f"Completed in {result.elapsed_seconds:.2f} seconds.")
     return 0
@@ -263,21 +276,15 @@ def run_complete_season(
 def _print_pipeline_result(
     *,
     label: str,
-    result: PipelineRunResult
+    result: PipelineRunResult,
 ) -> None:
     print(f"{label} pipeline completed for {result.season}.")
     print(f"Rows: {result.artifact.row_count}")
     print(f"Columns: {result.artifact.column_count}")
-    print(
-        f"File size: "
-        f"{result.artifact.file_size_bytes:,} bytes"
-    )
+    print(f"File size: {result.artifact.file_size_bytes:,} bytes")
     print(f"Saved to: {result.artifact.output_path}")
     print(f"Elapsed: {result.elapsed_seconds:.3f} seconds")
-    print(
-        f"Throughput: "
-        f"{result.rows_per_second:,.1f} rows/second"
-    )
+    print(f"Throughput: {result.rows_per_second:,.1f} rows/second")
     print(f"Ingestion run: {result.run_id}")
 
 
@@ -285,10 +292,7 @@ def run_ingestion_history(
     database_path: Path,
     limit: int = 10,
 ) -> int:
-    records = read_ingestion_log(
-        database_path,
-        limit=limit,
-    )
+    records = read_ingestion_log(database_path, limit=limit)
 
     if not records:
         print("No ingestion records found.")

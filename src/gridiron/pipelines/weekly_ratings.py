@@ -1,4 +1,4 @@
-"""Team-rating pipeline for Project Gridiron."""
+"""Weekly team-rating pipeline for Project Gridiron."""
 
 from __future__ import annotations
 
@@ -13,13 +13,15 @@ from gridiron.pipelines.base import (
     PipelineArtifact,
     PipelineRunResult,
 )
-from gridiron.ratings.metrics import build_team_metrics
-from gridiron.ratings.team import build_team_ratings
-from gridiron.validation.team_ratings import validate_team_ratings
+from gridiron.ratings.weekly import build_weekly_team_ratings
+from gridiron.ratings.weekly_metrics import build_weekly_team_metrics
+from gridiron.validation.weekly_team_ratings import (
+    validate_weekly_team_ratings,
+)
 
 
-class TeamRatingsPipeline(BasePipeline):
-    """Build and persist team ratings for one NFL season."""
+class WeeklyTeamRatingsPipeline(BasePipeline):
+    """Build and persist cumulative team ratings by week."""
 
     def __init__(
         self,
@@ -43,15 +45,15 @@ class TeamRatingsPipeline(BasePipeline):
 
     @property
     def pipeline_name(self) -> str:
-        return "Team Ratings Pipeline"
+        return "Weekly Team Ratings Pipeline"
 
     @property
     def dataset_name(self) -> str:
-        return "team_ratings"
+        return "weekly_team_ratings"
 
     @property
     def expected_output_path(self) -> Path:
-        return self.paths.team_ratings_file(self.season)
+        return self.paths.weekly_team_ratings_file(self.season)
 
     def execute(self) -> PipelineArtifact:
         self.set_stage("input validation")
@@ -65,36 +67,39 @@ class TeamRatingsPipeline(BasePipeline):
         self.set_stage("loading")
         feature_store = pl.read_parquet(input_path)
 
-        self.set_stage("metric aggregation")
-        team_metrics = build_team_metrics(feature_store)
+        self.set_stage("weekly metric aggregation")
+        weekly_metrics = build_weekly_team_metrics(feature_store)
 
-        self.set_stage("rating calculation")
-        team_ratings = build_team_ratings(team_metrics)
+        self.set_stage("weekly rating calculation")
+        weekly_ratings = build_weekly_team_ratings(
+            weekly_metrics,
+            season=self.season,
+        )
 
-        self.set_stage("rating validation")
-        validate_team_ratings(team_ratings)
+        self.set_stage("weekly rating validation")
+        validate_weekly_team_ratings(weekly_ratings)
 
         self.set_stage("persistence")
         write_parquet_atomically(
-            team_ratings,
+            weekly_ratings,
             self.expected_output_path,
         )
 
         return PipelineArtifact(
             output_path=self.expected_output_path,
-            row_count=team_ratings.height,
-            column_count=len(team_ratings.columns),
+            row_count=weekly_ratings.height,
+            column_count=len(weekly_ratings.columns),
         )
 
 
-def run_team_ratings_pipeline(
+def run_weekly_team_ratings_pipeline(
     season: int,
     *,
     project_root: Path | str = Path("."),
     database_path: Path | str | None = None,
 ) -> PipelineRunResult:
-    """Run the team-ratings pipeline."""
-    pipeline = TeamRatingsPipeline(
+    """Run the weekly team-ratings pipeline."""
+    pipeline = WeeklyTeamRatingsPipeline(
         season=season,
         project_root=project_root,
         database_path=database_path,

@@ -12,6 +12,9 @@ from gridiron.pipelines.features import build_team_game_feature_store
 from gridiron.pipelines.play_by_play import run_play_by_play_pipeline
 from gridiron.pipelines.ratings import run_team_ratings_pipeline
 from gridiron.pipelines.schedules import run_schedule_pipeline
+from gridiron.pipelines.weekly_ratings import (
+    run_weekly_team_ratings_pipeline,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -23,6 +26,7 @@ class SeasonPipelineResult:
     play_by_play: PipelineRunResult
     features: PipelineRunResult
     ratings: PipelineRunResult
+    weekly_ratings: PipelineRunResult
     elapsed_seconds: float
 
 
@@ -63,11 +67,18 @@ def run_season_pipeline(
         database_path=database_path,
     )
 
+    weekly_ratings = run_weekly_team_ratings_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
+
     return SeasonPipelineResult(
         season=season,
         schedule=schedule,
         play_by_play=play_by_play,
         features=features,
         ratings=ratings,
+        weekly_ratings=weekly_ratings,
         elapsed_seconds=perf_counter() - started_at,
     )
