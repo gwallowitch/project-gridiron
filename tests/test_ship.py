@@ -23,6 +23,16 @@ def test_ship_parser_accepts_doctor_command() -> None:
     assert args.project_root == Path(".")
 
 
+def test_ship_parser_accepts_benchmark_command() -> None:
+    args = ship.build_parser().parse_args(
+        ["benchmark", "--season", "2025"]
+    )
+
+    assert args.command == "benchmark"
+    assert args.season == 2025
+    assert args.project_root == Path(".")
+
+
 def test_ship_parser_accepts_status_command() -> None:
     args = ship.build_parser().parse_args(["status"])
 

@@ -7,6 +7,8 @@ from collections.abc import Sequence
 from pathlib import Path
 from time import perf_counter
 
+from gridiron.benchmark.evaluator import evaluate_pgr_season
+from gridiron.benchmark.report import print_benchmark_report
 from gridiron.pipelines.season import run_season_pipeline
 from gridiron.ship.banner import print_banner
 from gridiron.ship.doctor import check_repository
@@ -56,6 +58,17 @@ def build_parser() -> argparse.ArgumentParser:
         description="Display Project Gridiron status.",
     )
 
+    benchmark = subparsers.add_parser(
+        "benchmark",
+        description="Evaluate a persisted PGR season.",
+    )
+    benchmark.add_argument("--season", type=int, required=True)
+    benchmark.add_argument(
+        "--project-root",
+        type=Path,
+        default=Path("."),
+    )
+
     return parser
 
 
@@ -78,6 +91,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "status":
         print_status()
         return 0
+
+    if args.command == "benchmark":
+        return run_benchmark_command(
+            season=args.season,
+            project_root=args.project_root,
+        )
 
     raise RuntimeError(f"Unsupported command: {args.command}")
 
@@ -111,6 +130,20 @@ def run_season_command(
     print("✓ Project Gridiron Rating")
     print(f"Runtime: {elapsed:.2f} seconds")
 
+    return 0
+
+
+def run_benchmark_command(
+    *,
+    season: int,
+    project_root: Path,
+) -> int:
+    """Evaluate and print the PGR benchmark for one season."""
+    result = evaluate_pgr_season(
+        season,
+        project_root=project_root,
+    )
+    print_benchmark_report(result)
     return 0
 
 
