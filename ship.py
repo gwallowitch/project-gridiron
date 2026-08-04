@@ -107,6 +107,8 @@ def run_season_command(
     print("✓ Team Game Features")
     print("✓ Team Ratings")
     print("✓ Weekly Team Ratings")
+    print("✓ Strength of Schedule")
+    print("✓ Project Gridiron Rating")
     print(f"Runtime: {elapsed:.2f} seconds")
 
     return 0

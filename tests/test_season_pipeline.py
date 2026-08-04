@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from gridiron.core import paths
 import polars as pl
 
 from gridiron.core.paths import ProjectPaths
@@ -75,7 +74,11 @@ def test_run_season_pipeline_completes_all_stages(
     assert result.ratings.run_id
     assert result.elapsed_seconds >= 0
     assert result.weekly_ratings.run_id
+    assert result.strength_of_schedule.run_id
+    assert result.pgr.run_id
     assert paths.weekly_team_ratings_file(2025).exists()
+    assert paths.strength_of_schedule_file(2025).exists()
+    assert paths.pgr_file(2025).exists()
 
     assert paths.schedule_file(2025).exists()
     assert paths.play_by_play_file(2025).exists()
@@ -84,11 +87,13 @@ def test_run_season_pipeline_completes_all_stages(
 
     records = read_ingestion_log(paths.metadata_database)
 
-    assert len(records) == 5
+    assert len(records) == 7
     assert {record["dataset"] for record in records} == {
         "schedules",
         "play_by_play",
         "team_game_features",
         "team_ratings",
         "weekly_team_ratings",
+        "strength_of_schedule",
+        "pgr",
     }

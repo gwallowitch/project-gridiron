@@ -57,6 +57,20 @@ def test_project_paths_build_dataset_files(tmp_path: Path) -> None:
         / "weekly_team_ratings"
         / "weekly_team_ratings_2025.parquet"
     )
+    assert paths.strength_of_schedule_file(2025) == (
+        tmp_path.resolve()
+        / "data"
+        / "curated"
+        / "strength_of_schedule"
+        / "strength_of_schedule_2025.parquet"
+    )
+    assert paths.pgr_file(2025) == (
+        tmp_path.resolve()
+        / "data"
+        / "curated"
+        / "pgr"
+        / "pgr_2025.parquet"
+    )
 
 
 def test_project_paths_reject_invalid_season(tmp_path: Path) -> None:
@@ -76,5 +90,7 @@ def test_create_runtime_directories(tmp_path: Path) -> None:
     assert paths.team_game_features.is_dir()
     assert paths.team_ratings.is_dir()
     assert paths.weekly_team_ratings.is_dir()
+    assert paths.strength_of_schedule.is_dir()
+    assert paths.pgr.is_dir()
     assert paths.database.is_dir()
     assert paths.output.is_dir()

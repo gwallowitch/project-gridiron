@@ -49,6 +49,14 @@ class ProjectPaths:
         return self.curated / "weekly_team_ratings"
 
     @property
+    def strength_of_schedule(self) -> Path:
+        return self.curated / "strength_of_schedule"
+
+    @property
+    def pgr(self) -> Path:
+        return self.curated / "pgr"
+
+    @property
     def database(self) -> Path:
         return self.root / "database"
 
@@ -90,6 +98,17 @@ class ProjectPaths:
             / f"weekly_team_ratings_{season}.parquet"
         )
 
+    def strength_of_schedule_file(self, season: int) -> Path:
+        _validate_season(season)
+        return (
+            self.strength_of_schedule
+            / f"strength_of_schedule_{season}.parquet"
+        )
+
+    def pgr_file(self, season: int) -> Path:
+        _validate_season(season)
+        return self.pgr / f"pgr_{season}.parquet"
+
     def create_runtime_directories(self) -> None:
         """Create directories used by local pipelines."""
         for path in (
@@ -98,6 +117,8 @@ class ProjectPaths:
             self.team_game_features,
             self.team_ratings,
             self.weekly_team_ratings,
+            self.strength_of_schedule,
+            self.pgr,
             self.database,
             self.output,
         ):

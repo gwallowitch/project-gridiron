@@ -8,12 +8,16 @@ from pathlib import Path
 
 from gridiron.data.metadata import read_ingestion_log
 from gridiron.data.nflverse import NFLVerseGateway
+from gridiron.pgr.pipeline import run_pgr_pipeline
 from gridiron.pipelines.base import PipelineRunResult
 from gridiron.pipelines.features import build_team_game_feature_store
 from gridiron.pipelines.play_by_play import run_play_by_play_pipeline
 from gridiron.pipelines.ratings import run_team_ratings_pipeline
 from gridiron.pipelines.schedules import run_schedule_pipeline
 from gridiron.pipelines.season import run_season_pipeline
+from gridiron.pipelines.strength_of_schedule import (
+    run_strength_of_schedule_pipeline,
+)
 from gridiron.pipelines.weekly_ratings import (
     run_weekly_team_ratings_pipeline,
 )
@@ -62,6 +66,18 @@ def build_parser() -> argparse.ArgumentParser:
         description="Build cumulative weekly team ratings.",
     )
     _add_pipeline_arguments(weekly_ratings)
+
+    strength_of_schedule = subparsers.add_parser(
+        "build-strength-of-schedule",
+        description="Build weekly strength-of-schedule ratings.",
+    )
+    _add_pipeline_arguments(strength_of_schedule)
+
+    pgr = subparsers.add_parser(
+        "build-pgr",
+        description="Build Project Gridiron Ratings.",
+    )
+    _add_pipeline_arguments(pgr)
 
     season = subparsers.add_parser(
         "run-season",
@@ -135,6 +151,20 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.command == "build-weekly-ratings":
         return run_build_weekly_team_ratings(
+            season=args.season,
+            project_root=args.project_root,
+            database_path=args.database_path,
+        )
+
+    if args.command == "build-strength-of-schedule":
+        return run_build_strength_of_schedule(
+            season=args.season,
+            project_root=args.project_root,
+            database_path=args.database_path,
+        )
+
+    if args.command == "build-pgr":
+        return run_build_pgr(
             season=args.season,
             project_root=args.project_root,
             database_path=args.database_path,
@@ -246,6 +276,37 @@ def run_build_weekly_team_ratings(
     return 0
 
 
+def run_build_strength_of_schedule(
+    season: int,
+    project_root: Path = Path("."),
+    database_path: Path | None = None,
+) -> int:
+    result = run_strength_of_schedule_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
+    _print_pipeline_result(
+        label="Strength of schedule",
+        result=result,
+    )
+    return 0
+
+
+def run_build_pgr(
+    season: int,
+    project_root: Path = Path("."),
+    database_path: Path | None = None,
+) -> int:
+    result = run_pgr_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
+    _print_pipeline_result(label="PGR", result=result)
+    return 0
+
+
 def run_complete_season(
     season: int,
     project_root: Path = Path("."),
@@ -268,6 +329,8 @@ def run_complete_season(
     print("✓ Team Game Features")
     print("✓ Team Ratings")
     print("✓ Weekly Team Ratings")
+    print("✓ Strength of Schedule")
+    print("✓ Project Gridiron Rating")
     print()
     print(f"Completed in {result.elapsed_seconds:.2f} seconds.")
     return 0
