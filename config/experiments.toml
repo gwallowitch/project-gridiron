@@ -1,50 +1,49 @@
-# Project Gridiron prediction experiments.
-# This release does not change the production prediction defaults.
+# Rest-weight experiments using calibrated Prediction Engine v2 settings.
 
 [[experiment]]
-name = "baseline"
-home_field_advantage = 1.5
-probability_scale = 0.18
-margin_scale = 1.0
-margin_intercept = 0.0
-
-[[experiment]]
-name = "probability_016"
-home_field_advantage = 1.5
-probability_scale = 0.16
-margin_scale = 1.0
-margin_intercept = 0.0
-
-[[experiment]]
-name = "probability_014"
+name = "rest_000_baseline"
 home_field_advantage = 1.5
 probability_scale = 0.14
-margin_scale = 1.0
-margin_intercept = 0.0
-
-[[experiment]]
-name = "home_field_100"
-home_field_advantage = 1.0
-probability_scale = 0.16
-margin_scale = 1.0
-margin_intercept = 0.0
-
-[[experiment]]
-name = "home_field_200"
-home_field_advantage = 2.0
-probability_scale = 0.16
-margin_scale = 1.0
-margin_intercept = 0.0
-
-[[experiment]]
-name = "margin_075"
-home_field_advantage = 1.5
-probability_scale = 0.16
 margin_scale = 0.75
 margin_intercept = 0.0
+rest_weight = 0.0
 
 [[experiment]]
-name = "probability_014_margin_075"
+name = "rest_010"
+home_field_advantage = 1.5
 probability_scale = 0.14
-home_field_advantage = 1.5
 margin_scale = 0.75
+margin_intercept = 0.0
+rest_weight = 0.10
+
+[[experiment]]
+name = "rest_020"
+home_field_advantage = 1.5
+probability_scale = 0.14
+margin_scale = 0.75
+margin_intercept = 0.0
+rest_weight = 0.20
+
+[[experiment]]
+name = "rest_030"
+home_field_advantage = 1.5
+probability_scale = 0.14
+margin_scale = 0.75
+margin_intercept = 0.0
+rest_weight = 0.30
+
+[[experiment]]
+name = "rest_040"
+home_field_advantage = 1.5
+probability_scale = 0.14
+margin_scale = 0.75
+margin_intercept = 0.0
+rest_weight = 0.40
+
+[[experiment]]
+name = "rest_050"
+home_field_advantage = 1.5
+probability_scale = 0.14
+margin_scale = 0.75
+margin_intercept = 0.0
+rest_weight = 0.50

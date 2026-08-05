@@ -1,16 +1,18 @@
-# Project Gridiron Rest Differential v1
+# Project Gridiron v0.10.0a — Research Platform 60A
 
 ## Added
 
-- Rest differential feature engine
-- Rest feature validation
-- Rest feature pipeline and metadata registration
-- Season-pipeline integration
-- Curated rest-feature Parquet output
-- Unit, validation, pipeline, and integration tests
-- ADR and design documentation
+- Named multi-season research profiles
+- COVID-season exclusion policy
+- `ship.py research --profile NAME`
+- Multi-season experiment orchestration
+- Research run registry
+- Git commit, Python version, timestamp, and runtime metadata
+- Console research execution report
+- Research configuration, runner, registry, report, and validation tests
 
-## Unchanged
+## Deferred
 
-Prediction Engine v2 does not yet use rest differential. The feature is
-being introduced and validated independently before experimental tuning.
+- Aggregate cross-season rankings
+- Statistical confidence intervals
+- Automatic promotion recommendations

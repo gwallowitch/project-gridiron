@@ -16,6 +16,7 @@ class ExperimentConfig:
     probability_scale: float
     margin_scale: float = 1.0
     margin_intercept: float = 0.0
+    rest_weight: float = 0.0
 
 
 @dataclass(frozen=True, slots=True)
@@ -28,6 +29,7 @@ class ExperimentResult:
     probability_scale: float
     margin_scale: float
     margin_intercept: float
+    rest_weight: float
     games_evaluated: int
     winner_accuracy: float
     brier_score: float
@@ -59,6 +61,7 @@ class ExperimentResult:
             probability_scale=config.probability_scale,
             margin_scale=config.margin_scale,
             margin_intercept=config.margin_intercept,
+            rest_weight=config.rest_weight,
             games_evaluated=games_evaluated,
             winner_accuracy=winner_accuracy,
             brier_score=brier_score,

@@ -21,6 +21,10 @@ from gridiron.experiments.runner import run_experiments
 from gridiron.pipelines.season import run_season_pipeline
 from gridiron.prediction.pipeline import run_prediction_pipeline
 from gridiron.prediction.report import print_prediction_report
+from gridiron.research.config import load_research_profiles
+from gridiron.research.registry import append_research_registry
+from gridiron.research.report import print_research_report
+from gridiron.research.runner import run_research
 from gridiron.ship.banner import print_banner
 from gridiron.ship.doctor import check_repository
 from gridiron.ship.status import print_status
@@ -32,7 +36,6 @@ def build_parser() -> argparse.ArgumentParser:
         prog="ship.py",
         description="Project Gridiron Mission Control",
     )
-
     subparsers = parser.add_subparsers(
         dest="command",
         required=True,
@@ -75,24 +78,67 @@ def build_parser() -> argparse.ArgumentParser:
     )
     predict.add_argument("--season", type=int, required=True)
     predict.add_argument("--week", type=int, required=True)
-    predict.add_argument("--project-root", type=Path, default=Path("."))
-    predict.add_argument("--database-path", type=Path, default=None)
+    predict.add_argument(
+        "--project-root",
+        type=Path,
+        default=Path("."),
+    )
+    predict.add_argument(
+        "--database-path",
+        type=Path,
+        default=None,
+    )
 
     backtest = subparsers.add_parser(
         "backtest",
-        description="Evaluate historical predictions against completed games.",
+        description=(
+            "Evaluate historical predictions against completed games."
+        ),
     )
     backtest.add_argument("--season", type=int, required=True)
-    backtest.add_argument("--project-root", type=Path, default=Path("."))
-    backtest.add_argument("--database-path", type=Path, default=None)
+    backtest.add_argument(
+        "--project-root",
+        type=Path,
+        default=Path("."),
+    )
+    backtest.add_argument(
+        "--database-path",
+        type=Path,
+        default=None,
+    )
 
     experiment = subparsers.add_parser(
         "experiment",
         description="Run and rank prediction parameter experiments.",
     )
     experiment.add_argument("--season", type=int, required=True)
-    experiment.add_argument("--project-root", type=Path, default=Path("."))
+    experiment.add_argument(
+        "--project-root",
+        type=Path,
+        default=Path("."),
+    )
     experiment.add_argument("--config", type=Path, default=None)
+
+    research = subparsers.add_parser(
+        "research",
+        description="Run experiments across a named season profile.",
+    )
+    research.add_argument("--profile", required=True)
+    research.add_argument(
+        "--project-root",
+        type=Path,
+        default=Path("."),
+    )
+    research.add_argument(
+        "--research-config",
+        type=Path,
+        default=None,
+    )
+    research.add_argument(
+        "--experiment-config",
+        type=Path,
+        default=None,
+    )
 
     benchmark = subparsers.add_parser(
         "benchmark",
@@ -111,7 +157,6 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: Sequence[str] | None = None) -> int:
     """Run Mission Control."""
     args = build_parser().parse_args(argv)
-
     print_banner()
 
     if args.command == "season":
@@ -120,14 +165,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             project_root=args.project_root,
             database_path=args.database_path,
         )
-
     if args.command == "doctor":
         return run_doctor_command(args.project_root)
-
     if args.command == "status":
         print_status()
         return 0
-
     if args.command == "predict":
         return run_predict_command(
             season=args.season,
@@ -135,27 +177,30 @@ def main(argv: Sequence[str] | None = None) -> int:
             project_root=args.project_root,
             database_path=args.database_path,
         )
-
     if args.command == "backtest":
         return run_backtest_command(
             season=args.season,
             project_root=args.project_root,
             database_path=args.database_path,
         )
-
     if args.command == "experiment":
         return run_experiment_command(
             season=args.season,
             project_root=args.project_root,
             config_path=args.config,
         )
-
+    if args.command == "research":
+        return run_research_command(
+            profile=args.profile,
+            project_root=args.project_root,
+            research_config=args.research_config,
+            experiment_config=args.experiment_config,
+        )
     if args.command == "benchmark":
         return run_benchmark_command(
             season=args.season,
             project_root=args.project_root,
         )
-
     raise RuntimeError(f"Unsupported command: {args.command}")
 
 
@@ -167,19 +212,18 @@ def run_season_command(
 ) -> int:
     """Run the complete season workflow."""
     started_at = perf_counter()
-
     result = run_season_pipeline(
         season,
         project_root=project_root,
         database_path=database_path,
     )
-
     elapsed = perf_counter() - started_at
 
     print("Mission Complete")
     print("----------------")
     print(f"Season: {result.season}")
     print("✓ Schedule")
+    print("✓ Rest Features")
     print("✓ Play-by-Play")
     print("✓ Team Game Features")
     print("✓ Team Ratings")
@@ -188,7 +232,6 @@ def run_season_command(
     print("✓ Project Gridiron Rating")
     print("✓ Predictions")
     print(f"Runtime: {elapsed:.2f} seconds")
-
     return 0
 
 
@@ -205,7 +248,9 @@ def run_predict_command(
         database_path=database_path,
     )
     paths = ProjectPaths.from_root(project_root)
-    predictions = pl.read_parquet(paths.predictions_file(season))
+    predictions = pl.read_parquet(
+        paths.predictions_file(season)
+    )
     print_prediction_report(predictions, week=week)
     return 0
 
@@ -232,7 +277,7 @@ def run_experiment_command(
     project_root: Path,
     config_path: Path | None,
 ) -> int:
-    """Run configured prediction experiments and persist the registry."""
+    """Run configured prediction experiments and persist registry."""
     paths = ProjectPaths.from_root(project_root)
     resolved_config = (
         config_path
@@ -242,7 +287,15 @@ def run_experiment_command(
     experiments = load_experiments(resolved_config)
     schedule = pl.read_parquet(paths.schedule_file(season))
     pgr = pl.read_parquet(paths.pgr_file(season))
-    results = run_experiments(schedule, pgr, experiments)
+    rest_features = pl.read_parquet(
+        paths.rest_features_file(season)
+    )
+    results = run_experiments(
+        schedule,
+        pgr,
+        experiments,
+        rest_features=rest_features,
+    )
     registry_path = (
         paths.root
         / "data"
@@ -252,6 +305,48 @@ def run_experiment_command(
     )
     append_registry(registry_path, results)
     print_experiment_report(results)
+    print(f"Registry: {registry_path}")
+    return 0
+
+
+def run_research_command(
+    *,
+    profile: str,
+    project_root: Path,
+    research_config: Path | None,
+    experiment_config: Path | None,
+) -> int:
+    """Run configured experiments across multiple seasons."""
+    paths = ProjectPaths.from_root(project_root)
+    resolved_research = (
+        research_config
+        if research_config is not None
+        else paths.root / "config" / "research.toml"
+    )
+    resolved_experiments = (
+        experiment_config
+        if experiment_config is not None
+        else paths.root / "config" / "experiments.toml"
+    )
+
+    profiles = load_research_profiles(resolved_research)
+    seasons = profiles.seasons_for(profile)
+    experiments = load_experiments(resolved_experiments)
+    run = run_research(
+        profile=profile,
+        seasons=seasons,
+        experiments=experiments,
+        project_root=project_root,
+    )
+    registry_path = (
+        paths.root
+        / "data"
+        / "reports"
+        / "research"
+        / "research_registry.json"
+    )
+    append_research_registry(registry_path, run)
+    print_research_report(run)
     print(f"Registry: {registry_path}")
     return 0
 

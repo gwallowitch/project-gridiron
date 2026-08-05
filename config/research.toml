@@ -1,0 +1,9 @@
+# Named research season profiles.
+
+[profiles]
+modern = [2022, 2023, 2024, 2025]
+historical = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
+transition = [2021]
+
+[exclude]
+seasons = [2020]
