@@ -57,6 +57,30 @@ class ProjectPaths:
         return self.curated / "pgr"
 
     @property
+    def predictions(self) -> Path:
+        return self.curated / "predictions"
+
+    def predictions_file(self, season: int) -> Path:
+        _validate_season(season)
+        return self.predictions / f"predictions_{season}.parquet"
+
+    @property
+    def backtests(self) -> Path:
+        return self.curated / "backtests"
+
+    def backtest_file(self, season: int) -> Path:
+        _validate_season(season)
+        return self.backtests / f"backtest_{season}.parquet"
+
+    @property
+    def reports(self) -> Path:
+        return self.root / "data" / "reports"
+
+    @property
+    def backtest_reports(self) -> Path:
+        return self.reports / "backtests"
+
+    @property
     def database(self) -> Path:
         return self.root / "database"
 
@@ -119,6 +143,9 @@ class ProjectPaths:
             self.weekly_team_ratings,
             self.strength_of_schedule,
             self.pgr,
+            self.predictions,
+            self.backtests,
+            self.backtest_reports,
             self.database,
             self.output,
         ):

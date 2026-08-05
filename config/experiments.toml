@@ -1,0 +1,50 @@
+# Project Gridiron prediction experiments.
+# This release does not change the production prediction defaults.
+
+[[experiment]]
+name = "baseline"
+home_field_advantage = 1.5
+probability_scale = 0.18
+margin_scale = 1.0
+margin_intercept = 0.0
+
+[[experiment]]
+name = "probability_016"
+home_field_advantage = 1.5
+probability_scale = 0.16
+margin_scale = 1.0
+margin_intercept = 0.0
+
+[[experiment]]
+name = "probability_014"
+home_field_advantage = 1.5
+probability_scale = 0.14
+margin_scale = 1.0
+margin_intercept = 0.0
+
+[[experiment]]
+name = "home_field_100"
+home_field_advantage = 1.0
+probability_scale = 0.16
+margin_scale = 1.0
+margin_intercept = 0.0
+
+[[experiment]]
+name = "home_field_200"
+home_field_advantage = 2.0
+probability_scale = 0.16
+margin_scale = 1.0
+margin_intercept = 0.0
+
+[[experiment]]
+name = "margin_075"
+home_field_advantage = 1.5
+probability_scale = 0.16
+margin_scale = 0.75
+margin_intercept = 0.0
+
+[[experiment]]
+name = "probability_014_margin_075"
+probability_scale = 0.14
+home_field_advantage = 1.5
+margin_scale = 0.75

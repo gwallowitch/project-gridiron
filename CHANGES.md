@@ -1,5 +1,5 @@
-# Changes
+## v0.8.0a-alpha
 
-- Added `gridiron.benchmark` package.
-- Extended Mission Control with the `benchmark` command.
-- Added tests for metrics, evaluation, reports, persisted input, and parser behavior.
+- Added the prediction experiment framework and registry.
+- Added `python ship.py experiment --season YEAR`.
+- Added baseline parameter candidates in `config/experiments.toml`.

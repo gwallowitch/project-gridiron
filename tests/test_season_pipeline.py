@@ -84,10 +84,12 @@ def test_run_season_pipeline_completes_all_stages(
     assert paths.play_by_play_file(2025).exists()
     assert paths.team_game_features_file(2025).exists()
     assert paths.team_ratings_file(2025).exists()
+    assert result.predictions.run_id
+    assert paths.predictions_file(2025).exists()
 
     records = read_ingestion_log(paths.metadata_database)
 
-    assert len(records) == 7
+    assert len(records) == 8
     assert {record["dataset"] for record in records} == {
         "schedules",
         "play_by_play",
@@ -96,4 +98,5 @@ def test_run_season_pipeline_completes_all_stages(
         "weekly_team_ratings",
         "strength_of_schedule",
         "pgr",
+        "predictions",
     }

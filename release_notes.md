@@ -1,16 +1,12 @@
-# Project Gridiron v0.5.0-alpha — Benchmark Framework
+# Project Gridiron v0.8.0a-alpha
 
 ## Added
+- Configuration-driven prediction experiments
+- Multi-metric candidate ranking
+- Persistent JSON experiment registry
+- Mission Control `experiment` command
+- Tests and analytical design documentation
 
-- PGR distribution metrics
-- Weekly rating stability metrics
-- Typed benchmark result model
-- Deterministic console report
-- `ship.py benchmark --season <year>`
-- Optional JSON Lines benchmark history utility
-- ADR and design documentation
-- Benchmark unit and integration tests
-
-## Scope
-
-This release evaluates rating health. Predictive accuracy metrics will be added after the prediction engine exists.
+## Unchanged
+Production Prediction Engine v1 defaults remain unchanged. This release adds
+research infrastructure only; it does not promote a new model.

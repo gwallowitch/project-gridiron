@@ -19,6 +19,7 @@ from gridiron.pipelines.strength_of_schedule import (
 from gridiron.pipelines.weekly_ratings import (
     run_weekly_team_ratings_pipeline,
 )
+from gridiron.prediction.pipeline import run_prediction_pipeline
 
 
 @dataclass(frozen=True, slots=True)
@@ -33,6 +34,7 @@ class SeasonPipelineResult:
     weekly_ratings: PipelineRunResult
     strength_of_schedule: PipelineRunResult
     pgr: PipelineRunResult
+    predictions: PipelineRunResult
     elapsed_seconds: float
 
 
@@ -91,6 +93,12 @@ def run_season_pipeline(
         database_path=database_path,
     )
 
+    predictions = run_prediction_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
+
     return SeasonPipelineResult(
         season=season,
         schedule=schedule,
@@ -100,5 +108,6 @@ def run_season_pipeline(
         weekly_ratings=weekly_ratings,
         strength_of_schedule=strength_of_schedule,
         pgr=pgr,
+        predictions=predictions,
         elapsed_seconds=perf_counter() - started_at,
     )

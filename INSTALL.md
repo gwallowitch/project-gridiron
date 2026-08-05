@@ -1,13 +1,14 @@
-# Install Benchmark Milestone
+# Install v0.8.0a Experiment Framework
 
-Copy the contents of this release folder over the root of the current `project-gridiron` repository, preserving the directory structure.
+Copy this release folder's contents over the Project Gridiron repository root.
+Do not copy the release directory itself as a nested repository folder.
 
 Run:
 
 ```powershell
+python -m ruff check . --fix
 python -m ruff check .
 python -m pytest
-python ship.py benchmark --season 2025
+python ship.py season --season 2025
+python ship.py experiment --season 2025
 ```
-
-The benchmark command requires an existing `data/curated/pgr/pgr_<season>.parquet` file. Run the season pipeline first if it is missing.

@@ -6,6 +6,7 @@ import argparse
 from collections.abc import Sequence
 from pathlib import Path
 
+from gridiron.backtest.pipeline import run_backtest_pipeline
 from gridiron.data.metadata import read_ingestion_log
 from gridiron.data.nflverse import NFLVerseGateway
 from gridiron.pgr.pipeline import run_pgr_pipeline
@@ -21,6 +22,7 @@ from gridiron.pipelines.strength_of_schedule import (
 from gridiron.pipelines.weekly_ratings import (
     run_weekly_team_ratings_pipeline,
 )
+from gridiron.prediction.pipeline import run_prediction_pipeline
 from gridiron.validation.schedules import validate_schedule
 
 
@@ -72,6 +74,18 @@ def build_parser() -> argparse.ArgumentParser:
         description="Build weekly strength-of-schedule ratings.",
     )
     _add_pipeline_arguments(strength_of_schedule)
+
+    backtest = subparsers.add_parser(
+        "build-backtest",
+        description="Evaluate predictions against completed schedule results.",
+    )
+    _add_pipeline_arguments(backtest)
+
+    predictions = subparsers.add_parser(
+        "build-predictions",
+        description="Build game predictions from prior-week PGR.",
+    )
+    _add_pipeline_arguments(predictions)
 
     pgr = subparsers.add_parser(
         "build-pgr",
@@ -158,6 +172,20 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.command == "build-strength-of-schedule":
         return run_build_strength_of_schedule(
+            season=args.season,
+            project_root=args.project_root,
+            database_path=args.database_path,
+        )
+
+    if args.command == "build-backtest":
+        return run_build_backtest(
+            season=args.season,
+            project_root=args.project_root,
+            database_path=args.database_path,
+        )
+
+    if args.command == "build-predictions":
+        return run_build_predictions(
             season=args.season,
             project_root=args.project_root,
             database_path=args.database_path,
@@ -307,6 +335,37 @@ def run_build_pgr(
     return 0
 
 
+def run_build_backtest(
+    season: int,
+    project_root: Path = Path("."),
+    database_path: Path | None = None,
+) -> int:
+    result, metrics = run_backtest_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
+    _print_pipeline_result(label="Backtest", result=result)
+    print(f"Winner accuracy: {metrics.winner_accuracy:.1%}")
+    print(f"Brier score: {metrics.brier_score:.4f}")
+    print(f"Margin RMSE: {metrics.margin_rmse:.3f}")
+    return 0
+
+
+def run_build_predictions(
+    season: int,
+    project_root: Path = Path("."),
+    database_path: Path | None = None,
+) -> int:
+    result = run_prediction_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
+    )
+    _print_pipeline_result(label="Predictions", result=result)
+    return 0
+
+
 def run_complete_season(
     season: int,
     project_root: Path = Path("."),
@@ -331,6 +390,7 @@ def run_complete_season(
     print("✓ Weekly Team Ratings")
     print("✓ Strength of Schedule")
     print("✓ Project Gridiron Rating")
+    print("✓ Predictions")
     print()
     print(f"Completed in {result.elapsed_seconds:.2f} seconds.")
     return 0
