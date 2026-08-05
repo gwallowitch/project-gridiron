@@ -1,12 +1,16 @@
-# Project Gridiron v0.8.0a-alpha
+# Project Gridiron Rest Differential v1
 
 ## Added
-- Configuration-driven prediction experiments
-- Multi-metric candidate ranking
-- Persistent JSON experiment registry
-- Mission Control `experiment` command
-- Tests and analytical design documentation
+
+- Rest differential feature engine
+- Rest feature validation
+- Rest feature pipeline and metadata registration
+- Season-pipeline integration
+- Curated rest-feature Parquet output
+- Unit, validation, pipeline, and integration tests
+- ADR and design documentation
 
 ## Unchanged
-Production Prediction Engine v1 defaults remain unchanged. This release adds
-research infrastructure only; it does not promote a new model.
+
+Prediction Engine v2 does not yet use rest differential. The feature is
+being introduced and validated independently before experimental tuning.

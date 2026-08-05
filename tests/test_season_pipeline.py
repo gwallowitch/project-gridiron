@@ -69,6 +69,7 @@ def test_run_season_pipeline_completes_all_stages(
 
     assert result.season == 2025
     assert result.schedule.run_id
+    assert result.rest_features.run_id
     assert result.play_by_play.run_id
     assert result.features.run_id
     assert result.ratings.run_id
@@ -76,22 +77,24 @@ def test_run_season_pipeline_completes_all_stages(
     assert result.weekly_ratings.run_id
     assert result.strength_of_schedule.run_id
     assert result.pgr.run_id
-    assert paths.weekly_team_ratings_file(2025).exists()
-    assert paths.strength_of_schedule_file(2025).exists()
-    assert paths.pgr_file(2025).exists()
+    assert result.predictions.run_id
 
     assert paths.schedule_file(2025).exists()
+    assert paths.rest_features_file(2025).exists()
     assert paths.play_by_play_file(2025).exists()
     assert paths.team_game_features_file(2025).exists()
     assert paths.team_ratings_file(2025).exists()
-    assert result.predictions.run_id
+    assert paths.weekly_team_ratings_file(2025).exists()
+    assert paths.strength_of_schedule_file(2025).exists()
+    assert paths.pgr_file(2025).exists()
     assert paths.predictions_file(2025).exists()
 
     records = read_ingestion_log(paths.metadata_database)
 
-    assert len(records) == 8
+    assert len(records) == 9
     assert {record["dataset"] for record in records} == {
         "schedules",
+        "rest_features",
         "play_by_play",
         "team_game_features",
         "team_ratings",

@@ -12,6 +12,7 @@ from gridiron.pipelines.base import PipelineRunResult
 from gridiron.pipelines.features import build_team_game_feature_store
 from gridiron.pipelines.play_by_play import run_play_by_play_pipeline
 from gridiron.pipelines.ratings import run_team_ratings_pipeline
+from gridiron.pipelines.rest_features import run_rest_features_pipeline
 from gridiron.pipelines.schedules import run_schedule_pipeline
 from gridiron.pipelines.strength_of_schedule import (
     run_strength_of_schedule_pipeline,
@@ -28,6 +29,7 @@ class SeasonPipelineResult:
 
     season: int
     schedule: PipelineRunResult
+    rest_features: PipelineRunResult
     play_by_play: PipelineRunResult
     features: PipelineRunResult
     ratings: PipelineRunResult
@@ -54,6 +56,12 @@ def run_season_pipeline(
         project_root=project_root,
         database_path=database_path,
         gateway=gateway,
+    )
+
+    rest_features = run_rest_features_pipeline(
+        season,
+        project_root=project_root,
+        database_path=database_path,
     )
 
     play_by_play = run_play_by_play_pipeline(
@@ -102,6 +110,7 @@ def run_season_pipeline(
     return SeasonPipelineResult(
         season=season,
         schedule=schedule,
+        rest_features=rest_features,
         play_by_play=play_by_play,
         features=features,
         ratings=ratings,

@@ -37,6 +37,10 @@ class ProjectPaths:
         return self.raw / "play_by_play"
 
     @property
+    def rest_features(self) -> Path:
+        return self.curated / "rest_features"
+
+    @property
     def team_game_features(self) -> Path:
         return self.curated / "team_game_features"
 
@@ -104,6 +108,10 @@ class ProjectPaths:
         _validate_season(season)
         return self.play_by_play / f"play_by_play_{season}.parquet"
 
+    def rest_features_file(self, season: int) -> Path:
+        _validate_season(season)
+        return self.rest_features / f"rest_features_{season}.parquet"
+
     def team_game_features_file(self, season: int) -> Path:
         _validate_season(season)
         return (
@@ -138,6 +146,7 @@ class ProjectPaths:
         for path in (
             self.schedules,
             self.play_by_play,
+            self.rest_features,
             self.team_game_features,
             self.team_ratings,
             self.weekly_team_ratings,

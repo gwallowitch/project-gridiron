@@ -1,0 +1,90 @@
+"""Rest differential pipeline for Project Gridiron."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import polars as pl
+
+from gridiron.core.paths import ProjectPaths
+from gridiron.data.parquet import write_parquet_atomically
+from gridiron.features.rest import build_rest_features
+from gridiron.pipelines.base import (
+    BasePipeline,
+    PipelineArtifact,
+    PipelineRunResult,
+)
+from gridiron.validation.rest_features import validate_rest_features
+
+
+class RestFeaturesPipeline(BasePipeline):
+    """Build and persist rest features for one season."""
+
+    def __init__(
+        self,
+        *,
+        season: int,
+        project_root: Path | str = Path("."),
+        database_path: Path | str | None = None,
+    ) -> None:
+        self.paths = ProjectPaths.from_root(project_root)
+        catalog_path = (
+            Path(database_path)
+            if database_path is not None
+            else self.paths.metadata_database
+        )
+        super().__init__(season=season, database_path=catalog_path)
+
+    @property
+    def pipeline_name(self) -> str:
+        return "Rest Features Pipeline"
+
+    @property
+    def dataset_name(self) -> str:
+        return "rest_features"
+
+    @property
+    def expected_output_path(self) -> Path:
+        return self.paths.rest_features_file(self.season)
+
+    def execute(self) -> PipelineArtifact:
+        self.set_stage("input validation")
+        schedule_path = self.paths.schedule_file(self.season)
+        if not schedule_path.exists():
+            raise FileNotFoundError(
+                f"Schedule file does not exist: {schedule_path}"
+            )
+
+        self.set_stage("loading")
+        schedule = pl.read_parquet(schedule_path)
+
+        self.set_stage("feature calculation")
+        rest_features = build_rest_features(schedule)
+
+        self.set_stage("feature validation")
+        validate_rest_features(rest_features)
+
+        self.set_stage("persistence")
+        write_parquet_atomically(
+            rest_features,
+            self.expected_output_path,
+        )
+        return PipelineArtifact(
+            output_path=self.expected_output_path,
+            row_count=rest_features.height,
+            column_count=len(rest_features.columns),
+        )
+
+
+def run_rest_features_pipeline(
+    season: int,
+    *,
+    project_root: Path | str = Path("."),
+    database_path: Path | str | None = None,
+) -> PipelineRunResult:
+    """Run the rest-feature pipeline."""
+    return RestFeaturesPipeline(
+        season=season,
+        project_root=project_root,
+        database_path=database_path,
+    ).run()
