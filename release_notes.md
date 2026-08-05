@@ -1,18 +1,16 @@
-# Project Gridiron v0.10.0a — Research Platform 60A
+# Project Gridiron v0.10.0b — Research Aggregation
 
 ## Added
 
-- Named multi-season research profiles
-- COVID-season exclusion policy
-- `ship.py research --profile NAME`
-- Multi-season experiment orchestration
-- Research run registry
-- Git commit, Python version, timestamp, and runtime metadata
-- Console research execution report
-- Research configuration, runner, registry, report, and validation tests
+- Cross-season aggregate metrics
+- Aggregate experiment rankings
+- Season-win counts
+- Best and worst season tracking
+- Selection-score comparison against baseline
+- Expanded research report
+- Aggregation and reporting tests
 
 ## Deferred
 
-- Aggregate cross-season rankings
-- Statistical confidence intervals
-- Automatic promotion recommendations
+Statistical significance and automatic promotion remain deferred to 60C
+and 60D.

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from gridiron.experiments.models import ExperimentConfig, ExperimentResult
+from gridiron.experiments.models import (
+    ExperimentConfig,
+    ExperimentResult,
+)
 from gridiron.research.models import (
     ResearchRun,
     SeasonResearchResult,
@@ -8,10 +11,13 @@ from gridiron.research.models import (
 from gridiron.research.report import format_research_report
 
 
-def result() -> ExperimentResult:
+def result(
+    name: str,
+    score: float,
+) -> ExperimentResult:
     return ExperimentResult.create(
         config=ExperimentConfig(
-            name="baseline",
+            name=name,
             home_field_advantage=1.5,
             probability_scale=0.14,
             margin_scale=0.75,
@@ -24,16 +30,16 @@ def result() -> ExperimentResult:
         log_loss=0.66,
         margin_mae=10.5,
         margin_rmse=13.3,
-        selection_score=0.47,
+        selection_score=score,
     )
 
 
-def test_report_contains_run_summary() -> None:
+def test_report_contains_aggregate_ranking() -> None:
     run = ResearchRun(
         profile="modern",
         seasons=(2025,),
-        experiment_count=1,
-        total_runs=1,
+        experiment_count=2,
+        total_runs=2,
         runtime_seconds=0.5,
         generated_at="now",
         git_commit=None,
@@ -41,13 +47,16 @@ def test_report_contains_run_summary() -> None:
         results=(
             SeasonResearchResult(
                 season=2025,
-                experiments=(result(),),
+                experiments=(
+                    result("rest_010", 0.46),
+                    result("rest_000_baseline", 0.47),
+                ),
             ),
         ),
     )
 
     report = format_research_report(run)
 
-    assert "PROJECT GRIDIRON RESEARCH" in report
-    assert "modern" in report
-    assert "best=baseline" in report
+    assert "CROSS-SEASON AGGREGATE RANKING" in report
+    assert "Recommended aggregate leader: rest_010" in report
+    assert "ΔBaseline" in report
