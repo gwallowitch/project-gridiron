@@ -58,5 +58,7 @@ def test_report_contains_aggregate_ranking() -> None:
     report = format_research_report(run)
 
     assert "CROSS-SEASON AGGREGATE RANKING" in report
-    assert "Recommended aggregate leader: rest_010" in report
-    assert "ΔBaseline" in report
+    assert "PROMOTION REVIEW" in report
+    assert "Candidate................. rest_010" in report
+    assert "Status.................... INCONCLUSIVE" in report
+    assert "DeltaBase" in report

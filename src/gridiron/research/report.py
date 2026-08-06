@@ -7,23 +7,26 @@ from gridiron.research.aggregation import (
     aggregate_research,
 )
 from gridiron.research.models import ResearchRun
+from gridiron.research.promotion import review_candidate
+from gridiron.research.statistics import analyze_candidates
 
 
 def format_research_report(run: ResearchRun) -> str:
-    """Return a research execution and aggregate report."""
+    """Return research, aggregate, and promotion reporting."""
     season_text = ", ".join(str(season) for season in run.seasons)
     aggregates = aggregate_research(run)
+    analyses = analyze_candidates(run)
 
     lines = [
-        "=" * 96,
-        "PROJECT GRIDIRON RESEARCH".center(96),
-        "=" * 96,
+        "=" * 104,
+        "PROJECT GRIDIRON RESEARCH".center(104),
+        "=" * 104,
         f"Profile.................. {run.profile}",
         f"Seasons.................. {season_text}",
         f"Experiments per season... {run.experiment_count}",
         f"Total experiment runs.... {run.total_runs}",
         f"Runtime.................. {run.runtime_seconds:.2f} s",
-        "-" * 96,
+        "-" * 104,
     ]
 
     for season_result in run.results:
@@ -31,38 +34,80 @@ def format_research_report(run: ResearchRun) -> str:
         lines.append(
             f"{season_result.season}: "
             f"{len(season_result.experiments)} experiments, "
-            f"best={best.name}, "
-            f"score={best.selection_score:.4f}"
+            f"best={best.name}, score={best.selection_score:.4f}"
         )
 
     lines.extend(
         [
-            "-" * 96,
+            "-" * 104,
             "CROSS-SEASON AGGREGATE RANKING",
-            "-" * 96,
+            "-" * 104,
             (
                 "Rank  Experiment          Acc.    Brier   LogLoss  "
-                "MAE     RMSE    Score    Wins  ΔBaseline"
+                "MAE     RMSE    Score    Wins  DeltaBase"
             ),
-            "-" * 96,
+            "-" * 104,
         ]
     )
-
     for rank, aggregate in enumerate(aggregates, start=1):
-        lines.append(
-            _format_aggregate_row(rank, aggregate)
-        )
+        lines.append(_format_aggregate_row(rank, aggregate))
 
-    winner = aggregates[0]
     lines.extend(
         [
-            "-" * 96,
-            f"Recommended aggregate leader: {winner.name}",
+            "-" * 104,
+            "PAIRED STATISTICAL VALIDATION",
+            "-" * 104,
             (
-                "Negative ΔBaseline means a lower average selection "
-                "score than baseline."
+                "Candidate          W-L-T  MeanDelta Median    StdDev   "
+                "95% CI                  AccDelta"
             ),
-            "=" * 96,
+            "-" * 104,
+        ]
+    )
+    for analysis in analyses:
+        lines.append(
+            f"{analysis.name:<18}"
+            f"{analysis.wins:>2}-{analysis.losses}-{analysis.ties:<3}"
+            f"{analysis.mean_score_delta:>10.4f}"
+            f"{analysis.median_score_delta:>10.4f}"
+            f"{analysis.score_delta_stddev:>9.4f}"
+            f"  [{analysis.confidence_interval_low:>7.4f}, "
+            f"{analysis.confidence_interval_high:>7.4f}]"
+            f"{analysis.mean_accuracy_delta:>10.1%}"
+        )
+
+    leader = aggregates[0]
+    leader_analysis = next(
+        item for item in analyses if item.name == leader.name
+    )
+    review = review_candidate(leader_analysis)
+    lines.extend(
+        [
+            "-" * 104,
+            "PROMOTION REVIEW",
+            "-" * 104,
+            f"Candidate................. {review.candidate}",
+            f"Status.................... {review.status}",
+            f"Mean score delta.......... {leader_analysis.mean_score_delta:.4f}",
+            (
+                "95% confidence interval.. "
+                f"[{leader_analysis.confidence_interval_low:.4f}, "
+                f"{leader_analysis.confidence_interval_high:.4f}]"
+            ),
+            (
+                "Season record............ "
+                f"{leader_analysis.wins}-"
+                f"{leader_analysis.losses}-"
+                f"{leader_analysis.ties}"
+            ),
+            f"Mean accuracy delta....... {leader_analysis.mean_accuracy_delta:+.1%}",
+            f"Reason.................... {review.reason}",
+            "-" * 104,
+            (
+                "Negative score deltas favor the candidate; positive "
+                "accuracy deltas favor the candidate."
+            ),
+            "=" * 104,
         ]
     )
     return "\n".join(lines)

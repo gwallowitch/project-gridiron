@@ -1,0 +1,82 @@
+{
+  "approval_required": true,
+  "baseline": "rest_000_baseline",
+  "candidates": [
+    {
+      "confidence_interval_high": -0.00020165146829359548,
+      "confidence_interval_low": -0.0026733987993973196,
+      "losses": 0,
+      "mean_accuracy_delta": 0.004392208044834894,
+      "mean_score_delta": -0.0011746316913589516,
+      "name": "rest_020",
+      "rank": 1,
+      "reason": "Improvement is practical, the confidence interval excludes zero, and season wins exceed losses.",
+      "seasons": 4,
+      "status": "PASS",
+      "ties": 0,
+      "wins": 4
+    },
+    {
+      "confidence_interval_high": 0.0004632494848917923,
+      "confidence_interval_low": -0.004293640846168262,
+      "losses": 2,
+      "mean_accuracy_delta": 0.007042450672681111,
+      "mean_score_delta": -0.0015464935297749421,
+      "name": "rest_040",
+      "rank": 2,
+      "reason": "Confidence interval includes zero; season wins do not exceed losses.",
+      "seasons": 4,
+      "status": "INCONCLUSIVE",
+      "ties": 0,
+      "wins": 2
+    },
+    {
+      "confidence_interval_high": 0.0010499195860706745,
+      "confidence_interval_low": -0.00522637772273421,
+      "losses": 2,
+      "mean_accuracy_delta": 0.007907223107213618,
+      "mean_score_delta": -0.0014545697258105533,
+      "name": "rest_050",
+      "rank": 3,
+      "reason": "Confidence interval includes zero; season wins do not exceed losses.",
+      "seasons": 4,
+      "status": "INCONCLUSIVE",
+      "ties": 0,
+      "wins": 2
+    },
+    {
+      "confidence_interval_high": 4.5312324807367244e-05,
+      "confidence_interval_low": -0.0034010699692381685,
+      "losses": 1,
+      "mean_accuracy_delta": 0.005278732867529917,
+      "mean_score_delta": -0.0013946456449492328,
+      "name": "rest_030",
+      "rank": 4,
+      "reason": "Confidence interval includes zero.",
+      "seasons": 4,
+      "status": "INCONCLUSIVE",
+      "ties": 0,
+      "wins": 3
+    },
+    {
+      "confidence_interval_high": -0.0001406368867989949,
+      "confidence_interval_low": -0.0016280797443749273,
+      "losses": 1,
+      "mean_accuracy_delta": 0.0035150150623787513,
+      "mean_score_delta": -0.0007982504501940768,
+      "name": "rest_010",
+      "rank": 5,
+      "reason": "Improvement is below the practical threshold.",
+      "seasons": 4,
+      "status": "INCONCLUSIVE",
+      "ties": 0,
+      "wins": 3
+    }
+  ],
+  "generated_at": "2026-08-06T00:24:04.172668+00:00",
+  "git_commit": "94278f7828fb95f15e23dff1214ec19cc152a07d",
+  "profile": "modern",
+  "reason": "Improvement is practical, the confidence interval excludes zero, and season wins exceed losses.",
+  "recommendation": "PASS",
+  "recommended_candidate": "rest_020"
+}
