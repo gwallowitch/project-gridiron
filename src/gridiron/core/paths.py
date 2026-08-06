@@ -41,6 +41,10 @@ class ProjectPaths:
         return self.curated / "rest_features"
 
     @property
+    def qb_features(self) -> Path:
+        return self.curated / "qb_features"
+
+    @property
     def team_game_features(self) -> Path:
         return self.curated / "team_game_features"
 
@@ -64,21 +68,13 @@ class ProjectPaths:
     def predictions(self) -> Path:
         return self.curated / "predictions"
 
-    def predictions_file(self, season: int) -> Path:
-        _validate_season(season)
-        return self.predictions / f"predictions_{season}.parquet"
-
     @property
     def backtests(self) -> Path:
         return self.curated / "backtests"
 
-    def backtest_file(self, season: int) -> Path:
-        _validate_season(season)
-        return self.backtests / f"backtest_{season}.parquet"
-
     @property
     def reports(self) -> Path:
-        return self.root / "data" / "reports"
+        return self.data / "reports"
 
     @property
     def backtest_reports(self) -> Path:
@@ -106,11 +102,21 @@ class ProjectPaths:
 
     def play_by_play_file(self, season: int) -> Path:
         _validate_season(season)
-        return self.play_by_play / f"play_by_play_{season}.parquet"
+        return (
+            self.play_by_play
+            / f"play_by_play_{season}.parquet"
+        )
 
     def rest_features_file(self, season: int) -> Path:
         _validate_season(season)
-        return self.rest_features / f"rest_features_{season}.parquet"
+        return (
+            self.rest_features
+            / f"rest_features_{season}.parquet"
+        )
+
+    def qb_features_file(self, season: int) -> Path:
+        _validate_season(season)
+        return self.qb_features / f"qb_features_{season}.parquet"
 
     def team_game_features_file(self, season: int) -> Path:
         _validate_season(season)
@@ -141,12 +147,24 @@ class ProjectPaths:
         _validate_season(season)
         return self.pgr / f"pgr_{season}.parquet"
 
+    def predictions_file(self, season: int) -> Path:
+        _validate_season(season)
+        return (
+            self.predictions
+            / f"predictions_{season}.parquet"
+        )
+
+    def backtest_file(self, season: int) -> Path:
+        _validate_season(season)
+        return self.backtests / f"backtest_{season}.parquet"
+
     def create_runtime_directories(self) -> None:
         """Create directories used by local pipelines."""
         for path in (
             self.schedules,
             self.play_by_play,
             self.rest_features,
+            self.qb_features,
             self.team_game_features,
             self.team_ratings,
             self.weekly_team_ratings,
@@ -163,4 +181,6 @@ class ProjectPaths:
 
 def _validate_season(season: int) -> None:
     if season < 1999 or season > 2100:
-        raise ValueError("NFL seasons must be between 1999 and 2100.")
+        raise ValueError(
+            "NFL seasons must be between 1999 and 2100."
+        )
