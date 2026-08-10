@@ -1,23 +1,24 @@
-# Installation
+# 62B wiring fixes
 
-Copy this release folder's contents over the Project Gridiron repository
-root.
+Copy this package over the repository root.
 
-Run:
+Run the patch script once:
+
+```powershell
+python scripts/apply_62b_baseline_fixes.py
+```
+
+Then validate:
 
 ```powershell
 python -m ruff check . --fix
 python -m ruff check .
 python -m pytest
-python -c "from gridiron.pipelines.qb_features import run_qb_features_pipeline; print(run_qb_features_pipeline(2025))"
+python ship.py research --profile modern
 ```
 
-Inspect the output:
+This fixes:
 
-```powershell
-python -c "import polars as pl; print(pl.read_parquet('data/curated/qb_features/qb_features_2025.parquet').head())"
-```
-
-The provided QB CSV files are header-only, so the initial dataset will use
-neutral unknown-quarterback defaults until starter and rating data are
-added.
+- QB artifacts being required in old zero-QB-weight tests.
+- Research code hard-coding `rest_000_baseline`.
+- QB research now inferring `qb_000_baseline`.

@@ -1,49 +1,46 @@
-# Rest-weight experiments using calibrated Prediction Engine v2 settings.
+# QB experiments on the promoted rest_020 foundation.
 
 [[experiment]]
-name = "rest_000_baseline"
-home_field_advantage = 1.5
-probability_scale = 0.14
-margin_scale = 0.75
-margin_intercept = 0.0
-rest_weight = 0.0
+name="qb_000_baseline"
+home_field_advantage=1.5
+probability_scale=0.14
+margin_scale=0.75
+margin_intercept=0.0
+rest_weight=0.20
+qb_weight=0.0
 
 [[experiment]]
-name = "rest_010"
-home_field_advantage = 1.5
-probability_scale = 0.14
-margin_scale = 0.75
-margin_intercept = 0.0
-rest_weight = 0.10
+name="qb_025"
+home_field_advantage=1.5
+probability_scale=0.14
+margin_scale=0.75
+margin_intercept=0.0
+rest_weight=0.20
+qb_weight=0.25
 
 [[experiment]]
-name = "rest_020"
-home_field_advantage = 1.5
-probability_scale = 0.14
-margin_scale = 0.75
-margin_intercept = 0.0
-rest_weight = 0.20
+name="qb_050"
+home_field_advantage=1.5
+probability_scale=0.14
+margin_scale=0.75
+margin_intercept=0.0
+rest_weight=0.20
+qb_weight=0.50
 
 [[experiment]]
-name = "rest_030"
-home_field_advantage = 1.5
-probability_scale = 0.14
-margin_scale = 0.75
-margin_intercept = 0.0
-rest_weight = 0.30
+name="qb_075"
+home_field_advantage=1.5
+probability_scale=0.14
+margin_scale=0.75
+margin_intercept=0.0
+rest_weight=0.20
+qb_weight=0.75
 
 [[experiment]]
-name = "rest_040"
-home_field_advantage = 1.5
-probability_scale = 0.14
-margin_scale = 0.75
-margin_intercept = 0.0
-rest_weight = 0.40
-
-[[experiment]]
-name = "rest_050"
-home_field_advantage = 1.5
-probability_scale = 0.14
-margin_scale = 0.75
-margin_intercept = 0.0
-rest_weight = 0.50
+name="qb_100"
+home_field_advantage=1.5
+probability_scale=0.14
+margin_scale=0.75
+margin_intercept=0.0
+rest_weight=0.20
+qb_weight=1.0

@@ -6,6 +6,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from statistics import fmean
 
+from gridiron.research.baseline import resolve_baseline_name
 from gridiron.research.models import ResearchRun
 
 
@@ -32,7 +33,7 @@ class ResearchAggregate:
 def aggregate_research(
     run: ResearchRun,
     *,
-    baseline_name: str = "rest_000_baseline",
+    baseline_name: str | None = None,
 ) -> tuple[ResearchAggregate, ...]:
     """Aggregate experiment performance across all seasons."""
     grouped = defaultdict(list)
@@ -54,11 +55,8 @@ def aggregate_research(
     if not grouped:
         raise ValueError("Research run contains no experiment results.")
 
-    baseline_rows = grouped.get(baseline_name)
-    if baseline_rows is None:
-        raise ValueError(
-            f"Baseline experiment {baseline_name!r} was not found."
-        )
+    resolved_baseline = resolve_baseline_name(run, baseline_name)
+    baseline_rows = grouped[resolved_baseline]
     baseline_average = fmean(
         result.selection_score
         for _, result in baseline_rows

@@ -35,17 +35,22 @@ def run_research(
     started_at = perf_counter()
     paths = ProjectPaths.from_root(project_root)
     results: list[SeasonResearchResult] = []
+    needs_qb = any(
+        experiment.qb_weight != 0.0
+        for experiment in experiments
+    )
 
     for season in seasons:
         schedule_path = paths.schedule_file(season)
         pgr_path = paths.pgr_file(season)
         rest_path = paths.rest_features_file(season)
+        qb_path = paths.qb_features_file(season)
 
-        missing = [
-            path
-            for path in (schedule_path, pgr_path, rest_path)
-            if not path.exists()
-        ]
+        required = [schedule_path, pgr_path, rest_path]
+        if needs_qb:
+            required.append(qb_path)
+
+        missing = [path for path in required if not path.exists()]
         if missing:
             missing_text = ", ".join(str(path) for path in missing)
             raise FileNotFoundError(
@@ -53,11 +58,17 @@ def run_research(
                 f"{missing_text}"
             )
 
+        qb_features = (
+            pl.read_parquet(qb_path)
+            if qb_path.exists()
+            else None
+        )
         season_results = run_experiments(
             pl.read_parquet(schedule_path),
             pl.read_parquet(pgr_path),
             experiments,
             rest_features=pl.read_parquet(rest_path),
+            qb_features=qb_features,
         )
         results.append(
             SeasonResearchResult(

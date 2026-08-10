@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from random import Random
 from statistics import fmean, median, stdev
 
+from gridiron.research.baseline import resolve_baseline_name
 from gridiron.research.models import ResearchRun
 
 
@@ -33,7 +34,7 @@ class CandidateStatistics:
 def analyze_candidates(
     run: ResearchRun,
     *,
-    baseline_name: str = "rest_000_baseline",
+    baseline_name: str | None = None,
     bootstrap_samples: int = 10_000,
     confidence_level: float = 0.95,
     random_seed: int = 60,
@@ -52,15 +53,12 @@ def analyze_candidates(
                 season_result.season
             ] = result
 
-    baseline = by_name.get(baseline_name)
-    if baseline is None:
-        raise ValueError(
-            f"Baseline experiment {baseline_name!r} was not found."
-        )
+    resolved_baseline = resolve_baseline_name(run, baseline_name)
+    baseline = by_name[resolved_baseline]
 
     analyses: list[CandidateStatistics] = []
     for name, candidate in by_name.items():
-        if name == baseline_name:
+        if name == resolved_baseline:
             continue
 
         seasons = sorted(set(baseline).intersection(candidate))

@@ -76,10 +76,12 @@ def format_research_report(run: ResearchRun) -> str:
             f"{analysis.mean_accuracy_delta:>10.1%}"
         )
 
-    leader = aggregates[0]
-    leader_analysis = next(
-        item for item in analyses if item.name == leader.name
-    )
+    if not analyses:
+        raise ValueError(
+            "Promotion review requires at least one non-baseline candidate."
+        )
+
+    leader_analysis = analyses[0]
     review = review_candidate(leader_analysis)
     lines.extend(
         [
