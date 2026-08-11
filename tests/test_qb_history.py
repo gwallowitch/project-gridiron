@@ -20,7 +20,7 @@ def weekly() -> pl.DataFrame:
         "completions":[20,20,25,24],
         "passing_yards":[300,200,350,210],
         "passing_tds":[3,1,4,1],
-        "interceptions":[0,2,0,1],
+        "passing_interceptions":[0,2,0,1],
     })
 
 def schedule() -> pl.DataFrame:
