@@ -1,24 +1,19 @@
-# 62B wiring fixes
+# 62C hotfix
 
-Copy this package over the repository root.
-
-Run the patch script once:
-
-```powershell
-python scripts/apply_62b_baseline_fixes.py
-```
-
-Then validate:
+Copy over the repository root, then run:
 
 ```powershell
 python -m ruff check . --fix
 python -m ruff check .
 python -m pytest
+python scripts/build_historical_qb_intelligence.py
+python scripts/verify_qb_history_build.py
+```
+
+Only if verification passes:
+
+```powershell
 python ship.py research --profile modern
 ```
 
-This fixes:
-
-- QB artifacts being required in old zero-QB-weight tests.
-- Research code hard-coding `rest_000_baseline`.
-- QB research now inferring `qb_000_baseline`.
+Fixes nflreadpy `passing_interceptions` and double-normalization.

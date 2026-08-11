@@ -1,5 +1,11 @@
-# v0.11.0b — QB Experiment Wiring
+# Project Gridiron v0.11.0c — Historical QB Intelligence
 
-Adds qb_weight to experiment models/configuration, QB feature input to the
-experiment runner, QB artifacts to multi-season research, and a five-level
-QB experiment grid. Production prediction behavior remains unchanged.
+Adds:
+- nflreadpy weekly-player-stat ingestion
+- prior-game QB starter continuity proxy
+- leakage-safe cumulative QB ratings
+- league-relative shrinkage
+- 2022-2025 historical QB feature generation
+- explicit no-future-data leakage tests
+
+Production predictions remain unchanged; QB weights stay research-only.
