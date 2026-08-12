@@ -1,8 +1,4 @@
-"""Thin, replaceable gateway around nflreadpy.
-
-Keeping third-party calls in this module prevents nflreadpy-specific details
-from spreading through the rest of the application.
-"""
+"""Thin, replaceable gateway around nflreadpy."""
 
 from __future__ import annotations
 
@@ -11,8 +7,6 @@ from typing import Any
 
 
 class NFLVerseGateway:
-    """Load NFL datasets through the maintained nflreadpy package."""
-
     def __init__(self, client: Any | None = None) -> None:
         if client is None:
             try:
@@ -24,15 +18,13 @@ class NFLVerseGateway:
         self._client = client
 
     def schedules(self, seasons: Sequence[int]) -> Any:
-        """Return schedules for one or more seasons."""
-        normalized = _normalize_seasons(seasons)
-        return self._client.load_schedules(normalized)
+        return self._client.load_schedules(_normalize_seasons(seasons))
 
     def play_by_play(self, seasons: Sequence[int]) -> Any:
-        """Return play-by-play records for one or more seasons."""
-        normalized = _normalize_seasons(seasons)
-        return self._client.load_pbp(normalized)
+        return self._client.load_pbp(_normalize_seasons(seasons))
 
+    def injuries(self, seasons: Sequence[int]) -> Any:
+        return self._client.load_injuries(_normalize_seasons(seasons))
 
 def _normalize_seasons(seasons: Sequence[int]) -> list[int]:
     normalized = sorted(set(seasons))
@@ -41,4 +33,3 @@ def _normalize_seasons(seasons: Sequence[int]) -> list[int]:
     if any(season < 1999 or season > 2100 for season in normalized):
         raise ValueError("NFL seasons must be between 1999 and 2100.")
     return normalized
-
