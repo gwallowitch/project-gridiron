@@ -7,7 +7,6 @@ from gridiron.experiments.models import ExperimentConfig
 
 
 def validate_experiments(experiments: list[ExperimentConfig]) -> None:
-    """Validate a collection of experiment configurations."""
     if not experiments:
         raise ValueError("At least one experiment is required.")
     names = [e.name for e in experiments]
@@ -23,6 +22,7 @@ def validate_experiments(experiments: list[ExperimentConfig]) -> None:
             (e.margin_intercept, "margin_intercept"),
             (e.rest_weight, "rest_weight"),
             (e.qb_weight, "qb_weight"),
+            (e.injury_weight, "injury_weight"),
         ):
             if not math.isfinite(value):
                 raise ValueError(f"{name} must be finite.")
@@ -30,3 +30,5 @@ def validate_experiments(experiments: list[ExperimentConfig]) -> None:
             raise ValueError("probability_scale must be greater than zero.")
         if e.margin_scale <= 0:
             raise ValueError("margin_scale must be greater than zero.")
+        if e.injury_weight < 0:
+            raise ValueError("injury_weight must not be negative.")

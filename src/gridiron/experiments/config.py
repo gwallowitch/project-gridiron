@@ -9,7 +9,6 @@ from gridiron.experiments.validation import validate_experiments
 
 
 def load_experiments(path: Path) -> list[ExperimentConfig]:
-    """Load and validate experiment definitions from TOML."""
     if not path.exists():
         raise FileNotFoundError(f"Experiment configuration does not exist: {path}")
     with path.open("rb") as handle:
@@ -23,6 +22,7 @@ def load_experiments(path: Path) -> list[ExperimentConfig]:
             margin_intercept=float(row.get("margin_intercept", 0.0)),
             rest_weight=float(row.get("rest_weight", 0.0)),
             qb_weight=float(row.get("qb_weight", 0.0)),
+            injury_weight=float(row.get("injury_weight", 0.0)),
         )
         for row in payload.get("experiment", [])
     ]
