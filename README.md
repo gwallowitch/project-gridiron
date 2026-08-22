@@ -1,92 +1,28 @@
-# Project Gridiron
+# Step 81C Final Config Fix
 
-**Professional Football Analytics Platform**
+The remaining three failures are caused by the experiment loader requiring
+`home_field_advantage` and `probability_scale` in every experiment row.
 
-Project Gridiron is an open, test-driven NFL analytics platform focused on reproducible data engineering, transparent rating models, and predictive analytics. The project emphasizes modular pipelines, validated datasets, and explainable algorithms rather than black-box predictions.
-
-> **Current status:** Alpha 0.1 (Active Development)
-
-## Current Capabilities
-
-- Automated NFL schedule ingestion
-- Automated play-by-play ingestion
-- Curated team-game feature store
-- Team metrics engine
-- Metric normalization (league average = 100)
-- Team rating engine
-- Ratings pipeline
-- Season orchestration pipeline
-- DuckDB metadata catalog
-- Mission Control (`ship.py`)
-- Comprehensive automated test suite (currently 76 passing tests)
-
-## Architecture
-
-```text
-NFLVerse
-    ↓
-Schedule Pipeline
-    ↓
-Play-by-Play Pipeline
-    ↓
-Team Game Feature Store
-    ↓
-Team Metrics
-    ↓
-Normalization
-    ↓
-Team Ratings
-    ↓
-Power Ratings (In Development)
-```
-
-## Technology
-
-- Python 3.13
-- Polars
-- DuckDB
-- Pytest
-- Ruff
-- nflverse / nflreadpy
-
-## Quick Start
+Run:
 
 ```powershell
-git clone https://github.com/gwallowitch/project-gridiron.git
-cd project-gridiron
-py -3.13 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -e ".[dev]"
+python .\scripts\apply_step81c_final_config_fix.py
+python -m ruff check .
 python -m pytest
-python ship.py
 ```
 
-## Engineering Principles
+Then verify:
 
-- Reproducible pipelines
-- Modular architecture
-- Test-driven development
-- Explainable ratings
-- Preserve raw data and build curated datasets
-- Never use information unavailable before kickoff
+```powershell
+python -c "from pathlib import Path; from gridiron.experiments.config import load_experiments; x=load_experiments(Path('config/experiments.toml')); print('COUNT:',len(x)); [print(e.name,e.home_field_advantage,e.probability_scale,e.travel_miles_weight,e.travel_time_zone_weight) for e in x]"
+```
 
-## Roadmap
+Expected: `COUNT: 9`.
 
-### Alpha 0.2
-- Power Ratings
-- Strength of Schedule
-- Opponent Adjustments
+If green:
 
-### Alpha 0.3
-- Prediction Engine
-- Weekly Ratings
+```powershell
+python ship.py research --profile modern
+```
 
-### Beta
-- Monte Carlo Simulation
-- Dashboard
-- Reporting
-
-### Version 1.0
-- End-to-end analytics platform
-- One-command workflow
-- Stable public release
+Expected: 36 total research runs.

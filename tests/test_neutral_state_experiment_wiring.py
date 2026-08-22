@@ -1,0 +1,46 @@
+from __future__ import annotations
+
+import math
+
+import pytest
+
+from gridiron.experiments.models import ExperimentConfig
+from gridiron.experiments.validation import validate_experiments
+
+
+def config(**kwargs) -> ExperimentConfig:
+    values = {
+        "name": "neutral_state_test",
+        "home_field_advantage": 1.5,
+        "probability_scale": 0.14,
+        "margin_scale": 0.75,
+        "rest_weight": 0.20,
+        "off_sack_weight": 10.0,
+        "punt_return_weight": 0.24,
+    }
+    values.update(kwargs)
+    return ExperimentConfig(**values)
+
+
+def test_neutral_state_weights_default_to_zero() -> None:
+    x = ExperimentConfig("x", 1.5, 0.14)
+
+    assert x.neutral_off_epa_weight == 0.0
+    assert x.neutral_def_epa_weight == 0.0
+    assert x.neutral_success_weight == 0.0
+    assert x.neutral_yards_per_play_weight == 0.0
+    assert x.neutral_explosive_weight == 0.0
+
+
+def test_neutral_state_weights_must_be_finite() -> None:
+    with pytest.raises(ValueError, match="neutral_off_epa_weight"):
+        validate_experiments(
+            [config(neutral_off_epa_weight=math.inf)]
+        )
+
+
+def test_neutral_state_weights_must_not_be_negative() -> None:
+    with pytest.raises(ValueError, match="neutral_explosive_weight"):
+        validate_experiments(
+            [config(neutral_explosive_weight=-1.0)]
+        )

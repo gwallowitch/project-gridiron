@@ -1,0 +1,290 @@
+{
+  "baseline": "pace_volume_v1_baseline",
+  "candidate": "pace_volume_0010",
+  "results": [
+    {
+      "candidate": "pace_volume_0010",
+      "looso": [
+        {
+          "mean_delta": 2.1186078432341068e-07,
+          "omitted_season": 2022
+        },
+        {
+          "mean_delta": -7.327085603877255e-06,
+          "omitted_season": 2023
+        },
+        {
+          "mean_delta": -3.872446903807614e-06,
+          "omitted_season": 2024
+        },
+        {
+          "mean_delta": -8.412872612995059e-07,
+          "omitted_season": 2025
+        }
+      ],
+      "looso_total": 4,
+      "looso_wins": 3,
+      "mean_delta": -2.957239746165241e-06,
+      "season_deltas": [
+        {
+          "delta": -1.2464541337631196e-05,
+          "season": 2022
+        },
+        {
+          "delta": 1.0152297826970802e-05,
+          "season": 2023
+        },
+        {
+          "delta": -2.1161827323812332e-07,
+          "season": 2024
+        },
+        {
+          "delta": -9.305097200762447e-06,
+          "season": 2025
+        }
+      ],
+      "season_losses": 1,
+      "season_ties": 0,
+      "season_wins": 3,
+      "worst_looso_delta": 2.1186078432341068e-07
+    },
+    {
+      "candidate": "pace_volume_0015",
+      "looso": [
+        {
+          "mean_delta": 3.723232494534656e-07,
+          "omitted_season": 2022
+        },
+        {
+          "mean_delta": -1.0928323393888384e-05,
+          "omitted_season": 2023
+        },
+        {
+          "mean_delta": -5.747840304826113e-06,
+          "omitted_season": 2024
+        },
+        {
+          "mean_delta": -1.2019591957290743e-06,
+          "omitted_season": 2025
+        }
+      ],
+      "looso_total": 4,
+      "looso_wins": 3,
+      "mean_delta": -4.376449911247526e-06,
+      "season_deltas": [
+        {
+          "delta": -1.8622769393350502e-05,
+          "season": 2022
+        },
+        {
+          "delta": 1.5279170536675046e-05,
+          "season": 2023
+        },
+        {
+          "delta": -2.6227873051176687e-07,
+          "season": 2024
+        },
+        {
+          "delta": -1.3899922057802883e-05,
+          "season": 2025
+        }
+      ],
+      "season_losses": 1,
+      "season_ties": 0,
+      "season_wins": 3,
+      "worst_looso_delta": 3.723232494534656e-07
+    },
+    {
+      "candidate": "pace_volume_0020",
+      "looso": [
+        {
+          "mean_delta": 5.691381987175485e-07,
+          "omitted_season": 2022
+        },
+        {
+          "mean_delta": -1.4488029043283982e-05,
+          "omitted_season": 2023
+        },
+        {
+          "mean_delta": -7.582686377904935e-06,
+          "omitted_season": 2024
+        },
+        {
+          "mean_delta": -1.5226553911062979e-06,
+          "omitted_season": 2025
+        }
+      ],
+      "looso_total": 4,
+      "looso_wins": 3,
+      "mean_delta": -5.756058153394417e-06,
+      "season_deltas": [
+        {
+          "delta": -2.4731647209730312e-05,
+          "season": 2022
+        },
+        {
+          "delta": 2.043985451627428e-05,
+          "season": 2023
+        },
+        {
+          "delta": -2.7617347986286234e-07,
+          "season": 2024
+        },
+        {
+          "delta": -1.8456266440258773e-05,
+          "season": 2025
+        }
+      ],
+      "season_losses": 1,
+      "season_ties": 0,
+      "season_wins": 3,
+      "worst_looso_delta": 5.691381987175485e-07
+    },
+    {
+      "candidate": "pace_volume_0025",
+      "looso": [
+        {
+          "mean_delta": 8.023039315870525e-07,
+          "omitted_season": 2022
+        },
+        {
+          "mean_delta": -1.8006205985169704e-05,
+          "omitted_season": 2023
+        },
+        {
+          "mean_delta": -9.376989681212736e-06,
+          "omitted_season": 2024
+        },
+        {
+          "mean_delta": -1.8033799221717217e-06,
+          "omitted_season": 2025
+        }
+      ],
+      "looso_total": 4,
+      "looso_wins": 3,
+      "mean_delta": -7.096067914241777e-06,
+      "season_deltas": [
+        {
+          "delta": -3.0791183451728266e-05,
+          "season": 2022
+        },
+        {
+          "delta": 2.5634346298542e-05,
+          "season": 2023
+        },
+        {
+          "delta": -2.533026133288985e-07,
+          "season": 2024
+        },
+        {
+          "delta": -2.2974131890451943e-05,
+          "season": 2025
+        }
+      ],
+      "season_losses": 1,
+      "season_ties": 0,
+      "season_wins": 3,
+      "worst_looso_delta": 8.023039315870525e-07
+    },
+    {
+      "candidate": "pace_volume_0030",
+      "looso": [
+        {
+          "mean_delta": 0.00011844271074353448,
+          "omitted_season": 2022
+        },
+        {
+          "mean_delta": 9.588803434024129e-05,
+          "omitted_season": 2023
+        },
+        {
+          "mean_delta": 0.0001062401372224168,
+          "omitted_season": 2024
+        },
+        {
+          "mean_delta": -2.044136888423864e-06,
+          "omitted_season": 2025
+        }
+      ],
+      "looso_total": 4,
+      "looso_wins": 1,
+      "mean_delta": 7.963168635444218e-05,
+      "season_deltas": [
+        {
+          "delta": -3.6801386812834735e-05,
+          "season": 2022
+        },
+        {
+          "delta": 3.086264239704484e-05,
+          "season": 2023
+        },
+        {
+          "delta": -1.936662494816943e-07,
+          "season": 2024
+        },
+        {
+          "delta": 0.0003246591560830403,
+          "season": 2025
+        }
+      ],
+      "season_losses": 2,
+      "season_ties": 0,
+      "season_wins": 2,
+      "worst_looso_delta": 0.00011844271074353448
+    },
+    {
+      "candidate": "pace_volume_0035",
+      "looso": [
+        {
+          "mean_delta": 0.00023570763717883914,
+          "omitted_season": 2022
+        },
+        {
+          "mean_delta": 0.00020941196873724977,
+          "omitted_season": 2023
+        },
+        {
+          "mean_delta": 0.00010452690569018319,
+          "omitted_season": 2024
+        },
+        {
+          "mean_delta": 0.00011471413391284102,
+          "omitted_season": 2025
+        }
+      ],
+      "looso_total": 4,
+      "looso_wins": 0,
+      "mean_delta": 0.00016609016137977828,
+      "season_deltas": [
+        {
+          "delta": -4.2762266017404293e-05,
+          "season": 2022
+        },
+        {
+          "delta": 3.612473930736382e-05,
+          "season": 2023
+        },
+        {
+          "delta": 0.00035077992844856354,
+          "season": 2024
+        },
+        {
+          "delta": 0.00032021824378059005,
+          "season": 2025
+        }
+      ],
+      "season_losses": 3,
+      "season_ties": 0,
+      "season_wins": 1,
+      "worst_looso_delta": 0.00023570763717883914
+    }
+  ],
+  "seasons": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "status": "REJECT",
+  "step": "83D"
+}

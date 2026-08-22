@@ -1,0 +1,488 @@
+{
+  "artifacts": {
+    "2022": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\predictions\\predictions_2022.parquet",
+    "2023": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\predictions\\predictions_2023.parquet",
+    "2024": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\predictions\\predictions_2024.parquet",
+    "2025": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\backtests\\backtest_2025.parquet"
+  },
+  "best_method": "logistic",
+  "failures": [],
+  "fingerprint_sha256": "b12a0d4180ef30298fedcc2a9a676fef6a68589b9434283c1d111fd718427977",
+  "method_ranking": [
+    "logistic",
+    "temperature",
+    "intercept_only"
+  ],
+  "methods": {
+    "intercept_only": {
+      "aggregate_calibrated": {
+        "accuracy": 0.6080843585237259,
+        "brier": 0.2348841043346468,
+        "ece": 0.08770591447031591,
+        "log_loss": 0.6650882452242948
+      },
+      "aggregate_delta": {
+        "accuracy": 0.0008787346221441616,
+        "brier": 3.0153549372413657e-06,
+        "ece": -0.0030282813209481507,
+        "log_loss": -3.906308340329012e-05
+      },
+      "aggregate_raw": {
+        "accuracy": 0.6072056239015817,
+        "brier": 0.23488108897970955,
+        "ece": 0.09073419579126406,
+        "log_loss": 0.6651273083076981
+      },
+      "folds": [
+        {
+          "calibrated": {
+            "accuracy": 0.5880281690140845,
+            "brier": 0.23819343616007504,
+            "ece": 0.08905256918230693,
+            "games": 284,
+            "log_loss": 0.6685605756573755
+          },
+          "delta": {
+            "accuracy": 0.0,
+            "brier": -0.0001632904737342844,
+            "ece": 0.00033772652289490446,
+            "log_loss": -0.0002919728365139429
+          },
+          "holdout_season": 2022,
+          "parameters": {
+            "intercept": 0.02750000000000008,
+            "slope": 1.0
+          },
+          "raw": {
+            "accuracy": 0.5880281690140845,
+            "brier": 0.23835672663380933,
+            "ece": 0.08871484265941203,
+            "games": 284,
+            "log_loss": 0.6688525484938894
+          },
+          "train_seasons": [
+            2023,
+            2024,
+            2025
+          ]
+        },
+        {
+          "calibrated": {
+            "accuracy": 0.5824561403508772,
+            "brier": 0.2497327996145082,
+            "ece": 0.11725386958051355,
+            "games": 285,
+            "log_loss": 0.6990528700246985
+          },
+          "delta": {
+            "accuracy": 0.010526315789473717,
+            "brier": -0.00017797123237808798,
+            "ece": -0.016742669283132824,
+            "log_loss": -0.000298583906701122
+          },
+          "holdout_season": 2023,
+          "parameters": {
+            "intercept": 0.022499999999999964,
+            "slope": 1.0
+          },
+          "raw": {
+            "accuracy": 0.5719298245614035,
+            "brier": 0.2499107708468863,
+            "ece": 0.13399653886364638,
+            "games": 285,
+            "log_loss": 0.6993514539313996
+          },
+          "train_seasons": [
+            2022,
+            2024,
+            2025
+          ]
+        },
+        {
+          "calibrated": {
+            "accuracy": 0.6666666666666666,
+            "brier": 0.2167707988378367,
+            "ece": 0.05183218116791694,
+            "games": 285,
+            "log_loss": 0.6273285902852254
+          },
+          "delta": {
+            "accuracy": 0.007017543859649034,
+            "brier": 6.948139451903868e-05,
+            "ece": -0.00896543586638407,
+            "log_loss": 0.00015307078712734068
+          },
+          "holdout_season": 2024,
+          "parameters": {
+            "intercept": 0.0475000000000001,
+            "slope": 1.0
+          },
+          "raw": {
+            "accuracy": 0.6596491228070176,
+            "brier": 0.21670131744331766,
+            "ece": 0.06079761703430101,
+            "games": 285,
+            "log_loss": 0.627175519498098
+          },
+          "train_seasons": [
+            2022,
+            2023,
+            2025
+          ]
+        },
+        {
+          "calibrated": {
+            "accuracy": 0.5950704225352113,
+            "brier": 0.23485087783256475,
+            "ece": 0.09270731181740015,
+            "games": 284,
+            "log_loss": 0.6654243077120583
+          },
+          "delta": {
+            "accuracy": -0.014084507042253502,
+            "brier": 0.0002842449727072649,
+            "ece": 0.01332644891503934,
+            "log_loss": 0.0002814709004771432
+          },
+          "holdout_season": 2025,
+          "parameters": {
+            "intercept": 0.050000000000000044,
+            "slope": 1.0
+          },
+          "raw": {
+            "accuracy": 0.6091549295774648,
+            "brier": 0.2345666328598575,
+            "ece": 0.07938086290236081,
+            "games": 284,
+            "log_loss": 0.6651428368115812
+          },
+          "train_seasons": [
+            2022,
+            2023,
+            2024
+          ]
+        }
+      ],
+      "passes_candidate_gate": false,
+      "season_brier_wins": 2,
+      "season_ece_wins": 2,
+      "season_logloss_wins": 2
+    },
+    "logistic": {
+      "aggregate_calibrated": {
+        "accuracy": 0.6054481546572935,
+        "brier": 0.22876789242897108,
+        "ece": 0.05557207126716277,
+        "log_loss": 0.6482656068920181
+      },
+      "aggregate_delta": {
+        "accuracy": -0.0017574692442882123,
+        "brier": -0.00611319655073847,
+        "ece": -0.035162124524101286,
+        "log_loss": -0.016861701415679997
+      },
+      "aggregate_raw": {
+        "accuracy": 0.6072056239015817,
+        "brier": 0.23488108897970955,
+        "ece": 0.09073419579126406,
+        "log_loss": 0.6651273083076981
+      },
+      "folds": [
+        {
+          "calibrated": {
+            "accuracy": 0.5809859154929577,
+            "brier": 0.2308271144618922,
+            "ece": 0.0647991944819639,
+            "games": 284,
+            "log_loss": 0.6521124303021621
+          },
+          "delta": {
+            "accuracy": -0.007042253521126751,
+            "brier": -0.007529612171917138,
+            "ece": -0.023915648177448123,
+            "log_loss": -0.01674011819172727
+          },
+          "holdout_season": 2022,
+          "parameters": {
+            "intercept": 0.08944178184935508,
+            "slope": 0.574984436122689
+          },
+          "raw": {
+            "accuracy": 0.5880281690140845,
+            "brier": 0.23835672663380933,
+            "ece": 0.08871484265941203,
+            "games": 284,
+            "log_loss": 0.6688525484938894
+          },
+          "train_seasons": [
+            2023,
+            2024,
+            2025
+          ]
+        },
+        {
+          "calibrated": {
+            "accuracy": 0.5894736842105263,
+            "brier": 0.23843916223516265,
+            "ece": 0.0450341926876985,
+            "games": 285,
+            "log_loss": 0.6688249446773668
+          },
+          "delta": {
+            "accuracy": 0.01754385964912275,
+            "brier": -0.011471608611723638,
+            "ece": -0.08896234617594787,
+            "log_loss": -0.030526509254032885
+          },
+          "holdout_season": 2023,
+          "parameters": {
+            "intercept": 0.07925487708356437,
+            "slope": 0.6262054347494642
+          },
+          "raw": {
+            "accuracy": 0.5719298245614035,
+            "brier": 0.2499107708468863,
+            "ece": 0.13399653886364638,
+            "games": 285,
+            "log_loss": 0.6993514539313996
+          },
+          "train_seasons": [
+            2022,
+            2024,
+            2025
+          ]
+        },
+        {
+          "calibrated": {
+            "accuracy": 0.6596491228070176,
+            "brier": 0.21696134719364263,
+            "ece": 0.03820618326384876,
+            "games": 285,
+            "log_loss": 0.6238239711530582
+          },
+          "delta": {
+            "accuracy": 0.0,
+            "brier": 0.0002600297503249638,
+            "ece": -0.02259143377045225,
+            "log_loss": -0.003351548345039812
+          },
+          "holdout_season": 2024,
+          "parameters": {
+            "intercept": 0.12043544692150583,
+            "slope": 0.5176619032444116
+          },
+          "raw": {
+            "accuracy": 0.6596491228070176,
+            "brier": 0.21670131744331766,
+            "ece": 0.06079761703430101,
+            "games": 285,
+            "log_loss": 0.627175519498098
+          },
+          "train_seasons": [
+            2022,
+            2023,
+            2025
+          ]
+        },
+        {
+          "calibrated": {
+            "accuracy": 0.5915492957746479,
+            "brier": 0.2288514644006417,
+            "ece": 0.07434696733437506,
+            "games": 284,
+            "log_loss": 0.648314751498702
+          },
+          "delta": {
+            "accuracy": -0.017605633802816878,
+            "brier": -0.005715168459215797,
+            "ece": -0.005033895567985752,
+            "log_loss": -0.01682808531287916
+          },
+          "holdout_season": 2025,
+          "parameters": {
+            "intercept": 0.11960889032873313,
+            "slope": 0.5671082219041392
+          },
+          "raw": {
+            "accuracy": 0.6091549295774648,
+            "brier": 0.2345666328598575,
+            "ece": 0.07938086290236081,
+            "games": 284,
+            "log_loss": 0.6651428368115812
+          },
+          "train_seasons": [
+            2022,
+            2023,
+            2024
+          ]
+        }
+      ],
+      "passes_candidate_gate": true,
+      "season_brier_wins": 3,
+      "season_ece_wins": 4,
+      "season_logloss_wins": 4
+    },
+    "temperature": {
+      "aggregate_calibrated": {
+        "accuracy": 0.6072056239015817,
+        "brier": 0.22909527675982944,
+        "ece": 0.05237986388830453,
+        "log_loss": 0.6491249522343636
+      },
+      "aggregate_delta": {
+        "accuracy": 0.0,
+        "brier": -0.005785812219880115,
+        "ece": -0.038354331902959525,
+        "log_loss": -0.016002356073334445
+      },
+      "aggregate_raw": {
+        "accuracy": 0.6072056239015817,
+        "brier": 0.23488108897970955,
+        "ece": 0.09073419579126406,
+        "log_loss": 0.6651273083076981
+      },
+      "folds": [
+        {
+          "calibrated": {
+            "accuracy": 0.5880281690140845,
+            "brier": 0.23177084089711325,
+            "ece": 0.06504469307800378,
+            "games": 284,
+            "log_loss": 0.6539970200096056
+          },
+          "delta": {
+            "accuracy": 0.0,
+            "brier": -0.006585885736696079,
+            "ece": -0.023670149581408242,
+            "log_loss": -0.014855528484283842
+          },
+          "holdout_season": 2022,
+          "parameters": {
+            "intercept": 0.0,
+            "slope": 0.5900000000000001
+          },
+          "raw": {
+            "accuracy": 0.5880281690140845,
+            "brier": 0.23835672663380933,
+            "ece": 0.08871484265941203,
+            "games": 284,
+            "log_loss": 0.6688525484938894
+          },
+          "train_seasons": [
+            2023,
+            2024,
+            2025
+          ]
+        },
+        {
+          "calibrated": {
+            "accuracy": 0.5719298245614035,
+            "brier": 0.23952506203284712,
+            "ece": 0.06008673511055858,
+            "games": 285,
+            "log_loss": 0.6711142335728381
+          },
+          "delta": {
+            "accuracy": 0.0,
+            "brier": -0.010385708814039163,
+            "ece": -0.0739098037530878,
+            "log_loss": -0.028237220358561577
+          },
+          "holdout_season": 2023,
+          "parameters": {
+            "intercept": 0.0,
+            "slope": 0.64
+          },
+          "raw": {
+            "accuracy": 0.5719298245614035,
+            "brier": 0.2499107708468863,
+            "ece": 0.13399653886364638,
+            "games": 285,
+            "log_loss": 0.6993514539313996
+          },
+          "train_seasons": [
+            2022,
+            2024,
+            2025
+          ]
+        },
+        {
+          "calibrated": {
+            "accuracy": 0.6596491228070176,
+            "brier": 0.2166050147793523,
+            "ece": 0.04559836772902905,
+            "games": 285,
+            "log_loss": 0.6233485448793346
+          },
+          "delta": {
+            "accuracy": 0.0,
+            "brier": -9.630266396537523e-05,
+            "ece": -0.015199249305271958,
+            "log_loss": -0.003826974618763468
+          },
+          "holdout_season": 2024,
+          "parameters": {
+            "intercept": 0.0,
+            "slope": 0.54
+          },
+          "raw": {
+            "accuracy": 0.6596491228070176,
+            "brier": 0.21670131744331766,
+            "ece": 0.06079761703430101,
+            "games": 285,
+            "log_loss": 0.627175519498098
+          },
+          "train_seasons": [
+            2022,
+            2023,
+            2025
+          ]
+        },
+        {
+          "calibrated": {
+            "accuracy": 0.6091549295774648,
+            "brier": 0.22848744452967926,
+            "ece": 0.03878640127272888,
+            "games": 284,
+            "log_loss": 0.6480533454264391
+          },
+          "delta": {
+            "accuracy": 0.0,
+            "brier": -0.006079188330178231,
+            "ece": -0.04059446162963193,
+            "log_loss": -0.01708949138514204
+          },
+          "holdout_season": 2025,
+          "parameters": {
+            "intercept": 0.0,
+            "slope": 0.5900000000000001
+          },
+          "raw": {
+            "accuracy": 0.6091549295774648,
+            "brier": 0.2345666328598575,
+            "ece": 0.07938086290236081,
+            "games": 284,
+            "log_loss": 0.6651428368115812
+          },
+          "train_seasons": [
+            2022,
+            2023,
+            2024
+          ]
+        }
+      ],
+      "passes_candidate_gate": true,
+      "season_brier_wins": 4,
+      "season_ece_wins": 4,
+      "season_logloss_wins": 4
+    }
+  },
+  "notes": [
+    "All calibration evaluation is leave-one-season-out.",
+    "No feature or model weights are changed.",
+    "PASS means the research ran safely; CANDIDATE/REJECT is the calibration decision."
+  ],
+  "promotion_review": "CANDIDATE",
+  "status": "PASS",
+  "step": "88C"
+}

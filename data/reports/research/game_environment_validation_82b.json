@@ -1,0 +1,429 @@
+{
+  "failures": [],
+  "prediction_time_contract": {
+    "future_requirement": "Use only weather data available before the model decision timestamp.",
+    "historical_observed_weather_allowed_for_direct_production_promotion": false,
+    "historical_observed_weather_allowed_for_research": true
+  },
+  "seasons": {
+    "2022": {
+      "continuous": {
+        "temperature_f": {
+          "coverage": 0.3767605633802817,
+          "max": 88.0,
+          "mean": 45.64485981308411,
+          "median": 44.0,
+          "min": 6.0,
+          "p05": 17.0,
+          "p95": 76.39999999999998,
+          "std": 17.43951938950056
+        },
+        "wind_mph": {
+          "coverage": 0.3767605633802817,
+          "max": 27.0,
+          "mean": 8.925233644859814,
+          "median": 8.0,
+          "min": 2.0,
+          "p05": 2.0,
+          "p95": 18.399999999999977,
+          "std": 5.43694721255089
+        }
+      },
+      "duplicate_game_ids": 0,
+      "environment_known_rate": 1.0,
+      "flags": {
+        "adverse_weather": {
+          "coverage": 1.0,
+          "rate": 0.11267605633802817
+        },
+        "extreme_cold": {
+          "coverage": 0.3767605633802817,
+          "rate": 0.18691588785046728
+        },
+        "extreme_heat": {
+          "coverage": 0.3767605633802817,
+          "rate": 0.018691588785046728
+        },
+        "high_wind": {
+          "coverage": 0.3767605633802817,
+          "rate": 0.1308411214953271
+        },
+        "indoor_or_closed_roof": {
+          "coverage": 1.0,
+          "rate": 0.3028169014084507
+        },
+        "rain_or_precipitation": {
+          "coverage": 1.0,
+          "rate": 0.0
+        },
+        "retractable_roof": {
+          "coverage": 1.0,
+          "rate": 0.0
+        },
+        "snow_or_wintry": {
+          "coverage": 1.0,
+          "rate": 0.0
+        }
+      },
+      "rows": 284,
+      "season": 2022,
+      "severe_environment_games": [
+        {
+          "adverse_weather_count": 2,
+          "away_team": "NO",
+          "game_id": "2022_16_NO_CLE",
+          "home_team": "CLE",
+          "roof_text": "outdoors",
+          "temperature_f": 6.0,
+          "weather_text": null,
+          "week": 16,
+          "wind_mph": 27.0
+        },
+        {
+          "adverse_weather_count": 2,
+          "away_team": "LV",
+          "game_id": "2022_16_LV_PIT",
+          "home_team": "PIT",
+          "roof_text": "outdoors",
+          "temperature_f": 9.0,
+          "weather_text": null,
+          "week": 16,
+          "wind_mph": 21.0
+        },
+        {
+          "adverse_weather_count": 2,
+          "away_team": "PHI",
+          "game_id": "2022_15_PHI_CHI",
+          "home_team": "CHI",
+          "roof_text": "outdoors",
+          "temperature_f": 17.0,
+          "weather_text": null,
+          "week": 15,
+          "wind_mph": 17.0
+        },
+        {
+          "adverse_weather_count": 2,
+          "away_team": "BUF",
+          "game_id": "2022_16_BUF_CHI",
+          "home_team": "CHI",
+          "roof_text": "outdoors",
+          "temperature_f": 7.0,
+          "weather_text": null,
+          "week": 16,
+          "wind_mph": 17.0
+        }
+      ],
+      "text_coverage": {
+        "roof_text": 1.0,
+        "stadium_text": 1.0,
+        "surface_text": 1.0,
+        "weather_text": 0.0
+      }
+    },
+    "2023": {
+      "continuous": {
+        "temperature_f": {
+          "coverage": 0.5543859649122806,
+          "max": 90.0,
+          "mean": 55.79113924050633,
+          "median": 53.5,
+          "min": -4.0,
+          "p05": 32.85,
+          "p95": 82.0,
+          "std": 15.621336787390334
+        },
+        "wind_mph": {
+          "coverage": 0.5543859649122806,
+          "max": 44.0,
+          "mean": 8.30379746835443,
+          "median": 8.0,
+          "min": 1.0,
+          "p05": 2.0,
+          "p95": 15.150000000000006,
+          "std": 4.997717773105179
+        }
+      },
+      "duplicate_game_ids": 0,
+      "environment_known_rate": 1.0,
+      "flags": {
+        "adverse_weather": {
+          "coverage": 1.0,
+          "rate": 0.08771929824561403
+        },
+        "extreme_cold": {
+          "coverage": 0.5543859649122806,
+          "rate": 0.05063291139240506
+        },
+        "extreme_heat": {
+          "coverage": 0.5543859649122806,
+          "rate": 0.03164556962025317
+        },
+        "high_wind": {
+          "coverage": 0.5543859649122806,
+          "rate": 0.08860759493670886
+        },
+        "indoor_or_closed_roof": {
+          "coverage": 1.0,
+          "rate": 0.3017543859649123
+        },
+        "rain_or_precipitation": {
+          "coverage": 1.0,
+          "rate": 0.0
+        },
+        "retractable_roof": {
+          "coverage": 1.0,
+          "rate": 0.0
+        },
+        "snow_or_wintry": {
+          "coverage": 1.0,
+          "rate": 0.0
+        }
+      },
+      "rows": 285,
+      "season": 2023,
+      "severe_environment_games": [
+        {
+          "adverse_weather_count": 2,
+          "away_team": "MIA",
+          "game_id": "2023_19_MIA_KC",
+          "home_team": "KC",
+          "roof_text": "outdoors",
+          "temperature_f": -4.0,
+          "weather_text": null,
+          "week": 19,
+          "wind_mph": 19.0
+        },
+        {
+          "adverse_weather_count": 2,
+          "away_team": "HOU",
+          "game_id": "2023_20_HOU_BAL",
+          "home_team": "BAL",
+          "roof_text": "outdoors",
+          "temperature_f": 27.0,
+          "weather_text": null,
+          "week": 20,
+          "wind_mph": 16.0
+        }
+      ],
+      "text_coverage": {
+        "roof_text": 1.0,
+        "stadium_text": 1.0,
+        "surface_text": 1.0,
+        "weather_text": 0.0
+      }
+    },
+    "2024": {
+      "continuous": {
+        "temperature_f": {
+          "coverage": 0.6385964912280702,
+          "max": 93.0,
+          "mean": 58.604395604395606,
+          "median": 59.5,
+          "min": 14.0,
+          "p05": 29.05,
+          "p95": 85.0,
+          "std": 17.832789416184152
+        },
+        "wind_mph": {
+          "coverage": 0.6385964912280702,
+          "max": 20.0,
+          "mean": 7.983516483516484,
+          "median": 7.5,
+          "min": 0.0,
+          "p05": 2.0,
+          "p95": 15.949999999999989,
+          "std": 4.0623255929927256
+        }
+      },
+      "duplicate_game_ids": 0,
+      "environment_known_rate": 1.0,
+      "flags": {
+        "adverse_weather": {
+          "coverage": 1.0,
+          "rate": 0.14736842105263157
+        },
+        "extreme_cold": {
+          "coverage": 0.6385964912280702,
+          "rate": 0.0989010989010989
+        },
+        "extreme_heat": {
+          "coverage": 0.6385964912280702,
+          "rate": 0.06043956043956044
+        },
+        "high_wind": {
+          "coverage": 0.6385964912280702,
+          "rate": 0.08791208791208792
+        },
+        "indoor_or_closed_roof": {
+          "coverage": 1.0,
+          "rate": 0.34385964912280703
+        },
+        "rain_or_precipitation": {
+          "coverage": 1.0,
+          "rate": 0.0
+        },
+        "retractable_roof": {
+          "coverage": 1.0,
+          "rate": 0.0
+        },
+        "snow_or_wintry": {
+          "coverage": 1.0,
+          "rate": 0.0
+        }
+      },
+      "rows": 285,
+      "season": 2024,
+      "severe_environment_games": [
+        {
+          "adverse_weather_count": 2,
+          "away_team": "NYG",
+          "game_id": "2024_18_NYG_PHI",
+          "home_team": "PHI",
+          "roof_text": "outdoors",
+          "temperature_f": 31.0,
+          "weather_text": null,
+          "week": 18,
+          "wind_mph": 19.0
+        },
+        {
+          "adverse_weather_count": 2,
+          "away_team": "HOU",
+          "game_id": "2024_20_HOU_KC",
+          "home_team": "KC",
+          "roof_text": "outdoors",
+          "temperature_f": 23.0,
+          "weather_text": null,
+          "week": 20,
+          "wind_mph": 17.0
+        },
+        {
+          "adverse_weather_count": 2,
+          "away_team": "CLE",
+          "game_id": "2024_18_CLE_BAL",
+          "home_team": "BAL",
+          "roof_text": "outdoors",
+          "temperature_f": 31.0,
+          "weather_text": null,
+          "week": 18,
+          "wind_mph": 16.0
+        }
+      ],
+      "text_coverage": {
+        "roof_text": 1.0,
+        "stadium_text": 1.0,
+        "surface_text": 1.0,
+        "weather_text": 0.0
+      }
+    },
+    "2025": {
+      "continuous": {
+        "temperature_f": {
+          "coverage": 0.6666666666666666,
+          "max": 89.0,
+          "mean": 57.526315789473685,
+          "median": 60.0,
+          "min": 8.0,
+          "p05": 27.0,
+          "p95": 85.0,
+          "std": 18.502876713425838
+        },
+        "wind_mph": {
+          "coverage": 0.6666666666666666,
+          "max": 22.0,
+          "mean": 7.9,
+          "median": 7.0,
+          "min": 0.0,
+          "p05": 2.0,
+          "p95": 17.0,
+          "std": 4.516343044693848
+        }
+      },
+      "duplicate_game_ids": 0,
+      "environment_known_rate": 1.0,
+      "flags": {
+        "adverse_weather": {
+          "coverage": 1.0,
+          "rate": 0.16842105263157894
+        },
+        "extreme_cold": {
+          "coverage": 0.6666666666666666,
+          "rate": 0.1
+        },
+        "extreme_heat": {
+          "coverage": 0.6666666666666666,
+          "rate": 0.05789473684210526
+        },
+        "high_wind": {
+          "coverage": 0.6666666666666666,
+          "rate": 0.11052631578947368
+        },
+        "indoor_or_closed_roof": {
+          "coverage": 1.0,
+          "rate": 0.32280701754385965
+        },
+        "rain_or_precipitation": {
+          "coverage": 1.0,
+          "rate": 0.0
+        },
+        "retractable_roof": {
+          "coverage": 1.0,
+          "rate": 0.0
+        },
+        "snow_or_wintry": {
+          "coverage": 1.0,
+          "rate": 0.0
+        }
+      },
+      "rows": 285,
+      "season": 2025,
+      "severe_environment_games": [
+        {
+          "adverse_weather_count": 2,
+          "away_team": "LV",
+          "game_id": "2025_15_LV_PHI",
+          "home_team": "PHI",
+          "roof_text": "outdoors",
+          "temperature_f": 30.0,
+          "weather_text": null,
+          "week": 15,
+          "wind_mph": 20.0
+        },
+        {
+          "adverse_weather_count": 2,
+          "away_team": "NYJ",
+          "game_id": "2025_04_NYJ_MIA",
+          "home_team": "MIA",
+          "roof_text": "outdoors",
+          "temperature_f": 88.0,
+          "weather_text": null,
+          "week": 4,
+          "wind_mph": 17.0
+        },
+        {
+          "adverse_weather_count": 2,
+          "away_team": "BUF",
+          "game_id": "2025_16_BUF_CLE",
+          "home_team": "CLE",
+          "roof_text": "outdoors",
+          "temperature_f": 25.0,
+          "weather_text": null,
+          "week": 16,
+          "wind_mph": 16.0
+        }
+      ],
+      "text_coverage": {
+        "roof_text": 1.0,
+        "stadium_text": 1.0,
+        "surface_text": 1.0,
+        "weather_text": 0.0
+      }
+    }
+  },
+  "status": "PASS",
+  "step": "82B",
+  "warnings": [
+    "2022: temperature coverage below 60%",
+    "2022: wind coverage below 50%",
+    "2023: temperature coverage below 60%"
+  ]
+}

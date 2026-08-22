@@ -31,6 +31,8 @@ class ProjectPaths:
     @property
     def injury_features(self) -> Path: return self.curated / "injury_features"
     @property
+    def early_down_features(self) -> Path: return self.curated / "early_down_features"
+    @property
     def team_game_features(self) -> Path: return self.curated / "team_game_features"
     @property
     def team_ratings(self) -> Path: return self.curated / "team_ratings"
@@ -77,6 +79,10 @@ class ProjectPaths:
         _validate_season(season)
         return self.injury_features / f"injury_features_{season}.parquet"
 
+    def early_down_features_file(self, season: int) -> Path:
+        _validate_season(season)
+        return self.early_down_features / f"early_down_features_{season}.parquet"
+
     def team_game_features_file(self, season: int) -> Path:
         _validate_season(season)
         return self.team_game_features / f"team_game_features_{season}.parquet"
@@ -108,7 +114,8 @@ class ProjectPaths:
     def create_runtime_directories(self) -> None:
         for path in (
             self.schedules, self.play_by_play, self.rest_features,
-            self.qb_features, self.injury_features, self.team_game_features,
+            self.qb_features, self.injury_features, self.early_down_features,
+            self.team_game_features,
             self.team_ratings, self.weekly_team_ratings,
             self.strength_of_schedule, self.pgr, self.predictions,
             self.backtests, self.backtest_reports, self.database, self.output,

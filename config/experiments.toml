@@ -1,55 +1,44 @@
-# Injury experiments on promoted rest_020; QB remains rejected at 0.
+# Step 87D — play-consistency rejection lock
+# Step 87C failed to produce a practically meaningful improvement.
+# All Step 87 research weights are parked at zero.
 
 [[experiment]]
-name="injury_000_baseline"
-home_field_advantage=1.5
-probability_scale=0.14
-margin_scale=0.75
-rest_weight=0.20
-qb_weight=0.0
-injury_weight=0.0
+name = "six_weight_v1_locked"
+home_field_advantage = 1.5
+probability_scale = 0.14
+rest_weight = 0.20
+off_sack_weight = 10.0
+punt_return_weight = 0.24
+long_field_avoidance_weight = 1.0
+def_epa_trend_weight = 5.25
+defensive_schedule_difficulty_weight = 2.25
 
-[[experiment]]
-name="injury_010"
-home_field_advantage=1.5
-probability_scale=0.14
-margin_scale=0.75
-rest_weight=0.20
-qb_weight=0.0
-injury_weight=0.10
+travel_miles_weight = 0.0
+travel_time_zone_weight = 0.0
 
-[[experiment]]
-name="injury_020"
-home_field_advantage=1.5
-probability_scale=0.14
-margin_scale=0.75
-rest_weight=0.20
-qb_weight=0.0
-injury_weight=0.20
+adverse_weather_weight = 0.0
+indoor_environment_weight = 0.0
+high_wind_weight = 0.0
+extreme_cold_weight = 0.0
+forecast_high_wind_weight = 0.0
 
-[[experiment]]
-name="injury_030"
-home_field_advantage=1.5
-probability_scale=0.14
-margin_scale=0.75
-rest_weight=0.20
-qb_weight=0.0
-injury_weight=0.30
+pace_play_volume_weight = 0.0
+pace_seconds_weight = 0.0
+tempo_index_weight = 0.0
 
-[[experiment]]
-name="injury_040"
-home_field_advantage=1.5
-probability_scale=0.14
-margin_scale=0.75
-rest_weight=0.20
-qb_weight=0.0
-injury_weight=0.40
+performance_stability_weight = 0.0
+recent_margin_weight = 0.0
+close_game_experience_weight = 0.0
 
-[[experiment]]
-name="injury_050"
-home_field_advantage=1.5
-probability_scale=0.14
-margin_scale=0.75
-rest_weight=0.20
-qb_weight=0.0
-injury_weight=0.50
+first_half_off_epa_weight = 0.0
+first_half_def_epa_weight = 0.0
+first_half_play_volume_weight = 0.0
+
+explosive_pass_rate_weight = 0.0
+explosive_rush_rate_weight = 0.0
+explosive_play_rate_weight = 0.0
+
+off_success_rate_weight = 0.0
+def_success_prevention_weight = 0.0
+success_rate_matchup_weight = 0.0
+negative_play_matchup_weight = 0.0

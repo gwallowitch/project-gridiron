@@ -1,0 +1,633 @@
+{
+  "failures": [],
+  "fingerprint_sha256": "b12a0d4180ef30298fedcc2a9a676fef6a68589b9434283c1d111fd718427977",
+  "pooled": {
+    "calibration": [
+      {
+        "actual_home_win_rate": 0.18181818181818182,
+        "calibration_error": 0.1148910994383696,
+        "games": 11,
+        "lower": 0.0,
+        "mean_probability": 0.06692708237981222,
+        "upper": 0.1
+      },
+      {
+        "actual_home_win_rate": 0.3230769230769231,
+        "calibration_error": 0.1693159000461961,
+        "games": 65,
+        "lower": 0.1,
+        "mean_probability": 0.153761023030727,
+        "upper": 0.2
+      },
+      {
+        "actual_home_win_rate": 0.37037037037037035,
+        "calibration_error": 0.11571493863091475,
+        "games": 108,
+        "lower": 0.2,
+        "mean_probability": 0.2546554317394556,
+        "upper": 0.30000000000000004
+      },
+      {
+        "actual_home_win_rate": 0.49193548387096775,
+        "calibration_error": 0.14071839258741925,
+        "games": 124,
+        "lower": 0.3,
+        "mean_probability": 0.3512170912835485,
+        "upper": 0.4
+      },
+      {
+        "actual_home_win_rate": 0.4928571428571429,
+        "calibration_error": 0.044634598048042984,
+        "games": 140,
+        "lower": 0.4,
+        "mean_probability": 0.4482225448090999,
+        "upper": 0.5
+      },
+      {
+        "actual_home_win_rate": 0.49537037037037035,
+        "calibration_error": -0.05554336006126781,
+        "games": 216,
+        "lower": 0.5,
+        "mean_probability": 0.5509137304316382,
+        "upper": 0.6
+      },
+      {
+        "actual_home_win_rate": 0.6337209302325582,
+        "calibration_error": -0.016661392073651582,
+        "games": 172,
+        "lower": 0.6,
+        "mean_probability": 0.6503823223062097,
+        "upper": 0.7
+      },
+      {
+        "actual_home_win_rate": 0.6402877697841727,
+        "calibration_error": -0.11077766515322107,
+        "games": 139,
+        "lower": 0.7,
+        "mean_probability": 0.7510654349373937,
+        "upper": 0.7999999999999999
+      },
+      {
+        "actual_home_win_rate": 0.7786885245901639,
+        "calibration_error": -0.063774663120159,
+        "games": 122,
+        "lower": 0.8,
+        "mean_probability": 0.8424631877103229,
+        "upper": 0.9
+      },
+      {
+        "actual_home_win_rate": 0.8780487804878049,
+        "calibration_error": -0.04736881591471187,
+        "games": 41,
+        "lower": 0.9,
+        "mean_probability": 0.9254175964025168,
+        "upper": 1.0
+      }
+    ],
+    "expected_calibration_error": 0.0777226049173039,
+    "metrics": {
+      "brier_score": 0.23488108897970955,
+      "close_probability_rate": 0.1274165202108963,
+      "games": 1138,
+      "high_confidence_rate": 0.5571177504393673,
+      "home_pick_rate": 0.6063268892794376,
+      "log_loss": 0.6651273083076982,
+      "margin_mae": null,
+      "margin_rmse": null,
+      "mean_home_probability": 0.5452718608460744,
+      "winner_accuracy": 0.6072056239015817
+    },
+    "splits": {
+      "close_probability": {
+        "brier_score": 0.25173003989756526,
+        "games": 145,
+        "log_loss": 0.6966185149329128,
+        "winner_accuracy": 0.4689655172413793
+      },
+      "high_confidence": {
+        "brier_score": 0.22282985425870777,
+        "games": 634,
+        "log_loss": 0.6427377755386666,
+        "winner_accuracy": 0.6735015772870663
+      },
+      "model_away_favorite": {
+        "brier_score": 0.25356674325706996,
+        "games": 448,
+        "log_loss": 0.707132448027594,
+        "winner_accuracy": 0.5691964285714286
+      },
+      "model_home_favorite": {
+        "brier_score": 0.2227489540286118,
+        "games": 690,
+        "log_loss": 0.6378544059968093,
+        "winner_accuracy": 0.6318840579710145
+      }
+    }
+  },
+  "seasons": {
+    "2022": {
+      "artifact": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\predictions\\predictions_2022.parquet",
+      "calibration": [
+        {
+          "actual_home_win_rate": 0.0,
+          "calibration_error": -0.07101359314739437,
+          "games": 3,
+          "lower": 0.0,
+          "mean_probability": 0.07101359314739437,
+          "upper": 0.1
+        },
+        {
+          "actual_home_win_rate": 0.1111111111111111,
+          "calibration_error": -0.03146757534750652,
+          "games": 9,
+          "lower": 0.1,
+          "mean_probability": 0.14257868645861763,
+          "upper": 0.2
+        },
+        {
+          "actual_home_win_rate": 0.5,
+          "calibration_error": 0.24297367132157122,
+          "games": 30,
+          "lower": 0.2,
+          "mean_probability": 0.2570263286784288,
+          "upper": 0.30000000000000004
+        },
+        {
+          "actual_home_win_rate": 0.625,
+          "calibration_error": 0.27111060067536097,
+          "games": 24,
+          "lower": 0.3,
+          "mean_probability": 0.35388939932463903,
+          "upper": 0.4
+        },
+        {
+          "actual_home_win_rate": 0.4594594594594595,
+          "calibration_error": 0.01927762436118957,
+          "games": 37,
+          "lower": 0.4,
+          "mean_probability": 0.4401818350982699,
+          "upper": 0.5
+        },
+        {
+          "actual_home_win_rate": 0.5084745762711864,
+          "calibration_error": -0.044211507990684074,
+          "games": 59,
+          "lower": 0.5,
+          "mean_probability": 0.5526860842618705,
+          "upper": 0.6
+        },
+        {
+          "actual_home_win_rate": 0.6140350877192983,
+          "calibration_error": -0.03463934811119185,
+          "games": 57,
+          "lower": 0.6,
+          "mean_probability": 0.6486744358304901,
+          "upper": 0.7
+        },
+        {
+          "actual_home_win_rate": 0.6666666666666666,
+          "calibration_error": -0.08125872707532744,
+          "games": 27,
+          "lower": 0.7,
+          "mean_probability": 0.7479253937419941,
+          "upper": 0.7999999999999999
+        },
+        {
+          "actual_home_win_rate": 0.7575757575757576,
+          "calibration_error": -0.08309327498376662,
+          "games": 33,
+          "lower": 0.8,
+          "mean_probability": 0.8406690325595242,
+          "upper": 0.9
+        },
+        {
+          "actual_home_win_rate": 0.8,
+          "calibration_error": -0.13412883623940575,
+          "games": 5,
+          "lower": 0.9,
+          "mean_probability": 0.9341288362394058,
+          "upper": 1.0
+        }
+      ],
+      "expected_calibration_error": 0.08871484265941204,
+      "metrics": {
+        "brier_score": 0.23835672663380933,
+        "close_probability_rate": 0.13028169014084506,
+        "games": 284,
+        "high_confidence_rate": 0.5070422535211268,
+        "home_pick_rate": 0.6373239436619719,
+        "log_loss": 0.6688525484938895,
+        "margin_mae": null,
+        "margin_rmse": null,
+        "mean_home_probability": 0.5499181056367374,
+        "winner_accuracy": 0.5880281690140845
+      },
+      "splits": {
+        "close_probability": {
+          "brier_score": 0.24589712757459573,
+          "games": 37,
+          "log_loss": 0.684924118720566,
+          "winner_accuracy": 0.5135135135135135
+        },
+        "high_confidence": {
+          "brier_score": 0.21811142901313568,
+          "games": 144,
+          "log_loss": 0.6268189064734048,
+          "winner_accuracy": 0.6805555555555556
+        },
+        "model_away_favorite": {
+          "brier_score": 0.2599782456870483,
+          "games": 103,
+          "log_loss": 0.7108111327847285,
+          "winner_accuracy": 0.5339805825242718
+        },
+        "model_home_favorite": {
+          "brier_score": 0.2260527682775462,
+          "games": 181,
+          "log_loss": 0.6449755640631911,
+          "winner_accuracy": 0.6187845303867403
+        }
+      }
+    },
+    "2023": {
+      "artifact": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\predictions\\predictions_2023.parquet",
+      "calibration": [
+        {
+          "actual_home_win_rate": 0.0,
+          "calibration_error": -0.05620883391757724,
+          "games": 3,
+          "lower": 0.0,
+          "mean_probability": 0.05620883391757724,
+          "upper": 0.1
+        },
+        {
+          "actual_home_win_rate": 0.4666666666666667,
+          "calibration_error": 0.3060995412899735,
+          "games": 15,
+          "lower": 0.1,
+          "mean_probability": 0.16056712537669313,
+          "upper": 0.2
+        },
+        {
+          "actual_home_win_rate": 0.4166666666666667,
+          "calibration_error": 0.15736715396084333,
+          "games": 24,
+          "lower": 0.2,
+          "mean_probability": 0.25929951270582335,
+          "upper": 0.30000000000000004
+        },
+        {
+          "actual_home_win_rate": 0.4827586206896552,
+          "calibration_error": 0.12562960236061604,
+          "games": 29,
+          "lower": 0.3,
+          "mean_probability": 0.35712901832903915,
+          "upper": 0.4
+        },
+        {
+          "actual_home_win_rate": 0.5777777777777777,
+          "calibration_error": 0.13055989282128522,
+          "games": 45,
+          "lower": 0.4,
+          "mean_probability": 0.4472178849564925,
+          "upper": 0.5
+        },
+        {
+          "actual_home_win_rate": 0.45098039215686275,
+          "calibration_error": -0.10049945088366968,
+          "games": 51,
+          "lower": 0.5,
+          "mean_probability": 0.5514798430405324,
+          "upper": 0.6
+        },
+        {
+          "actual_home_win_rate": 0.7368421052631579,
+          "calibration_error": 0.0900974528396844,
+          "games": 38,
+          "lower": 0.6,
+          "mean_probability": 0.6467446524234735,
+          "upper": 0.7
+        },
+        {
+          "actual_home_win_rate": 0.5384615384615384,
+          "calibration_error": -0.21153593279892624,
+          "games": 39,
+          "lower": 0.7,
+          "mean_probability": 0.7499974712604647,
+          "upper": 0.7999999999999999
+        },
+        {
+          "actual_home_win_rate": 0.7666666666666667,
+          "calibration_error": -0.07457376641387792,
+          "games": 30,
+          "lower": 0.8,
+          "mean_probability": 0.8412404330805446,
+          "upper": 0.9
+        },
+        {
+          "actual_home_win_rate": 0.8181818181818182,
+          "calibration_error": -0.09975809454648454,
+          "games": 11,
+          "lower": 0.9,
+          "mean_probability": 0.9179399127283028,
+          "upper": 1.0
+        }
+      ],
+      "expected_calibration_error": 0.1339965388636464,
+      "metrics": {
+        "brier_score": 0.2499107708468863,
+        "close_probability_rate": 0.12631578947368421,
+        "games": 285,
+        "high_confidence_rate": 0.5228070175438596,
+        "home_pick_rate": 0.5929824561403508,
+        "log_loss": 0.6993514539313996,
+        "margin_mae": null,
+        "margin_rmse": null,
+        "mean_home_probability": 0.5493617201427092,
+        "winner_accuracy": 0.5719298245614035
+      },
+      "splits": {
+        "close_probability": {
+          "brier_score": 0.25077616522460416,
+          "games": 36,
+          "log_loss": 0.6947034063244184,
+          "winner_accuracy": 0.4444444444444444
+        },
+        "high_confidence": {
+          "brier_score": 0.25393750768035017,
+          "games": 149,
+          "log_loss": 0.7134335499407788,
+          "winner_accuracy": 0.6174496644295302
+        },
+        "model_away_favorite": {
+          "brier_score": 0.27013442804356097,
+          "games": 116,
+          "log_loss": 0.7414814441743708,
+          "winner_accuracy": 0.5086206896551724
+        },
+        "model_home_favorite": {
+          "brier_score": 0.23602944401366577,
+          "games": 169,
+          "log_loss": 0.6704338274924372,
+          "winner_accuracy": 0.6153846153846154
+        }
+      }
+    },
+    "2024": {
+      "artifact": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\predictions\\predictions_2024.parquet",
+      "calibration": [
+        {
+          "actual_home_win_rate": 0.3333333333333333,
+          "calibration_error": 0.27044736086449345,
+          "games": 3,
+          "lower": 0.0,
+          "mean_probability": 0.06288597246883988,
+          "upper": 0.1
+        },
+        {
+          "actual_home_win_rate": 0.2857142857142857,
+          "calibration_error": 0.12764275657426974,
+          "games": 21,
+          "lower": 0.1,
+          "mean_probability": 0.15807152914001596,
+          "upper": 0.2
+        },
+        {
+          "actual_home_win_rate": 0.21428571428571427,
+          "calibration_error": -0.03905602359395585,
+          "games": 28,
+          "lower": 0.2,
+          "mean_probability": 0.2533417378796701,
+          "upper": 0.30000000000000004
+        },
+        {
+          "actual_home_win_rate": 0.4444444444444444,
+          "calibration_error": 0.09692756593956064,
+          "games": 36,
+          "lower": 0.3,
+          "mean_probability": 0.3475168785048838,
+          "upper": 0.4
+        },
+        {
+          "actual_home_win_rate": 0.46153846153846156,
+          "calibration_error": 0.004844648223417014,
+          "games": 26,
+          "lower": 0.4,
+          "mean_probability": 0.45669381331504455,
+          "upper": 0.5
+        },
+        {
+          "actual_home_win_rate": 0.5869565217391305,
+          "calibration_error": 0.036634775181757506,
+          "games": 46,
+          "lower": 0.5,
+          "mean_probability": 0.550321746557373,
+          "upper": 0.6
+        },
+        {
+          "actual_home_win_rate": 0.5681818181818182,
+          "calibration_error": -0.08463384407225694,
+          "games": 44,
+          "lower": 0.6,
+          "mean_probability": 0.6528156622540752,
+          "upper": 0.7
+        },
+        {
+          "actual_home_win_rate": 0.696969696969697,
+          "calibration_error": -0.0535658630543292,
+          "games": 33,
+          "lower": 0.7,
+          "mean_probability": 0.7505355600240262,
+          "upper": 0.7999999999999999
+        },
+        {
+          "actual_home_win_rate": 0.7878787878787878,
+          "calibration_error": -0.056943421268766614,
+          "games": 33,
+          "lower": 0.8,
+          "mean_probability": 0.8448222091475545,
+          "upper": 0.9
+        },
+        {
+          "actual_home_win_rate": 0.9333333333333333,
+          "calibration_error": 0.0047109210437698,
+          "games": 15,
+          "lower": 0.9,
+          "mean_probability": 0.9286224122895635,
+          "upper": 1.0
+        }
+      ],
+      "expected_calibration_error": 0.060797617034301026,
+      "metrics": {
+        "brier_score": 0.21670131744331766,
+        "close_probability_rate": 0.11228070175438597,
+        "games": 285,
+        "high_confidence_rate": 0.631578947368421,
+        "home_pick_rate": 0.6,
+        "log_loss": 0.627175519498098,
+        "margin_mae": null,
+        "margin_rmse": null,
+        "mean_home_probability": 0.5459691491584866,
+        "winner_accuracy": 0.6596491228070176
+      },
+      "splits": {
+        "close_probability": {
+          "brier_score": 0.2543617871833504,
+          "games": 32,
+          "log_loss": 0.70188489805539,
+          "winner_accuracy": 0.40625
+        },
+        "high_confidence": {
+          "brier_score": 0.20407117588192877,
+          "games": 180,
+          "log_loss": 0.6024546126561088,
+          "winner_accuracy": 0.7055555555555556
+        },
+        "model_away_favorite": {
+          "brier_score": 0.2280279299699383,
+          "games": 114,
+          "log_loss": 0.6566126909312054,
+          "winner_accuracy": 0.6403508771929824
+        },
+        "model_home_favorite": {
+          "brier_score": 0.20915024242557062,
+          "games": 171,
+          "log_loss": 0.607550738542693,
+          "winner_accuracy": 0.672514619883041
+        }
+      }
+    },
+    "2025": {
+      "artifact": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\backtests\\backtest_2025.parquet",
+      "calibration": [
+        {
+          "actual_home_win_rate": 0.5,
+          "calibration_error": 0.41706364621174996,
+          "games": 2,
+          "lower": 0.0,
+          "mean_probability": 0.08293635378825001,
+          "upper": 0.1
+        },
+        {
+          "actual_home_win_rate": 0.35,
+          "calibration_error": 0.2008375336860519,
+          "games": 20,
+          "lower": 0.1,
+          "mean_probability": 0.14916246631394808,
+          "upper": 0.2
+        },
+        {
+          "actual_home_win_rate": 0.34615384615384615,
+          "calibration_error": 0.09710616146393014,
+          "games": 26,
+          "lower": 0.2,
+          "mean_probability": 0.249047684689916,
+          "upper": 0.30000000000000004
+        },
+        {
+          "actual_home_win_rate": 0.45714285714285713,
+          "calibration_error": 0.10885072635283671,
+          "games": 35,
+          "lower": 0.3,
+          "mean_probability": 0.3482921307900204,
+          "upper": 0.4
+        },
+        {
+          "actual_home_win_rate": 0.4375,
+          "calibration_error": -0.01454951266889598,
+          "games": 32,
+          "lower": 0.4,
+          "mean_probability": 0.452049512668896,
+          "upper": 0.5
+        },
+        {
+          "actual_home_win_rate": 0.45,
+          "calibration_error": -0.09914357441795357,
+          "games": 60,
+          "lower": 0.5,
+          "mean_probability": 0.5491435744179536,
+          "upper": 0.6
+        },
+        {
+          "actual_home_win_rate": 0.6363636363636364,
+          "calibration_error": -0.01791305039572244,
+          "games": 33,
+          "lower": 0.6,
+          "mean_probability": 0.6542766867593588,
+          "upper": 0.7
+        },
+        {
+          "actual_home_win_rate": 0.675,
+          "calibration_error": -0.07966337413282254,
+          "games": 40,
+          "lower": 0.7,
+          "mean_probability": 0.7546633741328226,
+          "upper": 0.7999999999999999
+        },
+        {
+          "actual_home_win_rate": 0.8076923076923077,
+          "calibration_error": -0.035464805073440964,
+          "games": 26,
+          "lower": 0.8,
+          "mean_probability": 0.8431571127657487,
+          "upper": 0.9
+        },
+        {
+          "actual_home_win_rate": 0.9,
+          "calibration_error": -0.024480204695136676,
+          "games": 10,
+          "lower": 0.9,
+          "mean_probability": 0.9244802046951367,
+          "upper": 1.0
+        }
+      ],
+      "expected_calibration_error": 0.0793808629023608,
+      "metrics": {
+        "brier_score": 0.2345666328598575,
+        "close_probability_rate": 0.14084507042253522,
+        "games": 284,
+        "high_confidence_rate": 0.5669014084507042,
+        "home_pick_rate": 0.5950704225352113,
+        "log_loss": 0.6651428368115812,
+        "margin_mae": null,
+        "margin_rmse": null,
+        "mean_home_probability": 0.5358216122928116,
+        "winner_accuracy": 0.6091549295774648
+      },
+      "splits": {
+        "close_probability": {
+          "brier_score": 0.25587857317334894,
+          "games": 40,
+          "log_loss": 0.7049463226789969,
+          "winner_accuracy": 0.5
+        },
+        "high_confidence": {
+          "brier_score": 0.21923342558391207,
+          "games": 161,
+          "log_loss": 0.6365863226091223,
+          "winner_accuracy": 0.6832298136645962
+        },
+        "model_away_favorite": {
+          "brier_score": 0.2564292522067419,
+          "games": 115,
+          "log_loss": 0.7192703978187012,
+          "winner_accuracy": 0.591304347826087
+        },
+        "model_home_favorite": {
+          "brier_score": 0.21968970253505446,
+          "games": 169,
+          "log_loss": 0.6283104728126533,
+          "winner_accuracy": 0.621301775147929
+        }
+      }
+    }
+  },
+  "stability": {
+    "accuracy_range": 0.08771929824561409,
+    "brier_range": 0.03320945340356862,
+    "log_loss_range": 0.07217593443330161
+  },
+  "status": "PASS",
+  "step": "88B",
+  "warnings": []
+}

@@ -1,0 +1,213 @@
+{
+  "failures": [
+    "2022: pace_seconds_advantage has no dispersion",
+    "2022: tempo_index_advantage contains non-finite values",
+    "2023: pace_seconds_advantage has no dispersion",
+    "2023: tempo_index_advantage contains non-finite values",
+    "2024: pace_seconds_advantage has no dispersion",
+    "2024: tempo_index_advantage contains non-finite values",
+    "2025: pace_seconds_advantage has no dispersion",
+    "2025: tempo_index_advantage contains non-finite values"
+  ],
+  "seasons": {
+    "2022": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "pace_play_volume_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 21.0,
+          "mean": -0.2164179104477613,
+          "median": -0.125,
+          "min": -32.0,
+          "p05": -13.25,
+          "p95": 12.0,
+          "std": 7.995281974628975
+        },
+        "pace_seconds_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p05": 0.0,
+          "p95": 0.0,
+          "std": 0.0
+        },
+        "tempo_index_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": NaN,
+          "mean": NaN,
+          "median": NaN,
+          "min": NaN,
+          "p05": NaN,
+          "p95": NaN,
+          "std": NaN
+        }
+      },
+      "known_rates": {
+        "away_pace_tempo_known": 0.9436619718309859,
+        "home_pace_tempo_known": 0.9436619718309859
+      },
+      "non_finite_counts": {
+        "pace_play_volume_advantage": 0,
+        "pace_seconds_advantage": 0,
+        "tempo_index_advantage": 268
+      },
+      "rows": 284,
+      "season": 2022,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    },
+    "2023": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "pace_play_volume_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 20.0,
+          "mean": -0.3850681536555142,
+          "median": 0.0,
+          "min": -26.5,
+          "p05": -11.75,
+          "p95": 10.0,
+          "std": 6.89189527235955
+        },
+        "pace_seconds_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p05": 0.0,
+          "p95": 0.0,
+          "std": 0.0
+        },
+        "tempo_index_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": NaN,
+          "mean": NaN,
+          "median": NaN,
+          "min": NaN,
+          "p05": NaN,
+          "p95": NaN,
+          "std": NaN
+        }
+      },
+      "known_rates": {
+        "away_pace_tempo_known": 0.9438596491228071,
+        "home_pace_tempo_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "pace_play_volume_advantage": 0,
+        "pace_seconds_advantage": 0,
+        "tempo_index_advantage": 269
+      },
+      "rows": 285,
+      "season": 2023,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    },
+    "2024": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "pace_play_volume_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 24.0,
+          "mean": -0.23946716232961593,
+          "median": -0.75,
+          "min": -20.0,
+          "p05": -12.0,
+          "p95": 11.25,
+          "std": 6.823899306593976
+        },
+        "pace_seconds_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p05": 0.0,
+          "p95": 0.0,
+          "std": 0.0
+        },
+        "tempo_index_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": NaN,
+          "mean": NaN,
+          "median": NaN,
+          "min": NaN,
+          "p05": NaN,
+          "p95": NaN,
+          "std": NaN
+        }
+      },
+      "known_rates": {
+        "away_pace_tempo_known": 0.9438596491228071,
+        "home_pace_tempo_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "pace_play_volume_advantage": 0,
+        "pace_seconds_advantage": 0,
+        "tempo_index_advantage": 269
+      },
+      "rows": 285,
+      "season": 2024,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    },
+    "2025": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "pace_play_volume_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 22.5,
+          "mean": -0.20260223048327136,
+          "median": 0.25,
+          "min": -21.0,
+          "p05": -12.25,
+          "p95": 11.25,
+          "std": 7.10085259887783
+        },
+        "pace_seconds_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.0,
+          "mean": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p05": 0.0,
+          "p95": 0.0,
+          "std": 0.0
+        },
+        "tempo_index_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": NaN,
+          "mean": NaN,
+          "median": NaN,
+          "min": NaN,
+          "p05": NaN,
+          "p95": NaN,
+          "std": NaN
+        }
+      },
+      "known_rates": {
+        "away_pace_tempo_known": 0.9438596491228071,
+        "home_pace_tempo_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "pace_play_volume_advantage": 0,
+        "pace_seconds_advantage": 0,
+        "tempo_index_advantage": 269
+      },
+      "rows": 285,
+      "season": 2025,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    }
+  },
+  "status": "FAIL",
+  "step": "83B",
+  "warnings": []
+}

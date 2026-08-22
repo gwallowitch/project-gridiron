@@ -1,0 +1,212 @@
+{
+  "failures": [],
+  "seasons": {
+    "2022": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "close_game_experience_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 1.0,
+          "mean": -0.006529850746268657,
+          "median": 0.0,
+          "min": -1.0,
+          "p05": -0.75,
+          "p95": 0.75,
+          "std": 0.404965360669239
+        },
+        "recent_margin_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 31.5,
+          "mean": -0.4287935323383085,
+          "median": 0.25,
+          "min": -26.25,
+          "p05": -16.5,
+          "p95": 18.0,
+          "std": 10.170482036973999
+        },
+        "stability_advantage": {
+          "coverage": 0.8873239436619719,
+          "max": 19.091883092036785,
+          "mean": 0.3885887914524737,
+          "median": 0.32916395171290347,
+          "min": -22.627416997969522,
+          "p05": -11.115516331446749,
+          "p95": 12.51220670157015,
+          "std": 7.255634450837623
+        }
+      },
+      "known_rates": {
+        "away_performance_stability_known": 0.9436619718309859,
+        "home_performance_stability_known": 0.9436619718309859
+      },
+      "non_finite_counts": {
+        "close_game_experience_advantage": 0,
+        "recent_margin_advantage": 0,
+        "stability_advantage": 0
+      },
+      "rows": 284,
+      "season": 2022,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2_margin_known_rate": 1.0,
+      "week2_stability_all_unknown": true,
+      "week3plus_stability_known_rate": 1.0
+    },
+    "2023": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "close_game_experience_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 1.0,
+          "mean": 0.002478314745972742,
+          "median": 0.0,
+          "min": -1.0,
+          "p05": -0.5,
+          "p95": 0.5,
+          "std": 0.3680520695728853
+        },
+        "recent_margin_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 36.0,
+          "mean": -0.08798017348203228,
+          "median": -0.5,
+          "min": -44.0,
+          "p05": -19.0,
+          "p95": 21.0,
+          "std": 12.086620503692039
+        },
+        "stability_advantage": {
+          "coverage": 0.887719298245614,
+          "max": 25.55077729326952,
+          "mean": 0.10946012681906117,
+          "median": -0.10041048119321516,
+          "min": -25.772092547726366,
+          "p05": -13.867057286807848,
+          "p95": 14.90366061855013,
+          "std": 8.614388923680243
+        }
+      },
+      "known_rates": {
+        "away_performance_stability_known": 0.9438596491228071,
+        "home_performance_stability_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "close_game_experience_advantage": 0,
+        "recent_margin_advantage": 0,
+        "stability_advantage": 0
+      },
+      "rows": 285,
+      "season": 2023,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2_margin_known_rate": 1.0,
+      "week2_stability_all_unknown": true,
+      "week3plus_stability_known_rate": 1.0
+    },
+    "2024": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "close_game_experience_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 1.0,
+          "mean": 0.0021685254027261486,
+          "median": 0.0,
+          "min": -1.0,
+          "p05": -0.5,
+          "p95": 0.6666666666666667,
+          "std": 0.3858913757969238
+        },
+        "recent_margin_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 36.0,
+          "mean": 0.07094175960346967,
+          "median": -0.25,
+          "min": -49.0,
+          "p05": -18.75,
+          "p95": 18.75,
+          "std": 12.127208527603067
+        },
+        "stability_advantage": {
+          "coverage": 0.887719298245614,
+          "max": 20.88455165265372,
+          "mean": -0.3088950472848365,
+          "median": -0.12568633394763395,
+          "min": -26.162950903902257,
+          "p05": -11.678793480480252,
+          "p95": 12.93069483077946,
+          "std": 7.960384751956072
+        }
+      },
+      "known_rates": {
+        "away_performance_stability_known": 0.9438596491228071,
+        "home_performance_stability_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "close_game_experience_advantage": 0,
+        "recent_margin_advantage": 0,
+        "stability_advantage": 0
+      },
+      "rows": 285,
+      "season": 2024,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2_margin_known_rate": 1.0,
+      "week2_stability_all_unknown": true,
+      "week3plus_stability_known_rate": 1.0
+    },
+    "2025": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "close_game_experience_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 1.0,
+          "mean": -0.0012391573729863682,
+          "median": 0.0,
+          "min": -1.0,
+          "p05": -0.6666666666666666,
+          "p95": 0.5,
+          "std": 0.38913854476033705
+        },
+        "recent_margin_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 29.5,
+          "mean": -0.10408921933085497,
+          "median": -1.0,
+          "min": -31.25,
+          "p05": -20.0,
+          "p95": 20.5,
+          "std": 12.327499956980605
+        },
+        "stability_advantage": {
+          "coverage": 0.887719298245614,
+          "max": 20.375234525800877,
+          "mean": 0.03127614049028354,
+          "median": 0.12059262829707151,
+          "min": -24.33466204492766,
+          "p05": -12.521423980126393,
+          "p95": 12.68674080604825,
+          "std": 7.493991196436906
+        }
+      },
+      "known_rates": {
+        "away_performance_stability_known": 0.9438596491228071,
+        "home_performance_stability_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "close_game_experience_advantage": 0,
+        "recent_margin_advantage": 0,
+        "stability_advantage": 0
+      },
+      "rows": 285,
+      "season": 2025,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2_margin_known_rate": 1.0,
+      "week2_stability_all_unknown": true,
+      "week3plus_stability_known_rate": 1.0
+    }
+  },
+  "status": "PASS",
+  "step": "84B",
+  "warnings": []
+}

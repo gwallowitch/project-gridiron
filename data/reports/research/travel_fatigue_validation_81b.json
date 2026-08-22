@@ -1,0 +1,1101 @@
+{
+  "failures": [],
+  "seasons": {
+    "2022": {
+      "duplicate_game_ids": 0,
+      "extreme_trips": [
+        {
+          "away_team": "MIA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2554.741867514447,
+          "cross_country_travel": true,
+          "game_id": "2022_13_MIA_SF",
+          "home_team": "SF",
+          "short_week_away": false,
+          "week": 13
+        },
+        {
+          "away_team": "SEA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2522.5899022016456,
+          "cross_country_travel": true,
+          "game_id": "2022_10_SEA_TB",
+          "home_team": "TB",
+          "short_week_away": false,
+          "week": 10
+        },
+        {
+          "away_team": "SF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2502.3327381003623,
+          "cross_country_travel": true,
+          "game_id": "2022_21_SF_PHI",
+          "home_team": "PHI",
+          "short_week_away": false,
+          "week": 21
+        },
+        {
+          "away_team": "WAS",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2427.6176597319723,
+          "cross_country_travel": true,
+          "game_id": "2022_16_WAS_SF",
+          "home_team": "SF",
+          "short_week_away": true,
+          "week": 16
+        },
+        {
+          "away_team": "NYG",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2395.576172572223,
+          "cross_country_travel": true,
+          "game_id": "2022_08_NYG_SEA",
+          "home_team": "SEA",
+          "short_week_away": false,
+          "week": 8
+        },
+        {
+          "away_team": "NYJ",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2395.576172572223,
+          "cross_country_travel": true,
+          "game_id": "2022_17_NYJ_SEA",
+          "home_team": "SEA",
+          "short_week_away": false,
+          "week": 17
+        },
+        {
+          "away_team": "TB",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2366.8269249298082,
+          "cross_country_travel": true,
+          "game_id": "2022_14_TB_SF",
+          "home_team": "SF",
+          "short_week_away": true,
+          "week": 14
+        },
+        {
+          "away_team": "NE",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2364.9110051451066,
+          "cross_country_travel": true,
+          "game_id": "2022_15_NE_LV",
+          "home_team": "LV",
+          "short_week_away": true,
+          "week": 15
+        },
+        {
+          "away_team": "MIA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2332.6053714700893,
+          "cross_country_travel": true,
+          "game_id": "2022_14_MIA_LAC",
+          "home_team": "LAC",
+          "short_week_away": false,
+          "week": 14
+        },
+        {
+          "away_team": "NE",
+          "away_time_zone_shift_hours": 2,
+          "away_travel_miles": 2291.3013366627924,
+          "cross_country_travel": true,
+          "game_id": "2022_14_NE_ARI",
+          "home_team": "ARI",
+          "short_week_away": false,
+          "week": 14
+        },
+        {
+          "away_team": "CAR",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2280.399240058037,
+          "cross_country_travel": true,
+          "game_id": "2022_14_CAR_SEA",
+          "home_team": "SEA",
+          "short_week_away": false,
+          "week": 14
+        },
+        {
+          "away_team": "SF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2275.9952243447146,
+          "cross_country_travel": true,
+          "game_id": "2022_05_SF_CAR",
+          "home_team": "CAR",
+          "short_week_away": true,
+          "week": 5
+        },
+        {
+          "away_team": "BUF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2205.606759745901,
+          "cross_country_travel": true,
+          "game_id": "2022_01_BUF_LA",
+          "home_team": "LA",
+          "short_week_away": false,
+          "week": 1
+        },
+        {
+          "away_team": "ATL",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2177.29832806147,
+          "cross_country_travel": true,
+          "game_id": "2022_03_ATL_SEA",
+          "home_team": "SEA",
+          "short_week_away": false,
+          "week": 3
+        },
+        {
+          "away_team": "LA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2151.718041867238,
+          "cross_country_travel": true,
+          "game_id": "2022_09_LA_TB",
+          "home_team": "TB",
+          "short_week_away": false,
+          "week": 9
+        }
+      ],
+      "features": {
+        "away_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.8380281690140845,
+          "median": 1.0,
+          "nonzero_rate": 0.5528169014084507,
+          "p05": 0.0,
+          "p95": 3.0,
+          "std": 0.944669433413783
+        },
+        "away_travel_miles": {
+          "coverage": 1.0,
+          "max": 2554.741867514447,
+          "mean": 877.188079920863,
+          "median": 744.7110264570179,
+          "nonzero_rate": 0.9964788732394366,
+          "p05": 183.71291597341892,
+          "p95": 2151.5300694174216,
+          "std": 597.279067152107
+        },
+        "eastward_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.4154929577464789,
+          "median": 0.0,
+          "nonzero_rate": 0.2746478873239437,
+          "p05": 0.0,
+          "p95": 2.0,
+          "std": 0.7817978532475371
+        },
+        "westward_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.4225352112676056,
+          "median": 0.0,
+          "nonzero_rate": 0.27816901408450706,
+          "p05": 0.0,
+          "p95": 2.0,
+          "std": 0.7959610380042501
+        }
+      },
+      "flags": {
+        "cross_country_travel": {
+          "coverage": 1.0,
+          "rate": 0.14788732394366197
+        },
+        "long_haul_travel": {
+          "coverage": 1.0,
+          "rate": 0.33098591549295775
+        }
+      },
+      "geography_known_rate": 1.0,
+      "rest_features": {
+        "short_week_away": {
+          "coverage": 1.0,
+          "rate": 0.17253521126760563
+        },
+        "short_week_time_zone_shift": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.13380281690140844,
+          "median": 0.0,
+          "nonzero_rate": 0.07746478873239436,
+          "p05": 0.0,
+          "p95": 1.0,
+          "std": 0.5213311751631433
+        },
+        "short_week_travel_miles": {
+          "coverage": 1.0,
+          "max": 2427.6176597319723,
+          "mean": 165.98585055206178,
+          "median": 0.0,
+          "nonzero_rate": 0.17253521126760563,
+          "p05": 0.0,
+          "p95": 1164.7571391790545,
+          "std": 443.4301905954499
+        }
+      },
+      "rest_known_rate": 1.0,
+      "rows": 284,
+      "schedule_rows": 284,
+      "season": 2022,
+      "site_audit": {
+        "international_count": 4,
+        "international_games": [
+          {
+            "away_team": "MIN",
+            "game_id": "2022_04_MIN_NO",
+            "home_team": "NO",
+            "location": "Neutral",
+            "season": 2022,
+            "stadium": "Tottenham Stadium",
+            "week": 4
+          },
+          {
+            "away_team": "NYG",
+            "game_id": "2022_05_NYG_GB",
+            "home_team": "GB",
+            "location": "Neutral",
+            "season": 2022,
+            "stadium": "Tottenham Stadium",
+            "week": 5
+          },
+          {
+            "away_team": "DEN",
+            "game_id": "2022_08_DEN_JAX",
+            "home_team": "JAX",
+            "location": "Neutral",
+            "season": 2022,
+            "stadium": "Wembley Stadium",
+            "week": 8
+          },
+          {
+            "away_team": "SF",
+            "game_id": "2022_11_SF_ARI",
+            "home_team": "ARI",
+            "location": "Neutral",
+            "season": 2022,
+            "stadium": "Azteca Stadium",
+            "week": 11
+          }
+        ],
+        "neutral_column": null,
+        "neutral_count": 0,
+        "neutral_games": [],
+        "venue_text_columns": [
+          "stadium",
+          "location"
+        ]
+      }
+    },
+    "2023": {
+      "duplicate_game_ids": 0,
+      "extreme_trips": [
+        {
+          "away_team": "LAC",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2589.4216757115314,
+          "cross_country_travel": true,
+          "game_id": "2023_13_LAC_NE",
+          "home_team": "NE",
+          "short_week_away": false,
+          "week": 13
+        },
+        {
+          "away_team": "NYG",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2546.692853403093,
+          "cross_country_travel": true,
+          "game_id": "2023_03_NYG_SF",
+          "home_team": "SF",
+          "short_week_away": true,
+          "week": 3
+        },
+        {
+          "away_team": "SF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2502.3327381003623,
+          "cross_country_travel": true,
+          "game_id": "2023_13_SF_PHI",
+          "home_team": "PHI",
+          "short_week_away": false,
+          "week": 13
+        },
+        {
+          "away_team": "LAC",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2449.3415336287117,
+          "cross_country_travel": true,
+          "game_id": "2023_09_LAC_NYJ",
+          "home_team": "NYJ",
+          "short_week_away": false,
+          "week": 9
+        },
+        {
+          "away_team": "LA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2449.3415336287117,
+          "cross_country_travel": true,
+          "game_id": "2023_17_LA_NYG",
+          "home_team": "NYG",
+          "short_week_away": false,
+          "week": 17
+        },
+        {
+          "away_team": "BAL",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2435.035627620866,
+          "cross_country_travel": true,
+          "game_id": "2023_16_BAL_SF",
+          "home_team": "SF",
+          "short_week_away": false,
+          "week": 16
+        },
+        {
+          "away_team": "SF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2427.6176597319723,
+          "cross_country_travel": true,
+          "game_id": "2023_17_SF_WAS",
+          "home_team": "WAS",
+          "short_week_away": true,
+          "week": 17
+        },
+        {
+          "away_team": "PHI",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2396.024771571971,
+          "cross_country_travel": true,
+          "game_id": "2023_05_PHI_LA",
+          "home_team": "LA",
+          "short_week_away": false,
+          "week": 5
+        },
+        {
+          "away_team": "SEA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2395.576172572223,
+          "cross_country_travel": true,
+          "game_id": "2023_04_SEA_NYG",
+          "home_team": "NYG",
+          "short_week_away": false,
+          "week": 4
+        },
+        {
+          "away_team": "PHI",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2374.837888364069,
+          "cross_country_travel": true,
+          "game_id": "2023_15_PHI_SEA",
+          "home_team": "SEA",
+          "short_week_away": false,
+          "week": 15
+        },
+        {
+          "away_team": "TB",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2366.8269249298082,
+          "cross_country_travel": true,
+          "game_id": "2023_11_TB_SF",
+          "home_team": "SF",
+          "short_week_away": false,
+          "week": 11
+        },
+        {
+          "away_team": "NE",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2364.9110051451066,
+          "cross_country_travel": true,
+          "game_id": "2023_06_NE_LV",
+          "home_team": "LV",
+          "short_week_away": false,
+          "week": 6
+        },
+        {
+          "away_team": "SF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2346.711386607212,
+          "cross_country_travel": true,
+          "game_id": "2023_10_SF_JAX",
+          "home_team": "JAX",
+          "short_week_away": false,
+          "week": 10
+        },
+        {
+          "away_team": "MIA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2332.6053714700893,
+          "cross_country_travel": true,
+          "game_id": "2023_01_MIA_LAC",
+          "home_team": "LAC",
+          "short_week_away": false,
+          "week": 1
+        },
+        {
+          "away_team": "WAS",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2329.619168790051,
+          "cross_country_travel": true,
+          "game_id": "2023_10_WAS_SEA",
+          "home_team": "SEA",
+          "short_week_away": false,
+          "week": 10
+        }
+      ],
+      "features": {
+        "away_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 1.0456140350877192,
+          "median": 1.0,
+          "nonzero_rate": 0.624561403508772,
+          "p05": 0.0,
+          "p95": 3.0,
+          "std": 1.0454580126147348
+        },
+        "away_travel_miles": {
+          "coverage": 1.0,
+          "max": 2589.4216757115314,
+          "mean": 998.422547591585,
+          "median": 874.4835009001666,
+          "nonzero_rate": 0.9964912280701754,
+          "p05": 183.71291597341892,
+          "p95": 2329.329660443694,
+          "std": 678.9478212659205
+        },
+        "eastward_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.5333333333333333,
+          "median": 0.0,
+          "nonzero_rate": 0.3263157894736842,
+          "p05": 0.0,
+          "p95": 3.0,
+          "std": 0.8978325491899792
+        },
+        "westward_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.512280701754386,
+          "median": 0.0,
+          "nonzero_rate": 0.2982456140350877,
+          "p05": 0.0,
+          "p95": 3.0,
+          "std": 0.9139124560192357
+        }
+      },
+      "flags": {
+        "cross_country_travel": {
+          "coverage": 1.0,
+          "rate": 0.23157894736842105
+        },
+        "long_haul_travel": {
+          "coverage": 1.0,
+          "rate": 0.42105263157894735
+        }
+      },
+      "geography_known_rate": 1.0,
+      "rest_features": {
+        "short_week_away": {
+          "coverage": 1.0,
+          "rate": 0.15789473684210525
+        },
+        "short_week_time_zone_shift": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.18947368421052632,
+          "median": 0.0,
+          "nonzero_rate": 0.11228070175438597,
+          "p05": 0.0,
+          "p95": 1.0,
+          "std": 0.6044681664652238
+        },
+        "short_week_travel_miles": {
+          "coverage": 1.0,
+          "max": 2546.692853403093,
+          "mean": 169.93183076676775,
+          "median": 0.0,
+          "nonzero_rate": 0.15789473684210525,
+          "p05": 0.0,
+          "p95": 1199.8511797197928,
+          "std": 471.17931822194566
+        }
+      },
+      "rest_known_rate": 1.0,
+      "rows": 285,
+      "schedule_rows": 285,
+      "season": 2023,
+      "site_audit": {
+        "international_count": 3,
+        "international_games": [
+          {
+            "away_team": "ATL",
+            "game_id": "2023_04_ATL_JAX",
+            "home_team": "JAX",
+            "location": "Neutral",
+            "season": 2023,
+            "stadium": "Wembley Stadium",
+            "week": 4
+          },
+          {
+            "away_team": "JAX",
+            "game_id": "2023_05_JAX_BUF",
+            "home_team": "BUF",
+            "location": "Neutral",
+            "season": 2023,
+            "stadium": "Tottenham Stadium",
+            "week": 5
+          },
+          {
+            "away_team": "BAL",
+            "game_id": "2023_06_BAL_TEN",
+            "home_team": "TEN",
+            "location": "Neutral",
+            "season": 2023,
+            "stadium": "Tottenham Stadium",
+            "week": 6
+          }
+        ],
+        "neutral_column": null,
+        "neutral_count": 0,
+        "neutral_games": [],
+        "venue_text_columns": [
+          "stadium",
+          "location"
+        ]
+      }
+    },
+    "2024": {
+      "duplicate_game_ids": 0,
+      "extreme_trips": [
+        {
+          "away_team": "MIA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2719.7386704641162,
+          "cross_country_travel": true,
+          "game_id": "2024_03_MIA_SEA",
+          "home_team": "SEA",
+          "short_week_away": false,
+          "week": 3
+        },
+        {
+          "away_team": "NE",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2673.549068788494,
+          "cross_country_travel": true,
+          "game_id": "2024_04_NE_SF",
+          "home_team": "SF",
+          "short_week_away": false,
+          "week": 4
+        },
+        {
+          "away_team": "LA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2589.4216757115314,
+          "cross_country_travel": true,
+          "game_id": "2024_11_LA_NE",
+          "home_team": "NE",
+          "short_week_away": true,
+          "week": 11
+        },
+        {
+          "away_team": "LAC",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2589.4216757115314,
+          "cross_country_travel": true,
+          "game_id": "2024_17_LAC_NE",
+          "home_team": "NE",
+          "short_week_away": false,
+          "week": 17
+        },
+        {
+          "away_team": "SF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2554.741867514447,
+          "cross_country_travel": true,
+          "game_id": "2024_16_SF_MIA",
+          "home_team": "MIA",
+          "short_week_away": false,
+          "week": 16
+        },
+        {
+          "away_team": "NYJ",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2546.692853403093,
+          "cross_country_travel": true,
+          "game_id": "2024_01_NYJ_SF",
+          "home_team": "SF",
+          "short_week_away": false,
+          "week": 1
+        },
+        {
+          "away_team": "SEA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2484.5708860460372,
+          "cross_country_travel": true,
+          "game_id": "2024_02_SEA_NE",
+          "home_team": "NE",
+          "short_week_away": false,
+          "week": 2
+        },
+        {
+          "away_team": "LA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2449.3415336287117,
+          "cross_country_travel": true,
+          "game_id": "2024_16_LA_NYJ",
+          "home_team": "NYJ",
+          "short_week_away": false,
+          "week": 16
+        },
+        {
+          "away_team": "PHI",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2396.024771571971,
+          "cross_country_travel": true,
+          "game_id": "2024_12_PHI_LA",
+          "home_team": "LA",
+          "short_week_away": false,
+          "week": 12
+        },
+        {
+          "away_team": "LA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2396.024771571971,
+          "cross_country_travel": true,
+          "game_id": "2024_20_LA_PHI",
+          "home_team": "PHI",
+          "short_week_away": true,
+          "week": 20
+        },
+        {
+          "away_team": "NYG",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2395.576172572223,
+          "cross_country_travel": true,
+          "game_id": "2024_05_NYG_SEA",
+          "home_team": "SEA",
+          "short_week_away": false,
+          "week": 5
+        },
+        {
+          "away_team": "SEA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2395.576172572223,
+          "cross_country_travel": true,
+          "game_id": "2024_13_SEA_NYJ",
+          "home_team": "NYJ",
+          "short_week_away": false,
+          "week": 13
+        },
+        {
+          "away_team": "SF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2366.8269249298082,
+          "cross_country_travel": true,
+          "game_id": "2024_10_SF_TB",
+          "home_team": "TB",
+          "short_week_away": false,
+          "week": 10
+        },
+        {
+          "away_team": "MIA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2332.6053714700893,
+          "cross_country_travel": true,
+          "game_id": "2024_10_MIA_LA",
+          "home_team": "LA",
+          "short_week_away": false,
+          "week": 10
+        },
+        {
+          "away_team": "BAL",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2321.8363470856134,
+          "cross_country_travel": true,
+          "game_id": "2024_12_BAL_LAC",
+          "home_team": "LAC",
+          "short_week_away": false,
+          "week": 12
+        }
+      ],
+      "features": {
+        "away_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.9859649122807017,
+          "median": 1.0,
+          "nonzero_rate": 0.5929824561403508,
+          "p05": 0.0,
+          "p95": 3.0,
+          "std": 1.0311074650095013
+        },
+        "away_travel_miles": {
+          "coverage": 1.0,
+          "max": 2719.7386704641162,
+          "mean": 970.1077432083412,
+          "median": 836.8076728563726,
+          "nonzero_rate": 1.0,
+          "p05": 186.41523280990094,
+          "p95": 2315.7293450010498,
+          "std": 665.291907902052
+        },
+        "eastward_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.49473684210526314,
+          "median": 0.0,
+          "nonzero_rate": 0.29473684210526313,
+          "p05": 0.0,
+          "p95": 3.0,
+          "std": 0.8905649917034348
+        },
+        "westward_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.49122807017543857,
+          "median": 0.0,
+          "nonzero_rate": 0.2982456140350877,
+          "p05": 0.0,
+          "p95": 3.0,
+          "std": 0.8705431164044375
+        }
+      },
+      "flags": {
+        "cross_country_travel": {
+          "coverage": 1.0,
+          "rate": 0.21403508771929824
+        },
+        "long_haul_travel": {
+          "coverage": 1.0,
+          "rate": 0.4105263157894737
+        }
+      },
+      "geography_known_rate": 1.0,
+      "rest_features": {
+        "short_week_away": {
+          "coverage": 1.0,
+          "rate": 0.1649122807017544
+        },
+        "short_week_time_zone_shift": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.14736842105263157,
+          "median": 0.0,
+          "nonzero_rate": 0.09824561403508772,
+          "p05": 0.0,
+          "p95": 1.0,
+          "std": 0.4957940221296949
+        },
+        "short_week_travel_miles": {
+          "coverage": 1.0,
+          "max": 2589.4216757115314,
+          "mean": 151.55311348431147,
+          "median": 0.0,
+          "nonzero_rate": 0.1649122807017544,
+          "p05": 0.0,
+          "p95": 1248.9985056245441,
+          "std": 430.7284809799245
+        }
+      },
+      "rest_known_rate": 1.0,
+      "rows": 285,
+      "schedule_rows": 285,
+      "season": 2024,
+      "site_audit": {
+        "international_count": 3,
+        "international_games": [
+          {
+            "away_team": "NYJ",
+            "game_id": "2024_05_NYJ_MIN",
+            "home_team": "MIN",
+            "location": "Neutral",
+            "season": 2024,
+            "stadium": "Tottenham Stadium",
+            "week": 5
+          },
+          {
+            "away_team": "JAX",
+            "game_id": "2024_06_JAX_CHI",
+            "home_team": "CHI",
+            "location": "Neutral",
+            "season": 2024,
+            "stadium": "Tottenham Stadium",
+            "week": 6
+          },
+          {
+            "away_team": "NE",
+            "game_id": "2024_07_NE_JAX",
+            "home_team": "JAX",
+            "location": "Neutral",
+            "season": 2024,
+            "stadium": "Wembley Stadium",
+            "week": 7
+          }
+        ],
+        "neutral_column": null,
+        "neutral_count": 0,
+        "neutral_games": [],
+        "venue_text_columns": [
+          "stadium",
+          "location"
+        ]
+      }
+    },
+    "2025": {
+      "duplicate_game_ids": 0,
+      "extreme_trips": [
+        {
+          "away_team": "LAC",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2589.4216757115314,
+          "cross_country_travel": true,
+          "game_id": "2025_19_LAC_NE",
+          "home_team": "NE",
+          "short_week_away": false,
+          "week": 19
+        },
+        {
+          "away_team": "SF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2546.692853403093,
+          "cross_country_travel": true,
+          "game_id": "2025_09_SF_NYG",
+          "home_team": "NYG",
+          "short_week_away": false,
+          "week": 9
+        },
+        {
+          "away_team": "TB",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2522.5899022016456,
+          "cross_country_travel": true,
+          "game_id": "2025_05_TB_SEA",
+          "home_team": "SEA",
+          "short_week_away": false,
+          "week": 5
+        },
+        {
+          "away_team": "SF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2502.3327381003623,
+          "cross_country_travel": true,
+          "game_id": "2025_19_SF_PHI",
+          "home_team": "PHI",
+          "short_week_away": false,
+          "week": 19
+        },
+        {
+          "away_team": "SEA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2484.5708860460372,
+          "cross_country_travel": true,
+          "game_id": "2025_22_SEA_NE",
+          "home_team": "NE",
+          "short_week_away": false,
+          "week": 22
+        },
+        {
+          "away_team": "SEA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2452.532721086655,
+          "cross_country_travel": true,
+          "game_id": "2025_06_SEA_JAX",
+          "home_team": "JAX",
+          "short_week_away": false,
+          "week": 6
+        },
+        {
+          "away_team": "LAC",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2449.3415336287117,
+          "cross_country_travel": true,
+          "game_id": "2025_04_LAC_NYG",
+          "home_team": "NYG",
+          "short_week_away": false,
+          "week": 4
+        },
+        {
+          "away_team": "LA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2396.024771571971,
+          "cross_country_travel": true,
+          "game_id": "2025_03_LA_PHI",
+          "home_team": "PHI",
+          "short_week_away": false,
+          "week": 3
+        },
+        {
+          "away_team": "PHI",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2396.024771571971,
+          "cross_country_travel": true,
+          "game_id": "2025_14_PHI_LAC",
+          "home_team": "LAC",
+          "short_week_away": false,
+          "week": 14
+        },
+        {
+          "away_team": "SF",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2366.8269249298082,
+          "cross_country_travel": true,
+          "game_id": "2025_06_SF_TB",
+          "home_team": "TB",
+          "short_week_away": false,
+          "week": 6
+        },
+        {
+          "away_team": "LV",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2364.9110051451066,
+          "cross_country_travel": true,
+          "game_id": "2025_01_LV_NE",
+          "home_team": "NE",
+          "short_week_away": false,
+          "week": 1
+        },
+        {
+          "away_team": "JAX",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2346.711386607212,
+          "cross_country_travel": true,
+          "game_id": "2025_04_JAX_SF",
+          "home_team": "SF",
+          "short_week_away": false,
+          "week": 4
+        },
+        {
+          "away_team": "LAC",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2332.6053714700893,
+          "cross_country_travel": true,
+          "game_id": "2025_06_LAC_MIA",
+          "home_team": "MIA",
+          "short_week_away": false,
+          "week": 6
+        },
+        {
+          "away_team": "SEA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2329.619168790051,
+          "cross_country_travel": true,
+          "game_id": "2025_09_SEA_WAS",
+          "home_team": "WAS",
+          "short_week_away": false,
+          "week": 9
+        },
+        {
+          "away_team": "LA",
+          "away_time_zone_shift_hours": 3,
+          "away_travel_miles": 2321.8363470856134,
+          "cross_country_travel": true,
+          "game_id": "2025_06_LA_BAL",
+          "home_team": "BAL",
+          "short_week_away": false,
+          "week": 6
+        }
+      ],
+      "features": {
+        "away_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 1.0210526315789474,
+          "median": 1.0,
+          "nonzero_rate": 0.6035087719298246,
+          "p05": 0.0,
+          "p95": 3.0,
+          "std": 1.0479249855734796
+        },
+        "away_travel_miles": {
+          "coverage": 1.0,
+          "max": 2589.4216757115314,
+          "mean": 987.0685174026081,
+          "median": 869.3421430935621,
+          "nonzero_rate": 1.0,
+          "p05": 183.71291597341892,
+          "p95": 2319.643673134259,
+          "std": 667.0125467817791
+        },
+        "eastward_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.5403508771929825,
+          "median": 0.0,
+          "nonzero_rate": 0.30526315789473685,
+          "p05": 0.0,
+          "p95": 3.0,
+          "std": 0.9471714096553981
+        },
+        "westward_time_zone_shift_hours": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.4807017543859649,
+          "median": 0.0,
+          "nonzero_rate": 0.2982456140350877,
+          "p05": 0.0,
+          "p95": 2.8000000000000114,
+          "std": 0.8499044263773337
+        }
+      },
+      "flags": {
+        "cross_country_travel": {
+          "coverage": 1.0,
+          "rate": 0.22807017543859648
+        },
+        "long_haul_travel": {
+          "coverage": 1.0,
+          "rate": 0.4070175438596491
+        }
+      },
+      "geography_known_rate": 1.0,
+      "rest_features": {
+        "short_week_away": {
+          "coverage": 1.0,
+          "rate": 0.16140350877192983
+        },
+        "short_week_time_zone_shift": {
+          "coverage": 1.0,
+          "max": 3.0,
+          "mean": 0.14385964912280702,
+          "median": 0.0,
+          "nonzero_rate": 0.09824561403508772,
+          "p05": 0.0,
+          "p95": 1.0,
+          "std": 0.4932707538160954
+        },
+        "short_week_travel_miles": {
+          "coverage": 1.0,
+          "max": 2147.433757248081,
+          "mean": 139.6602128177609,
+          "median": 0.0,
+          "nonzero_rate": 0.16140350877192983,
+          "p05": 0.0,
+          "p95": 1104.2094437772573,
+          "std": 392.69048848820165
+        }
+      },
+      "rest_known_rate": 1.0,
+      "rows": 285,
+      "schedule_rows": 285,
+      "season": 2025,
+      "site_audit": {
+        "international_count": 0,
+        "international_games": [],
+        "neutral_column": null,
+        "neutral_count": 0,
+        "neutral_games": [],
+        "venue_text_columns": [
+          "stadium",
+          "location"
+        ]
+      }
+    }
+  },
+  "status": "PASS",
+  "step": "81B",
+  "warnings": [
+    "2022: venue audit found 0 neutral and 4 international-site rows",
+    "2023: venue audit found 0 neutral and 3 international-site rows",
+    "2024: venue audit found 0 neutral and 3 international-site rows"
+  ]
+}

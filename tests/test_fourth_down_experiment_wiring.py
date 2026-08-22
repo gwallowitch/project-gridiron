@@ -1,0 +1,55 @@
+from __future__ import annotations
+
+import math
+
+import pytest
+
+from gridiron.experiments.models import ExperimentConfig
+from gridiron.experiments.validation import validate_experiments
+
+
+def config(**kwargs) -> ExperimentConfig:
+    values = {
+        "name": "fourth_down_test",
+        "home_field_advantage": 1.5,
+        "probability_scale": 0.14,
+        "margin_scale": 0.75,
+        "rest_weight": 0.20,
+        "off_sack_weight": 10.0,
+        "punt_return_weight": 0.24,
+        "long_field_avoidance_weight": 1.0,
+    }
+    values.update(kwargs)
+    return ExperimentConfig(**values)
+
+
+def test_fourth_down_weights_default_to_zero() -> None:
+    x = ExperimentConfig("x", 1.5, 0.14)
+
+    assert x.fourth_down_off_epa_weight == 0.0
+    assert x.fourth_down_def_epa_weight == 0.0
+    assert x.fourth_down_conversion_weight == 0.0
+    assert x.fourth_down_stop_weight == 0.0
+    assert x.fourth_short_conversion_weight == 0.0
+
+
+def test_fourth_down_weights_must_be_finite() -> None:
+    with pytest.raises(ValueError, match="fourth_down_off_epa_weight"):
+        validate_experiments(
+            [config(fourth_down_off_epa_weight=math.inf)]
+        )
+
+
+def test_fourth_down_weights_must_not_be_negative() -> None:
+    with pytest.raises(ValueError, match="fourth_short_conversion_weight"):
+        validate_experiments(
+            [config(fourth_short_conversion_weight=-1.0)]
+        )
+
+
+def test_75c_preserves_four_weight_research_lock() -> None:
+    x = config()
+    assert x.rest_weight == 0.20
+    assert x.off_sack_weight == 10.0
+    assert x.punt_return_weight == 0.24
+    assert x.long_field_avoidance_weight == 1.0

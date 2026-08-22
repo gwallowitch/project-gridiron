@@ -1,0 +1,21 @@
+{
+  "failures": [],
+  "model": {
+    "active_weight_count": 6,
+    "active_weights": {
+      "def_epa_trend_weight": 5.25,
+      "defensive_schedule_difficulty_weight": 2.25,
+      "long_field_avoidance_weight": 1.0,
+      "off_sack_weight": 10.0,
+      "punt_return_weight": 0.24,
+      "rest_weight": 0.2
+    },
+    "fingerprint_sha256": "b12a0d4180ef30298fedcc2a9a676fef6a68589b9434283c1d111fd718427977",
+    "home_field_advantage": 1.5,
+    "name": "six_weight_v1_locked",
+    "parked_weight_count": 23,
+    "probability_scale": 0.14
+  },
+  "status": "PASS",
+  "warnings": []
+}

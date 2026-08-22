@@ -1,0 +1,82 @@
+{
+  "candidate": "def_sos_225",
+  "stats": {
+    "def_sos_150": {
+      "leave_one_season_out_mean_deltas": {
+        "2022": -0.00011120022459291483,
+        "2023": -0.00019299487593963752,
+        "2024": -0.00013581762871706093,
+        "2025": -0.0004936126073538475
+      },
+      "looso_improves_count": 4,
+      "losses": 1,
+      "mean_accuracy_delta": -0.0008833703978255447,
+      "mean_score_delta": -0.0002334063341508652,
+      "ties": 0,
+      "wins": 3,
+      "worst_looso_delta": -0.00011120022459291483
+    },
+    "def_sos_200": {
+      "leave_one_season_out_mean_deltas": {
+        "2022": -0.00017916850292254427,
+        "2023": -0.0003278229657760849,
+        "2024": -0.00021267832601038852,
+        "2025": -0.0006108657678246902
+      },
+      "looso_improves_count": 4,
+      "losses": 1,
+      "mean_accuracy_delta": -0.0008833703978255447,
+      "mean_score_delta": -0.00033263389063342697,
+      "ties": 0,
+      "wins": 3,
+      "worst_looso_delta": -0.00017916850292254427
+    },
+    "def_sos_225": {
+      "leave_one_season_out_mean_deltas": {
+        "2022": -0.0003285354352614567,
+        "2023": -0.0003937703772769474,
+        "2024": -0.0003666214637810435,
+        "2025": -0.0007848888717956563
+      },
+      "looso_improves_count": 4,
+      "losses": 1,
+      "mean_accuracy_delta": -6.17741536940164e-06,
+      "mean_score_delta": -0.00046845403702877597,
+      "ties": 0,
+      "wins": 3,
+      "worst_looso_delta": -0.0003285354352614567
+    },
+    "def_sos_250": {
+      "leave_one_season_out_mean_deltas": {
+        "2022": -0.0002429306848326096,
+        "2023": -0.000341777100097788,
+        "2024": -0.0004026390452649409,
+        "2025": -0.000723950119503954
+      },
+      "looso_improves_count": 4,
+      "losses": 1,
+      "mean_accuracy_delta": -0.0008833703978255447,
+      "mean_score_delta": -0.0004278242374248231,
+      "ties": 0,
+      "wins": 3,
+      "worst_looso_delta": -0.0002429306848326096
+    },
+    "def_sos_275": {
+      "leave_one_season_out_mean_deltas": {
+        "2022": -0.00015585849203255306,
+        "2023": -0.0002883875044594382,
+        "2024": -0.00032031749085292827,
+        "2025": -0.0007789251521793291
+      },
+      "looso_improves_count": 4,
+      "losses": 1,
+      "mean_accuracy_delta": -0.0017636520879664164,
+      "mean_score_delta": -0.00038587215988106216,
+      "ties": 0,
+      "wins": 3,
+      "worst_looso_delta": -0.00015585849203255306
+    }
+  },
+  "status": "PROVISIONAL_PASS",
+  "step": "79E"
+}

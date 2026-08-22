@@ -1,0 +1,236 @@
+{
+  "failures": [],
+  "seasons": {
+    "2022": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "explosive_pass_rate_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 0.09354932174699616,
+          "mean": 0.0007982419712636221,
+          "median": 0.0017669200266560818,
+          "min": -0.10688678088408544,
+          "p05": -0.05954767481463811,
+          "p95": 0.05956859617850329,
+          "std": 0.03681065311240372
+        },
+        "explosive_play_rate_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 0.09558823529411764,
+          "mean": 0.0016265153068352161,
+          "median": -7.594514212345971e-05,
+          "min": -0.07363249887242683,
+          "p05": -0.052069995731967564,
+          "p95": 0.05825526932084309,
+          "std": 0.03279194262920711
+        },
+        "explosive_rush_rate_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 0.2,
+          "mean": 0.0030091856222147603,
+          "median": 9.696109202686487e-05,
+          "min": -0.18178130746065527,
+          "p05": -0.0884082094376212,
+          "p95": 0.1000558647825649,
+          "std": 0.057376298455679355
+        }
+      },
+      "known_rates": {
+        "away_explosive_play_known": 0.9436619718309859,
+        "home_explosive_play_known": 0.9436619718309859
+      },
+      "non_finite_counts": {
+        "explosive_pass_rate_advantage": 0,
+        "explosive_play_rate_advantage": 0,
+        "explosive_rush_rate_advantage": 0
+      },
+      "out_of_bounds_counts": {
+        "away_explosive_pass_rate": 0,
+        "away_explosive_play_rate": 0,
+        "away_explosive_rush_rate": 0,
+        "home_explosive_pass_rate": 0,
+        "home_explosive_play_rate": 0,
+        "home_explosive_rush_rate": 0
+      },
+      "rows": 284,
+      "season": 2022,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    },
+    "2023": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "explosive_pass_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.10595121473354234,
+          "mean": -0.0011413346837359627,
+          "median": 0.00014374263635391626,
+          "min": -0.14269005847953217,
+          "p05": -0.0862361272422248,
+          "p95": 0.07079908249263087,
+          "std": 0.04702058442426001
+        },
+        "explosive_play_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.09191452951768958,
+          "mean": -0.000644695878782122,
+          "median": -0.0019769693422775347,
+          "min": -0.13125608568646543,
+          "p05": -0.06465787821720026,
+          "p95": 0.06084995147174008,
+          "std": 0.03695925819653894
+        },
+        "explosive_rush_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.18181818181818182,
+          "mean": -0.0005491032565395482,
+          "median": 0.00024747699410368473,
+          "min": -0.16666666666666666,
+          "p05": -0.08321939952882228,
+          "p95": 0.08076530774399768,
+          "std": 0.0535897656588484
+        }
+      },
+      "known_rates": {
+        "away_explosive_play_known": 0.9438596491228071,
+        "home_explosive_play_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "explosive_pass_rate_advantage": 0,
+        "explosive_play_rate_advantage": 0,
+        "explosive_rush_rate_advantage": 0
+      },
+      "out_of_bounds_counts": {
+        "away_explosive_pass_rate": 0,
+        "away_explosive_play_rate": 0,
+        "away_explosive_rush_rate": 0,
+        "home_explosive_pass_rate": 0,
+        "home_explosive_play_rate": 0,
+        "home_explosive_rush_rate": 0
+      },
+      "rows": 285,
+      "season": 2023,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    },
+    "2024": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "explosive_pass_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.13541666666666666,
+          "mean": 0.0023911358718956667,
+          "median": 0.0013157894736842146,
+          "min": -0.10793626508130794,
+          "p05": -0.06340041507337321,
+          "p95": 0.07681051587301586,
+          "std": 0.04353463613757532
+        },
+        "explosive_play_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.10285714285714287,
+          "mean": 0.002265454550812089,
+          "median": 0.00032211331332847315,
+          "min": -0.0956485263518236,
+          "p05": -0.05454545454545455,
+          "p95": 0.05872045687655708,
+          "std": 0.035070763971220255
+        },
+        "explosive_rush_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.1460254721124286,
+          "mean": 0.0029222843751432115,
+          "median": 0.0030857200608721824,
+          "min": -0.14285714285714285,
+          "p05": -0.08783690703559258,
+          "p95": 0.08836598450569039,
+          "std": 0.0522381988382981
+        }
+      },
+      "known_rates": {
+        "away_explosive_play_known": 0.9438596491228071,
+        "home_explosive_play_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "explosive_pass_rate_advantage": 0,
+        "explosive_play_rate_advantage": 0,
+        "explosive_rush_rate_advantage": 0
+      },
+      "out_of_bounds_counts": {
+        "away_explosive_pass_rate": 0,
+        "away_explosive_play_rate": 0,
+        "away_explosive_rush_rate": 0,
+        "home_explosive_pass_rate": 0,
+        "home_explosive_play_rate": 0,
+        "home_explosive_rush_rate": 0
+      },
+      "rows": 285,
+      "season": 2024,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    },
+    "2025": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "explosive_pass_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.17426545086119555,
+          "mean": -0.0013927323909213335,
+          "median": 0.0020191732111438238,
+          "min": -0.13283562963814305,
+          "p05": -0.07703074272841717,
+          "p95": 0.06500899778516056,
+          "std": 0.04584682603640735
+        },
+        "explosive_play_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.2577464788732394,
+          "mean": -0.0002499210315662838,
+          "median": -0.0013656598812639559,
+          "min": -0.09451395750988141,
+          "p05": -0.05421013271097466,
+          "p95": 0.06073110567814469,
+          "std": 0.03784210962253513
+        },
+        "explosive_rush_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.3448275862068966,
+          "mean": 0.002767344067715899,
+          "median": -0.0003318424143851084,
+          "min": -0.16999999999999998,
+          "p05": -0.07301050467559005,
+          "p95": 0.09016271085236605,
+          "std": 0.05438817933601042
+        }
+      },
+      "known_rates": {
+        "away_explosive_play_known": 0.9438596491228071,
+        "home_explosive_play_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "explosive_pass_rate_advantage": 0,
+        "explosive_play_rate_advantage": 0,
+        "explosive_rush_rate_advantage": 0
+      },
+      "out_of_bounds_counts": {
+        "away_explosive_pass_rate": 0,
+        "away_explosive_play_rate": 0,
+        "away_explosive_rush_rate": 0,
+        "home_explosive_pass_rate": 0,
+        "home_explosive_play_rate": 0,
+        "home_explosive_rush_rate": 0
+      },
+      "rows": 285,
+      "season": 2025,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    }
+  },
+  "status": "PASS",
+  "step": "86B",
+  "warnings": []
+}

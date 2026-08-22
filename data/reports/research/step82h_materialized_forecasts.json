@@ -1,0 +1,43 @@
+{
+  "production_eligible": false,
+  "seasons": {
+    "2022": {
+      "all_research_only": true,
+      "any_exact_vintage_known": false,
+      "game_id_unique": true,
+      "precipitation_coverage": 0.0,
+      "rows": 284,
+      "temperature_coverage": 1.0,
+      "wind_coverage": 1.0
+    },
+    "2023": {
+      "all_research_only": true,
+      "any_exact_vintage_known": false,
+      "game_id_unique": true,
+      "precipitation_coverage": 0.0,
+      "rows": 285,
+      "temperature_coverage": 1.0,
+      "wind_coverage": 1.0
+    },
+    "2024": {
+      "all_research_only": true,
+      "any_exact_vintage_known": false,
+      "game_id_unique": true,
+      "precipitation_coverage": 1.0,
+      "rows": 285,
+      "temperature_coverage": 1.0,
+      "wind_coverage": 1.0
+    },
+    "2025": {
+      "all_research_only": true,
+      "any_exact_vintage_known": false,
+      "game_id_unique": true,
+      "precipitation_coverage": 1.0,
+      "rows": 285,
+      "temperature_coverage": 1.0,
+      "wind_coverage": 1.0
+    }
+  },
+  "status": "PASS",
+  "step": "82H"
+}

@@ -1,0 +1,49 @@
+{
+  "fit_diagnostics": {
+    "calibrated": {
+      "accuracy": 0.6072056239015817,
+      "brier": 0.22866556559060744,
+      "ece": 0.027709045668464806,
+      "games": 1138,
+      "log_loss": 0.6481451928787773
+    },
+    "delta": {
+      "accuracy": 0.0,
+      "brier": -0.006215523389102112,
+      "ece": -0.050013559248839164,
+      "log_loss": -0.016982115428920808
+    },
+    "raw": {
+      "accuracy": 0.6072056239015817,
+      "brier": 0.23488108897970955,
+      "ece": 0.07772260491730397,
+      "games": 1138,
+      "log_loss": 0.6651273083076981
+    }
+  },
+  "intercept": 0.0,
+  "method": "temperature",
+  "population_games": 1138,
+  "production_contract": {
+    "calibrated_probability_field": "calibrated_home_win_probability",
+    "feature_weights_changed": false,
+    "raw_probability_retained": true,
+    "winner_boundary_preserved": true
+  },
+  "schema_version": 1,
+  "slope": 0.5900000000000001,
+  "source_fingerprint_sha256": "b12a0d4180ef30298fedcc2a9a676fef6a68589b9434283c1d111fd718427977",
+  "source_step": "88D",
+  "training_artifacts": {
+    "2022": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\predictions\\predictions_2022.parquet",
+    "2023": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\predictions\\predictions_2023.parquet",
+    "2024": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\predictions\\predictions_2024.parquet",
+    "2025": "C:\\Users\\grego\\Desktop\\ProjectGridiron\\project-gridiron\\data\\curated\\backtests\\backtest_2025.parquet"
+  },
+  "training_seasons": [
+    2022,
+    2023,
+    2024,
+    2025
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "candidate": "six_weight_v1_locked",
+  "defensive_schedule_difficulty_weight": 2.25,
+  "leave_one_season_out_mean_deltas": {
+    "2022": -0.0003285354352614567,
+    "2023": -0.0003937703772769474,
+    "2024": -0.0003666214637810435,
+    "2025": -0.0007848888717956563
+  },
+  "looso_improves_count": 4,
+  "mean_accuracy_delta": -6.17741536940164e-06,
+  "mean_score_delta": -0.00046845403702877597,
+  "season_losses": 1,
+  "season_ties": 0,
+  "season_wins": 3,
+  "status": "PROMOTE",
+  "step": "79F",
+  "worst_looso_delta": -0.0003285354352614567
+}

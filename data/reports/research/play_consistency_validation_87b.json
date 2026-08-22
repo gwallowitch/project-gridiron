@@ -1,0 +1,312 @@
+{
+  "failures": [],
+  "seasons": {
+    "2022": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "def_success_prevention_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 0.1986607142857143,
+          "mean": 0.0006330604076234279,
+          "median": 0.00437244123374797,
+          "min": -0.15600211528291907,
+          "p05": -0.0993812938946042,
+          "p95": 0.09299871394097803,
+          "std": 0.059215692668115015
+        },
+        "negative_play_matchup_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 0.11478639963448067,
+          "mean": -0.002697114309561962,
+          "median": -0.0015706189832991185,
+          "min": -0.14124962026569673,
+          "p05": -0.08762676139611697,
+          "p95": 0.07082542509283207,
+          "std": 0.04869551377605577
+        },
+        "off_success_rate_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 0.17330210772833726,
+          "mean": 0.0003818731099948994,
+          "median": 0.0051638081458811325,
+          "min": -0.1646626438818452,
+          "p05": -0.10852122233739397,
+          "p95": 0.10604164601711435,
+          "std": 0.06655320588328316
+        },
+        "success_rate_matchup_advantage": {
+          "coverage": 0.9436619718309859,
+          "max": 0.228816060006092,
+          "mean": 0.001014933517618335,
+          "median": -0.0028017396925402727,
+          "min": -0.17951197265432717,
+          "p05": -0.13367028861946928,
+          "p95": 0.13996865203761755,
+          "std": 0.08038145096259046
+        }
+      },
+      "known_feature_mismatch": {
+        "def_success_prevention_advantage": 0,
+        "negative_play_matchup_advantage": 0,
+        "off_success_rate_advantage": 0,
+        "success_rate_matchup_advantage": 0
+      },
+      "known_rates": {
+        "away_play_consistency_known": 0.9436619718309859,
+        "home_play_consistency_known": 0.9436619718309859
+      },
+      "non_finite_counts": {
+        "def_success_prevention_advantage": 0,
+        "negative_play_matchup_advantage": 0,
+        "off_success_rate_advantage": 0,
+        "success_rate_matchup_advantage": 0
+      },
+      "out_of_bounds_counts": {
+        "away_def_negative_play_forced_rate": 0,
+        "away_def_success_prevention_rate": 0,
+        "away_off_negative_play_rate": 0,
+        "away_off_success_rate": 0,
+        "home_def_negative_play_forced_rate": 0,
+        "home_def_success_prevention_rate": 0,
+        "home_off_negative_play_rate": 0,
+        "home_off_success_rate": 0
+      },
+      "rows": 284,
+      "season": 2022,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    },
+    "2023": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "def_success_prevention_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.2346850733390854,
+          "mean": -0.00055898176423531,
+          "median": -0.0013283000113709642,
+          "min": -0.20538720538720534,
+          "p05": -0.10102985738968406,
+          "p95": 0.10354798962801115,
+          "std": 0.06157539502008809
+        },
+        "negative_play_matchup_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.209569209039548,
+          "mean": 0.0015155522313332825,
+          "median": -0.0009345374474676038,
+          "min": -0.16346756691584277,
+          "p05": -0.07248982542299498,
+          "p95": 0.07516242718890731,
+          "std": 0.048225934169860436
+        },
+        "off_success_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.17276754223181578,
+          "mean": 0.0017420565239900194,
+          "median": 0.0007810900513723906,
+          "min": -0.29081177520071366,
+          "p05": -0.10879406548394582,
+          "p95": 0.10508403633403635,
+          "std": 0.06585623029745882
+        },
+        "success_rate_matchup_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.22122234036773436,
+          "mean": 0.0011830747597547076,
+          "median": -0.00017644512158354608,
+          "min": -0.29459041697839006,
+          "p05": -0.13489845719088156,
+          "p95": 0.1380342976792891,
+          "std": 0.08409690638262456
+        }
+      },
+      "known_feature_mismatch": {
+        "def_success_prevention_advantage": 0,
+        "negative_play_matchup_advantage": 0,
+        "off_success_rate_advantage": 0,
+        "success_rate_matchup_advantage": 0
+      },
+      "known_rates": {
+        "away_play_consistency_known": 0.9438596491228071,
+        "home_play_consistency_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "def_success_prevention_advantage": 0,
+        "negative_play_matchup_advantage": 0,
+        "off_success_rate_advantage": 0,
+        "success_rate_matchup_advantage": 0
+      },
+      "out_of_bounds_counts": {
+        "away_def_negative_play_forced_rate": 0,
+        "away_def_success_prevention_rate": 0,
+        "away_off_negative_play_rate": 0,
+        "away_off_success_rate": 0,
+        "home_def_negative_play_forced_rate": 0,
+        "home_def_success_prevention_rate": 0,
+        "home_off_negative_play_rate": 0,
+        "home_off_success_rate": 0
+      },
+      "rows": 285,
+      "season": 2023,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    },
+    "2024": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "def_success_prevention_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.168133250223248,
+          "mean": -0.001630712588299422,
+          "median": -0.0008102877317535118,
+          "min": -0.14570803717878622,
+          "p05": -0.10118438210209302,
+          "p95": 0.09998750322635563,
+          "std": 0.05989165412697831
+        },
+        "negative_play_matchup_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.17097691094840062,
+          "mean": 0.0003714481801324861,
+          "median": 0.0017634713820807169,
+          "min": -0.14570082438763202,
+          "p05": -0.07708394287718096,
+          "p95": 0.08207263498369552,
+          "std": 0.047483534427482384
+        },
+        "off_success_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.21850664223545585,
+          "mean": 0.0007463179328758575,
+          "median": 0.0,
+          "min": -0.17231705464319252,
+          "p05": -0.11774193548387096,
+          "p95": 0.09736035534597548,
+          "std": 0.06679589255699515
+        },
+        "success_rate_matchup_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.31409558818435457,
+          "mean": -0.0008843946554235651,
+          "median": 0.004863377194055163,
+          "min": -0.20025349172424078,
+          "p05": -0.14884073113071017,
+          "p95": 0.14035610495158202,
+          "std": 0.08855621626179826
+        }
+      },
+      "known_feature_mismatch": {
+        "def_success_prevention_advantage": 0,
+        "negative_play_matchup_advantage": 0,
+        "off_success_rate_advantage": 0,
+        "success_rate_matchup_advantage": 0
+      },
+      "known_rates": {
+        "away_play_consistency_known": 0.9438596491228071,
+        "home_play_consistency_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "def_success_prevention_advantage": 0,
+        "negative_play_matchup_advantage": 0,
+        "off_success_rate_advantage": 0,
+        "success_rate_matchup_advantage": 0
+      },
+      "out_of_bounds_counts": {
+        "away_def_negative_play_forced_rate": 0,
+        "away_def_success_prevention_rate": 0,
+        "away_off_negative_play_rate": 0,
+        "away_off_success_rate": 0,
+        "home_def_negative_play_forced_rate": 0,
+        "home_def_success_prevention_rate": 0,
+        "home_off_negative_play_rate": 0,
+        "home_off_success_rate": 0
+      },
+      "rows": 285,
+      "season": 2024,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    },
+    "2025": {
+      "duplicate_game_ids": 0,
+      "features": {
+        "def_success_prevention_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.17461161479305398,
+          "mean": 0.002871072103304611,
+          "median": 0.00634855761081532,
+          "min": -0.18916827852998064,
+          "p05": -0.10591872125996526,
+          "p95": 0.1211444184197602,
+          "std": 0.06704810434445152
+        },
+        "negative_play_matchup_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.16977466218854953,
+          "mean": 0.00020847813317128984,
+          "median": 0.0016457647757616156,
+          "min": -0.1332766188149934,
+          "p05": -0.07909618282072589,
+          "p95": 0.06870188882538292,
+          "std": 0.046214107921608905
+        },
+        "off_success_rate_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.1584181726183464,
+          "mean": -0.00016581598678307375,
+          "median": -0.003779310806970193,
+          "min": -0.21539539938472813,
+          "p05": -0.10393520051396038,
+          "p95": 0.1055425907913844,
+          "std": 0.06452973227482242
+        },
+        "success_rate_matchup_advantage": {
+          "coverage": 0.9438596491228071,
+          "max": 0.20602059685232943,
+          "mean": 0.0027052561165215425,
+          "median": 0.009394012007035157,
+          "min": -0.20154634929587134,
+          "p05": -0.13917624341319823,
+          "p95": 0.13773639822321582,
+          "std": 0.0842777897680974
+        }
+      },
+      "known_feature_mismatch": {
+        "def_success_prevention_advantage": 0,
+        "negative_play_matchup_advantage": 0,
+        "off_success_rate_advantage": 0,
+        "success_rate_matchup_advantage": 0
+      },
+      "known_rates": {
+        "away_play_consistency_known": 0.9438596491228071,
+        "home_play_consistency_known": 0.9438596491228071
+      },
+      "non_finite_counts": {
+        "def_success_prevention_advantage": 0,
+        "negative_play_matchup_advantage": 0,
+        "off_success_rate_advantage": 0,
+        "success_rate_matchup_advantage": 0
+      },
+      "out_of_bounds_counts": {
+        "away_def_negative_play_forced_rate": 0,
+        "away_def_success_prevention_rate": 0,
+        "away_off_negative_play_rate": 0,
+        "away_off_success_rate": 0,
+        "home_def_negative_play_forced_rate": 0,
+        "home_def_success_prevention_rate": 0,
+        "home_off_negative_play_rate": 0,
+        "home_off_success_rate": 0
+      },
+      "rows": 285,
+      "season": 2025,
+      "week1_all_unknown": true,
+      "week1_rows": 16,
+      "week2plus_both_known_rate": 1.0
+    }
+  },
+  "status": "PASS",
+  "step": "87B",
+  "warnings": []
+}

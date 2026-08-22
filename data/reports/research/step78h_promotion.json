@@ -1,0 +1,18 @@
+{
+  "candidate": "five_weight_v1_locked",
+  "def_epa_trend_weight": 5.25,
+  "leave_one_season_out_mean_deltas": {
+    "2022": -0.0009246178930742976,
+    "2023": -0.0017256017002536355,
+    "2024": -0.0017216928961672668,
+    "2025": -0.0005093237558708719
+  },
+  "looso_improves_count": 4,
+  "mean_accuracy_delta": 0.0035274356103023596,
+  "mean_score_delta": -0.001220309061341518,
+  "season_losses": 2,
+  "season_ties": 0,
+  "season_wins": 2,
+  "status": "PROMOTE",
+  "step": "78H"
+}
