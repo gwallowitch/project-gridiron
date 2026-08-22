@@ -15,6 +15,7 @@ from gridiron.market.expected_value import (
     NFLMoneylineExpectedValue,
     calculate_moneyline_expected_value,
 )
+from gridiron.market.historical import NFLHistoricalMoneylineRecord
 from gridiron.market.moneyline import (
     FairMoneylineProbabilities,
     NFLMoneylineSnapshot,
@@ -24,6 +25,7 @@ from gridiron.market.moneyline import (
 
 __all__ = [
     "FairMoneylineProbabilities",
+    "NFLHistoricalMoneylineRecord",
     "NFLMoneylineEdge",
     "NFLMoneylineEligibilityThresholds",
     "NFLMoneylineExpectedValue",
@@ -38,3 +40,4 @@ __all__ = [
     "evaluate_moneyline_game",
     "remove_two_sided_vig",
 ]
+
