@@ -1,0 +1,33 @@
+{
+  "book_aliases": {
+    "Bet365": ["Bet365", "bet365"],
+    "BetMGM": ["BetMGM", "betmgm", "Bet MGM"],
+    "Betway": ["Betway", "betway"],
+    "Caesars": ["Caesars", "caesars", "Caesars Sportsbook"],
+    "DraftKings": ["DraftKings", "draftkings", "Draft Kings"],
+    "FanDuel": ["FanDuel", "fanduel", "Fan Duel"],
+    "SI": ["SI", "si", "Sports Illustrated"]
+  },
+  "candidate_id": "market-plus-def-epa-capped-0425-v1",
+  "consensus_books": [
+    "Bet365",
+    "SI",
+    "Betway",
+    "BetMGM",
+    "FanDuel",
+    "Caesars",
+    "DraftKings"
+  ],
+  "execution_book": "DraftKings",
+  "file_ingestion_only": true,
+  "input_schema_version": 1,
+  "market": "moneyline",
+  "network_access": false,
+  "protocol_id": "step91b-prospective-validation-v1",
+  "schema_version": 1,
+  "season": 2026,
+  "season_type": "REG",
+  "selection_policy": "latest-at-or-before-captured-at",
+  "step91c_config_path": "config/step91c_prospective_data_capture_v1.json",
+  "weeks": [1, 16]
+}
