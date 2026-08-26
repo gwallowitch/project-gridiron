@@ -1,0 +1,27 @@
+{
+  "candidate": {
+    "def_epa_coefficient": 1.044827,
+    "id": "market-plus-def-epa-capped-0425-v1",
+    "intercept": -2.514766,
+    "market_coefficient": 4.980172,
+    "symmetric_residual_cap": 0.0425
+  },
+  "eligibility": {
+    "edge": "strictly-positive",
+    "season": 2026,
+    "season_type": "REG",
+    "weeks": [1, 16]
+  },
+  "execution_book": "DraftKings",
+  "market_consensus_books": [
+    "Bet365",
+    "SI",
+    "Betway",
+    "BetMGM",
+    "FanDuel",
+    "Caesars",
+    "DraftKings"
+  ],
+  "protocol_id": "step91b-prospective-validation-v1",
+  "schema_version": 1
+}
