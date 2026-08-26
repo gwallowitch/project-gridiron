@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "audit_id": "step91e-end-to-end-prospective-audit-v1",
+  "classification": {
+    "contract_checks": "operational integrity check",
+    "ledger_checks": "operational integrity check",
+    "economic_metrics": "descriptive diagnostic",
+    "edge_tail_robustness": "predeclared robustness",
+    "fixed_block_robustness": "predeclared robustness"
+  },
+  "step91c_config_path": "config/step91c_prospective_data_capture_v1.json",
+  "step91d_config_path": "config/step91d_prospective_market_ingestion_2026_v1.json",
+  "default_ledger_path": "data/prospective/2026.jsonl",
+  "protocol_id": "step91b-prospective-validation-v1",
+  "candidate_id": "market-plus-def-epa-capped-0425-v1",
+  "season": 2026,
+  "season_type": "REG",
+  "weeks": [1, 16],
+  "fixed_week_blocks": [[1, 4], [5, 8], [9, 12], [13, 16]],
+  "decision_gates": {
+    "minimum_settled_bets": 200,
+    "fail_roi_at_or_below": -0.03,
+    "promotion_minimum_roi": 0.02,
+    "promotion_requires_positive_profit": true,
+    "promotion_requires_positive_profit_after_every_predeclared_edge_trim": true,
+    "season_minimum_bets": 50,
+    "season_fail_roi_at_or_below": -0.05
+  },
+  "predeclared_edge_trims": [],
+  "predeclared_edge_trims_note": "No standalone Step 91B artifact or trim thresholds are present in the authoritative Step 91D baseline; Step 91E will not invent them.",
+  "network_access": false,
+  "historical_backfill_allowed": false
+}
