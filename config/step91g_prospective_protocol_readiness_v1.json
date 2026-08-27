@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "readiness_id": "step91g-prospective-protocol-readiness-v1",
+  "status": "READY_WITH_DOCUMENTED_LIMITATION",
+  "protocol_id": "step91b-prospective-validation-v1",
+  "candidate_id": "market-plus-def-epa-capped-0425-v1",
+  "source_configs": [
+    "config/step91c_prospective_data_capture_v1.json",
+    "config/step91d_prospective_market_ingestion_2026_v1.json",
+    "config/step91e_end_to_end_prospective_audit_v1.json",
+    "config/step91f_prospective_evidence_accumulation_v1.json"
+  ],
+  "edge_trim_recovery": {
+    "classification": "AUTHORITATIVELY_RECOVERABLE_WITH_PROVENANCE_LIMITATION",
+    "definitions": [
+      {"exclude_largest_fraction": 0.01, "label": "exclude largest 1%"},
+      {"exclude_largest_fraction": 0.05, "label": "exclude largest 5%"},
+      {"exclude_largest_fraction": 0.10, "label": "exclude largest 10%"}
+    ],
+    "published_definition_commit": "2b83303b679d2c3fbd36bb06508c93d90c819bd9",
+    "replicated_definition_commit": "17529d576d0b8b22230c4ab15e31e118f870f310",
+    "definition_path": "STEP90G_BUILD_PROMPT.md",
+    "definition_blob": "393e302347a57ee9bc0d528f4b9b65d177c3aa5b",
+    "local_implementation_object": "3b9d0a02a9c1d635800bebd6ad6492f164de2610",
+    "implementation_path": "src/gridiron/market/economic_robustness.py",
+    "implementation_rule": "sort positive edges descending; remove floor(sample_size * fraction)",
+    "limitation": "The executable implementation is available only through a local Codex Git ref, not a published frozen Step 91B artifact; equal-edge tie semantics are implicit in stable input order."
+  },
+  "real_evidence_collection_allowed": true,
+  "promotion_declaration_allowed": false,
+  "historical_backfill_allowed": false,
+  "network_access": false
+}
