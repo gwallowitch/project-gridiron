@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "operations_id": "step91i-prospective-collection-operations-v1",
+  "candidate_id": "market-plus-def-epa-capped-0425-v1",
+  "protocol_id": "step91b-prospective-validation-v1",
+  "population": {"season": 2026, "season_type": "REG", "weeks": [1, 16]},
+  "real_evidence": {
+    "initial_observations": 0,
+    "ledger": "operator-supplied append-only Step 91C JSONL path",
+    "direct_editing": false,
+    "historical_backfill": false
+  },
+  "dry_run": {
+    "classification": "SYNTHETIC_TEST_DATA",
+    "requires_empty_isolated_workspace": true,
+    "may_target_real_ledger": false
+  },
+  "capture": {
+    "explicit_game_id": true,
+    "explicit_receipt_at": true,
+    "window_minutes_before_kickoff": [55, 65],
+    "maximum_quote_age_minutes": 10,
+    "complete_seven_book_input": true,
+    "execution_book": "DraftKings",
+    "raw_artifact": "content-addressed SHA256",
+    "accepted_capture_replacement": false
+  },
+  "workflow": ["initialize", "inspect", "capture", "validate", "record", "settle", "audit"],
+  "settlement": {
+    "explicit_final_at": true,
+    "retained_official_result_artifact": true,
+    "artifact_sha256": true,
+    "maximum_hours_after_final": 48
+  },
+  "learning_during_collection": false,
+  "network_dependency": false
+}
