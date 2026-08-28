@@ -1,0 +1,95 @@
+{
+  "step": "STEP 91N",
+  "classification": "GOVERNANCE / NON-PROSPECTIVE",
+  "schema_version": 1,
+  "baseline": {
+    "branch": "feature/step91i-prospective-collection-operations",
+    "head": "7afb2850d72749916160f6698bce8a5d366681f0",
+    "working_tree_before": "clean"
+  },
+  "decision": {
+    "original_seven_book_2026_status": "CLOSED_TERMINATED",
+    "original_protocol_amended": false,
+    "core_four_status": "DRAFT_CONDITIONALLY_APPROVED_NOT_FREEZE_READY",
+    "implemented": false,
+    "activated": false,
+    "prospective_evidence_count": 0,
+    "outcomes_used": false
+  },
+  "identity": {
+    "design_label": "step91k-2026-live-market-core-four-v1",
+    "design_label_status": "DESIGN_LABEL_ONLY",
+    "candidate_variant": "market-plus-def-epa-capped-0425-v1 / step91k-core-four transportability variant",
+    "evidence_class_if_activated": "REAL PROSPECTIVE DATA — STEP91K CORE-FOUR V1"
+  },
+  "frozen_candidate": {
+    "market_coefficient": 4.980172,
+    "def_epa_coefficient": 1.044827,
+    "intercept": -2.514766,
+    "residual_cap": 0.0425,
+    "edge_rule": "strictly_positive",
+    "changed": false
+  },
+  "universe": {
+    "draft_core_four": ["BetMGM", "FanDuel", "Caesars", "DraftKings"],
+    "bet365": "UNRESOLVED",
+    "si_sportsbook": "INELIGIBLE_OBSOLETE_IDENTITY",
+    "us_betway": "INELIGIBLE_OBSOLETE_US_IDENTITY",
+    "replacement_books_added": false
+  },
+  "provider": {
+    "primary": "The Odds API",
+    "feed": "us",
+    "backup": null,
+    "atomic_single_response": true,
+    "cross_provider_assembly": false,
+    "identifiers": {
+      "BetMGM": "betmgm",
+      "FanDuel": "fanduel",
+      "Caesars": "williamhill_us",
+      "DraftKings": "draftkings"
+    }
+  },
+  "markets": {
+    "moneyline": "h2h",
+    "spread": "spreads",
+    "total": "totals",
+    "model_input": "moneyline_only",
+    "all_four_moneylines_required": true,
+    "three_of_four_allowed": false,
+    "imputation_allowed": false
+  },
+  "timing": {
+    "capture_minutes_before_kickoff": {"minimum": 55, "maximum": 65},
+    "maximum_quote_age_minutes": 10,
+    "future_quote": "REJECT",
+    "missing_quote_timestamp": "REJECT",
+    "outside_window": "REJECT",
+    "latency_is_eligibility_threshold": false
+  },
+  "gates": {
+    "original_seven_book_closure": "PASS",
+    "new_protocol_identity": "PASS",
+    "objective_universe_rule": "PASS",
+    "bet365_disposition": "UNRESOLVED",
+    "us_jurisdiction_definition": "UNRESOLVED",
+    "provider_identity_mapping": "PASS_FOR_DRAFT",
+    "nfl_market_conformance": "UNRESOLVED",
+    "timestamp_semantics": "UNRESOLVED",
+    "freshness_rule": "PASS",
+    "main_line_definition": "PASS",
+    "duplicate_behavior": "PASS",
+    "suspended_behavior": "PASS",
+    "atomic_capture": "PASS_FOR_DESIGN",
+    "kickoff_authority": "UNRESOLVED",
+    "rescheduling_behavior": "UNRESOLVED",
+    "draftkings_snapshot_consistency": "UNRESOLVED",
+    "fallback_behavior": "PASS",
+    "raw_retention_permission": "UNRESOLVED",
+    "commercial_entitlement": "UNRESOLVED",
+    "independent_implementation_audit": "UNRESOLVED",
+    "effective_timestamp": "UNRESOLVED"
+  },
+  "activation_allowed": false,
+  "next_step": "Resolve provider written clarifications, regional Bet365 disposition, and paid Caesars non-evidence conformance before a later freeze-readiness decision."
+}
