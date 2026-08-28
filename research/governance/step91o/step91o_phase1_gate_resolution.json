@@ -1,0 +1,103 @@
+{
+  "step": "STEP 91O",
+  "phase": 1,
+  "classification": "NON-PROSPECTIVE / NON-EVIDENCE",
+  "schema_version": 1,
+  "baseline": {
+    "branch": "feature/step91i-prospective-collection-operations",
+    "head": "b38b10482e3f8e944e52262f4ceeb33cd6fcfcf9",
+    "working_tree_before": "clean"
+  },
+  "protocol": {
+    "design_label": "step91k-2026-live-market-core-four-v1",
+    "status": "NOT_FROZEN_UNIMPLEMENTED_UNACTIVATED",
+    "books": ["BetMGM", "FanDuel", "DraftKings", "Caesars"],
+    "provider": "The Odds API",
+    "provider_feed": "us",
+    "backup_provider": null,
+    "activation_allowed": false
+  },
+  "frozen_candidate": {
+    "id": "market-plus-def-epa-capped-0425-v1",
+    "market_coefficient": 4.980172,
+    "def_epa_coefficient": 1.044827,
+    "intercept": -2.514766,
+    "residual_cap": 0.0425,
+    "edge_rule": "strictly_positive",
+    "execution_book": "DraftKings",
+    "season": 2026,
+    "season_type": "REG",
+    "weeks": [1, 16],
+    "changed": false
+  },
+  "provider_mapping": {
+    "BetMGM": "betmgm",
+    "FanDuel": "fanduel",
+    "DraftKings": "draftkings",
+    "Caesars": "williamhill_us"
+  },
+  "contracts": {
+    "jurisdiction_classes": ["US_AGGREGATE", "US_STATE_SPECIFIC", "GLOBAL_UNQUALIFIED", "NON_US_REGIONAL", "UNKNOWN"],
+    "atomic_single_response": true,
+    "cross_call_assembly": false,
+    "all_four_moneylines_required": true,
+    "three_of_four_allowed": false,
+    "imputation_allowed": false,
+    "backup_provider": null,
+    "provider_failure": "REJECT_ATTEMPT",
+    "future_timestamp": "REJECT",
+    "missing_timestamp": "REJECT",
+    "maximum_quote_age_minutes": 10,
+    "capture_window_minutes_before_kickoff": [55, 65],
+    "moneyline_model_input_only": true
+  },
+  "bet365": {
+    "status": "PARTIAL",
+    "obsolete": false,
+    "included": false,
+    "finally_excluded": false,
+    "resolution": "Authenticated state-specific U.S. NFL provider conformance and retention evidence required"
+  },
+  "commercial": {
+    "classification": "REQUIRED_FOR_OPERATION_NOT_AUTHORIZED_IN_PHASE_1",
+    "caesars_paid_only": true,
+    "credits_available_on_candidate_plan": 20000,
+    "conservative_estimated_credits": 3000,
+    "spent_usd": 0,
+    "plan_purchased": false,
+    "subscription_activated": false
+  },
+  "gates": [
+    {"id": 1, "gate": "original_protocol_closure", "status": "PASS", "blocking": true, "resolution": null},
+    {"id": 2, "gate": "new_protocol_identity", "status": "PASS", "blocking": true, "resolution": null},
+    {"id": 3, "gate": "objective_universe", "status": "PARTIAL", "blocking": true, "resolution": "Final equal-criteria Bet365 disposition"},
+    {"id": 4, "gate": "bet365", "status": "PARTIAL", "blocking": true, "resolution": "Authenticated regional test or documented failure"},
+    {"id": 5, "gate": "us_jurisdiction", "status": "PARTIAL", "blocking": true, "resolution": "Name execution state and prove feed classification"},
+    {"id": 6, "gate": "provider_mapping", "status": "PARTIAL", "blocking": true, "resolution": "Paid live Caesars mapping test"},
+    {"id": 7, "gate": "nfl_coverage", "status": "PARTIAL", "blocking": true, "resolution": "Paid non-evidence Caesars NFL test"},
+    {"id": 8, "gate": "market_conformance", "status": "PARTIAL", "blocking": true, "resolution": "Caesars ML/spread/total structural pass"},
+    {"id": 9, "gate": "timestamp_semantics", "status": "UNKNOWN", "blocking": true, "resolution": "Written provider clarification"},
+    {"id": 10, "gate": "freshness", "status": "PASS", "blocking": true, "resolution": null},
+    {"id": 11, "gate": "main_line_definition", "status": "PASS", "blocking": true, "resolution": null},
+    {"id": 12, "gate": "duplicate_handling", "status": "PASS", "blocking": true, "resolution": null},
+    {"id": 13, "gate": "suspended_handling", "status": "PARTIAL", "blocking": true, "resolution": "Confirm provider representation or retain fail-closed absence/null rule"},
+    {"id": 14, "gate": "atomic_capture", "status": "PASS", "blocking": true, "resolution": null},
+    {"id": 15, "gate": "kickoff_authority", "status": "PARTIAL", "blocking": true, "resolution": "Retain official NFL artifact and define conflict/outage behavior"},
+    {"id": 16, "gate": "rescheduling", "status": "PARTIAL", "blocking": true, "resolution": "Specify and audit append-only void behavior"},
+    {"id": 17, "gate": "draftkings_state_equivalence", "status": "UNKNOWN", "blocking": true, "resolution": "Name state and verify executable equivalence"},
+    {"id": 18, "gate": "fallback", "status": "PASS", "blocking": true, "resolution": null},
+    {"id": 19, "gate": "raw_retention", "status": "UNKNOWN", "blocking": true, "resolution": "Written permission or separately approved substitute"},
+    {"id": 20, "gate": "commercial_entitlement", "status": "FAIL", "blocking": true, "resolution": "Later authorization, purchase, and paid Caesars conformance"},
+    {"id": 21, "gate": "implementation_audit", "status": "FAIL", "blocking": true, "resolution": "Implement only after freeze, then independently audit"},
+    {"id": 22, "gate": "effective_timestamp", "status": "FAIL", "blocking": true, "resolution": "Set after all preceding gates pass"}
+  ],
+  "evidence_boundary": {
+    "prospective_evidence_count": 0,
+    "real_manifest_touched": false,
+    "real_ledger_touched": false,
+    "qualifying_capture": false,
+    "settlement": false,
+    "outcomes_used": false,
+    "historical_optimization": false
+  }
+}
