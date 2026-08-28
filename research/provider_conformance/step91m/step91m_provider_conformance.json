@@ -1,0 +1,17 @@
+{
+  "step": "STEP 91M",
+  "classification": "NON-EVIDENCE PROVIDER CONFORMANCE DATA",
+  "schema_version": 1,
+  "baseline": {"branch": "feature/step91i-prospective-collection-operations", "head": "3f623d129a807c5c0868dc1b486e0311f87f85c7", "working_tree_before": "clean"},
+  "candidate": {"id": "market-plus-def-epa-capped-0425-v1", "market_coefficient": 4.980172, "def_epa_coefficient": 1.044827, "intercept": -2.514766, "residual_cap": 0.0425, "changed": false},
+  "live_tests": [
+    {"classification": "NON-EVIDENCE PROVIDER CONFORMANCE DATA", "provider": "The Odds API", "date": "2026-08-28", "http_status": 200, "event_records": 272, "sample_event": {"event_id": "8c94552d022acec4a0458d70c19d3da9", "away": "New England Patriots", "home": "Seattle Seahawks", "kickoff": "2026-09-10T00:15:00Z"}, "books": {"betmgm": {"rows": 16, "markets": ["h2h", "spreads", "totals"]}, "fanduel": {"rows": 32, "markets": ["h2h", "spreads", "totals"]}, "draftkings": {"rows": 272, "markets": ["h2h", "spreads", "totals"]}, "williamhill_us": {"rows": 0, "markets": []}, "bet365": {"rows": 0, "markets": []}}, "prices_retained": false, "prospective_evidence": false},
+    {"classification": "NON-EVIDENCE PROVIDER CONFORMANCE DATA", "provider": "Odds-API.io", "date": "2026-08-28", "http_status": 401, "authentication_passed": false, "prices_retained": false, "prospective_evidence": false}
+  ],
+  "bet365": {"status": "PARTIAL", "operational_us": true, "provider_a_us_identity": "FAIL", "provider_b_regional_identity": "PARTIAL", "provider_b_authentication": "FAIL", "provider_c": "UNKNOWN"},
+  "core_four": {"BetMGM": "PARTIAL", "FanDuel": "PARTIAL", "Caesars": "PARTIAL", "DraftKings": "PARTIAL"},
+  "architecture": {"primary": "The Odds API, conditional", "backup": null, "cross_provider_assembly": false, "fallback_on_price": false},
+  "cost": {"classification": "POTENTIALLY NEEDED", "required_if_core_four_provider_a_frozen": true, "conservative_credits": 3034, "plan_credits": 20000, "purchase_made": false},
+  "unresolved": ["Bet365 regional authentication", "execution jurisdiction", "paid Caesars conformance", "timestamp semantics", "raw retention rights", "kickoff authority", "timeout and retry values"],
+  "recommendation": "NOT READY TO FREEZE OR IMPLEMENT"
+}
