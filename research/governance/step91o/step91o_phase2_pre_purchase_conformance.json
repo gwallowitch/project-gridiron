@@ -1,0 +1,88 @@
+{
+  "step": "STEP 91O",
+  "phase": 2,
+  "classification": "NON-PROSPECTIVE / NON-EVIDENCE",
+  "stage": "PRE_PURCHASE_STOP",
+  "schema_version": 1,
+  "baseline": {
+    "branch": "feature/step91i-prospective-collection-operations",
+    "head": "3856d41ba93df114ba920b3cf8709ccd29c030f3",
+    "working_tree_before": "clean"
+  },
+  "live_test": {
+    "provider": "The Odds API",
+    "date": "2026-08-28",
+    "classification": "NON-PROSPECTIVE / NON-EVIDENCE PROVIDER CONFORMANCE",
+    "api_calls": 2,
+    "credits_used": 3,
+    "event": {
+      "id": "8c94552d022acec4a0458d70c19d3da9",
+      "away_team": "New England Patriots",
+      "home_team": "Seattle Seahawks",
+      "kickoff": "2026-09-10T00:15:00Z"
+    },
+    "prices_retained": false,
+    "raw_response_retained": false,
+    "books": {
+      "betmgm": {"count": 1, "markets": ["h2h", "spreads", "totals"], "duplicate": false, "status": "PASS"},
+      "fanduel": {"count": 1, "markets": ["h2h", "spreads", "totals"], "duplicate": false, "status": "PASS"},
+      "draftkings": {"count": 1, "markets": ["h2h", "spreads", "totals"], "duplicate": false, "status": "PASS"},
+      "williamhill_us": {"count": 0, "markets": [], "duplicate": false, "status": "FAIL_CURRENT_ENTITLEMENT"}
+    }
+  },
+  "purchase_recommendation": {
+    "required_for_core_four_provider_a": true,
+    "materially_useful": true,
+    "provider": "The Odds API",
+    "plan": "20K",
+    "price_usd_per_month": 30,
+    "credits_per_month": 20000,
+    "expected_protocol_credits": 3000,
+    "purchase_made": false,
+    "subscription_activated": false,
+    "money_spent_usd": 0,
+    "stop_before_purchase": true
+  },
+  "gates": {
+    "bet365_disposition": "PARTIAL",
+    "us_jurisdiction_execution_state": "PARTIAL",
+    "caesars_paid_conformance": "FAIL",
+    "nfl_coverage": "PARTIAL",
+    "market_conformance": "PARTIAL",
+    "timestamp_semantics": "UNKNOWN",
+    "suspended_market_representation": "PARTIAL",
+    "kickoff_authority_compatibility": "PARTIAL",
+    "rescheduling_behavior": "PARTIAL",
+    "draftkings_execution_state_equivalence": "UNKNOWN",
+    "raw_response_retention": "UNKNOWN",
+    "commercial_entitlement": "FAIL"
+  },
+  "payment_would_enable": [
+    "Caesars exact live identity test",
+    "Caesars NFL coverage test",
+    "Caesars h2h/spreads/totals structural test",
+    "Core-Four same-response duplicate and atomicity test",
+    "Commercial entitlement resolution"
+  ],
+  "payment_would_not_resolve": [
+    "Bet365",
+    "State jurisdiction",
+    "DraftKings execution-state equivalence",
+    "Timestamp semantics",
+    "Raw retention permission",
+    "Kickoff and rescheduling governance",
+    "Implementation audit",
+    "Effective timestamp"
+  ],
+  "evidence_boundary": {
+    "prospective_evidence_count": 0,
+    "real_manifest_touched": false,
+    "real_ledger_touched": false,
+    "qualifying_capture": false,
+    "settlement": false,
+    "outcomes_used": false,
+    "candidate_changed": false,
+    "protocol_frozen": false,
+    "protocol_activated": false
+  }
+}
