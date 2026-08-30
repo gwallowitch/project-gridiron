@@ -1,0 +1,110 @@
+{
+  "step": "STEP 91O",
+  "phase": "2A",
+  "classification": "FREE-ONLY / NON-PROSPECTIVE / NON-EVIDENCE",
+  "schema_version": 1,
+  "baseline": {
+    "branch": "feature/step91i-prospective-collection-operations",
+    "head": "9329ff21808e6af585e68435c3f94a14ce2dee06",
+    "working_tree_before": "clean"
+  },
+  "protocol": {
+    "design_label": "step91k-2026-live-market-core-four-v1",
+    "status": "NOT_FROZEN_NOT_IMPLEMENTED_NOT_ACTIVATED",
+    "prospective_evidence_count": 0
+  },
+  "free_test": {
+    "provider": "The Odds API",
+    "sport": "americanfootball_nfl",
+    "region": "us",
+    "date": "2026-08-28",
+    "endpoint_category": "event_odds",
+    "api_calls": 2,
+    "credits_used": 6,
+    "credits_remaining_after": 452,
+    "raw_response_retained": false,
+    "prices_retained": false,
+    "event": {
+      "id": "8c94552d022acec4a0458d70c19d3da9",
+      "away_team": "New England Patriots",
+      "home_team": "Seattle Seahawks",
+      "provider_commence_time": "2026-09-10T00:15:00Z",
+      "retained_schedule_id": "2026_01_NE_SEA",
+      "retained_schedule_kickoff": "2026-09-10T00:20:00Z",
+      "team_week_reconciliation": "PASS",
+      "kickoff_equality": "FAIL",
+      "kickoff_difference_minutes": 5
+    },
+    "requested_markets": ["h2h", "spreads", "totals"],
+    "books": {
+      "betmgm": {"objects_per_response": 1, "markets": ["h2h", "spreads", "totals"], "complete_pairs": true, "numeric_prices": true, "source_ids": true, "status": "PASS"},
+      "fanduel": {"objects_per_response": 1, "markets": ["h2h", "spreads", "totals"], "complete_pairs": true, "numeric_prices": true, "source_ids": true, "status": "PASS"},
+      "draftkings": {"objects_per_response": 1, "markets": ["h2h", "spreads", "totals"], "complete_pairs": true, "numeric_prices": true, "source_ids": true, "status": "PASS"},
+      "williamhill_us": {"objects_per_response": 0, "markets": [], "status": "PAID_REQUIRED"}
+    },
+    "observed": {
+      "duplicate_bookmakers": false,
+      "conflicting_lines": false,
+      "alternate_market_keys": false,
+      "null_prices": false,
+      "explicit_suspension_fields": false,
+      "deep_link_fields": false,
+      "jurisdiction_fields": false,
+      "market_last_update_present": true,
+      "timestamps_changed_between_near_consecutive_calls": false
+    }
+  },
+  "timestamp": {
+    "quote_age_formula": "receipt_time - provider_timestamp",
+    "mechanically_deterministic_with_explicit_timezone": true,
+    "inspection_conversion_preserved_timezone_safely": false,
+    "computed_sample_ages_valid": false,
+    "provider_update_trigger_documented": false,
+    "freshness_gate_operable_without_unsupported_assumptions": false,
+    "status": "UNKNOWN"
+  },
+  "implementation_blockers": [
+    "Original seven-book universe and protocol are hard-coded",
+    "Aliases are accepted instead of exact provider keys and region provenance",
+    "No Core-Four three-market Provider A adapter exists",
+    "Latest-observation duplicate selection is incompatible with atomic no-assembly rules",
+    "Raw input is retained before validation while retention permission is unknown",
+    "Retained NFLVerse schedule is not the official authority named by Step 91H",
+    "No Provider A timestamp semantic adapter exists",
+    "No state-specific DraftKings equivalence field exists",
+    "No Core-Four reschedule and append-only void implementation exists"
+  ],
+  "gates": [
+    {"gate": "BetMGM", "status": "PASS", "classification": "RESOLVED FOR PHASE 2"},
+    {"gate": "FanDuel", "status": "PASS", "classification": "RESOLVED FOR PHASE 2"},
+    {"gate": "DraftKings", "status": "PASS", "classification": "RESOLVED FOR PHASE 2"},
+    {"gate": "Caesars", "status": "PAID_REQUIRED", "classification": "REQUIRES PAID TEST"},
+    {"gate": "Bet365", "status": "PARTIAL", "classification": "REQUIRES GOVERNANCE"},
+    {"gate": "U.S. jurisdiction", "status": "PARTIAL", "classification": "REQUIRES DOCUMENTATION"},
+    {"gate": "Timestamp semantics", "status": "UNKNOWN", "classification": "REQUIRES DOCUMENTATION"},
+    {"gate": "Raw retention", "status": "UNKNOWN", "classification": "REQUIRES DOCUMENTATION"},
+    {"gate": "Kickoff reconciliation", "status": "FAIL", "classification": "REQUIRES GOVERNANCE"},
+    {"gate": "Rescheduling", "status": "PARTIAL", "classification": "REQUIRES ENGINEERING"},
+    {"gate": "Main-line selection", "status": "PASS", "classification": "RESOLVED FOR PHASE 2"},
+    {"gate": "Duplicate handling", "status": "PARTIAL", "classification": "REQUIRES ENGINEERING"},
+    {"gate": "Suspended handling", "status": "PARTIAL", "classification": "REQUIRES DOCUMENTATION"},
+    {"gate": "Atomic capture", "status": "PARTIAL", "classification": "REQUIRES ENGINEERING"},
+    {"gate": "DraftKings execution state", "status": "UNKNOWN", "classification": "REQUIRES DOCUMENTATION"},
+    {"gate": "Commercial entitlement", "status": "PAID_REQUIRED", "classification": "REQUIRES PAID TEST"}
+  ],
+  "safety": {
+    "money_spent_usd": 0,
+    "plan_purchased": false,
+    "subscription_activated": false,
+    "prospective_evidence_count": 0,
+    "real_manifest_touched": false,
+    "real_ledger_touched": false,
+    "outcomes_used": false,
+    "candidate_changed": false,
+    "coefficients_changed": false,
+    "thresholds_changed": false,
+    "residual_cap_changed": false,
+    "execution_venue_changed": false,
+    "activation_allowed": false
+  }
+}
