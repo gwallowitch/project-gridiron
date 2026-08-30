@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "protocol_id": "step91o-2026-live-market-core-three-v1",
+  "status": "IMPLEMENTED_INACTIVE",
+  "evidence_class_if_activated": "REAL PROSPECTIVE DATA — STEP91O CORE-THREE V1",
+  "candidate": {
+    "id": "market-plus-def-epa-capped-0425-v1",
+    "market_coefficient": 4.980172,
+    "def_epa_coefficient": 1.044827,
+    "intercept": -2.514766,
+    "residual_cap": 0.0425,
+    "eligibility": "strictly_positive_edge"
+  },
+  "provider": {
+    "name": "The Odds API",
+    "sport_key": "americanfootball_nfl",
+    "jurisdiction": "US_AGGREGATE_UNRESOLVED",
+    "exact_bookmaker_keys": ["betmgm", "fanduel", "draftkings"],
+    "aliases_allowed": false,
+    "backup": null
+  },
+  "markets": {
+    "required_keys": ["h2h", "spreads", "totals"],
+    "all_required_per_book": true,
+    "alternate_markets_allowed": false,
+    "moneyline_is_only_model_input": true
+  },
+  "consensus": {
+    "method": "equal_mean_of_two_sided_no_vig_home_probabilities",
+    "weight_per_book": "1/3",
+    "all_three_required": true,
+    "imputation_allowed": false,
+    "reweighting_allowed": false
+  },
+  "capture": {
+    "boundary": "one_completed_event_scoped_response",
+    "assembly_allowed": false,
+    "window_minutes_before_authoritative_kickoff": [55, 65],
+    "maximum_quote_age_minutes": 10,
+    "kickoff_tolerance_seconds": 0,
+    "receipt_timezone": "UTC"
+  },
+  "retention": {
+    "raw_payload_archival": false,
+    "normalized_non_evidence_preview": true,
+    "sanitized_provenance": true,
+    "credential_retention": false
+  },
+  "external_gates": {
+    "timestamp_semantics": "UNRESOLVED",
+    "jurisdiction": "UNRESOLVED",
+    "draftkings_execution_state": "UNRESOLVED",
+    "raw_retention_permission": "UNRESOLVED",
+    "authoritative_kickoff": "UNRESOLVED",
+    "governance_approval": "UNRESOLVED",
+    "effective_timestamp": null
+  },
+  "activation_allowed": false,
+  "prospective_evidence_count": 0
+}
