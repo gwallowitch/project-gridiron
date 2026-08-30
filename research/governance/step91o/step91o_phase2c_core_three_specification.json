@@ -1,0 +1,189 @@
+{
+  "step": "STEP 91O",
+  "phase": "2C",
+  "protocol": "CORE-THREE",
+  "classification": "NON-PROSPECTIVE / NON-EVIDENCE",
+  "schema_version": 1,
+  "baseline": {
+    "branch": "feature/step91i-prospective-collection-operations",
+    "local_head": "f4d9a5114662b44b6c85686d8eb2dfdc44c6ab3c",
+    "remote_head": "f4d9a5114662b44b6c85686d8eb2dfdc44c6ab3c",
+    "working_tree_before": "clean"
+  },
+  "identity": {
+    "protocol_id": "step91o-2026-live-market-core-three-v1",
+    "status": "DRAFT_SPECIFICATION_ONLY",
+    "candidate_variant": "market-plus-def-epa-capped-0425-v1 / step91o-core-three transportability variant",
+    "evidence_class_if_activated": "REAL PROSPECTIVE DATA — STEP91O CORE-THREE V1",
+    "original_seven_book_protocol_status": "CLOSED_UNCHANGED",
+    "equivalent_to_original": false
+  },
+  "candidate": {
+    "id": "market-plus-def-epa-capped-0425-v1",
+    "market_coefficient": 4.980172,
+    "def_epa_coefficient": 1.044827,
+    "intercept": -2.514766,
+    "residual_cap": 0.0425,
+    "eligibility": "strictly_positive_edge",
+    "execution_book": "DraftKings",
+    "changed": false
+  },
+  "universe": {
+    "provider": "The Odds API",
+    "sport": "americanfootball_nfl",
+    "books": ["BetMGM", "FanDuel", "DraftKings"],
+    "exact_keys": {"BetMGM": "betmgm", "FanDuel": "fanduel", "DraftKings": "draftkings"},
+    "aliases_allowed": false,
+    "unknown_or_extra_book": "REJECT_ATTEMPT",
+    "backup_provider": null,
+    "substitution_allowed": false
+  },
+  "markets": {
+    "required": ["h2h", "spreads", "totals"],
+    "all_three_required_per_book": true,
+    "moneyline_model_input_only": true,
+    "alternate_markets_allowed": false,
+    "operator_selection_allowed": false,
+    "duplicates": "REJECT_ATTEMPT",
+    "conflicts": "REJECT_ATTEMPT",
+    "suspended_or_incomplete": "REJECT_ATTEMPT"
+  },
+  "consensus": {
+    "estimand": "ARITHMETIC_MEAN_OF_THREE_BOOK_NO_VIG_HOME_PROBABILITIES",
+    "weight_per_book": "1/3",
+    "all_books_required": true,
+    "two_of_three_allowed": false,
+    "imputation_allowed": false,
+    "reweighting_allowed": false,
+    "cross_call_replacement_allowed": false
+  },
+  "atomic_capture": {
+    "boundary": "ONE_COMPLETED_EVENT_SCOPED_PROVIDER_RESPONSE",
+    "required_books": 3,
+    "required_market_objects": 9,
+    "cross_call_assembly": false,
+    "cross_provider_assembly": false,
+    "assembly_interval": null,
+    "receipt_at": "LOCAL_UTC_AFTER_COMPLETE_BODY_BEFORE_ACCEPTANCE",
+    "capture_window_minutes_before_kickoff": [55, 65],
+    "timeout_retry_values": "UNRESOLVED_OPERATIONAL_SPECIFICATION"
+  },
+  "timestamps": {
+    "provider_field": "last_update",
+    "raw_text_must_be_preserved": true,
+    "timezone_required": true,
+    "normalized_timezone": "UTC",
+    "quote_age_formula": "receipt_at - provider_timestamp",
+    "maximum_quote_age_minutes": 10,
+    "clock_tolerance_seconds": 0,
+    "future_or_missing": "REJECT_ATTEMPT",
+    "provider_semantics": "UNKNOWN",
+    "freshness_activation_ready": false
+  },
+  "event_identity": {
+    "authoritative_source_required": "RETAINED_OFFICIAL_NFL_SCHEDULE",
+    "required_equalities": ["season", "season_type", "week", "home_team", "away_team", "kickoff_utc"],
+    "provider_event_id_required": true,
+    "fuzzy_matching": false,
+    "ambiguity": "REJECT_ATTEMPT",
+    "kickoff_tolerance_seconds": 0,
+    "patriots_seahawks": {"official_and_retained": "2026-09-10T00:20:00Z", "provider": "2026-09-10T00:15:00Z", "status": "FAIL", "cause": "UNKNOWN"}
+  },
+  "lifecycle": {
+    "postponed_before_acceptance": "APPEND_GAME_POSTPONED_AND_WAIT_FOR_OFFICIAL_NEW_KICKOFF",
+    "rescheduled_before_acceptance": "APPEND_SCHEDULE_REVISION_AND_INVALIDATE_OLD_WINDOW",
+    "rescheduled_after_acceptance": "APPEND_DECISION_VOID_SCHEDULE_CHANGE_NO_RECAPTURE_V1",
+    "cancelled": "APPEND_GAME_CANCELLED_NO_QUALIFYING_OBSERVATION",
+    "rewriting_allowed": false
+  },
+  "jurisdiction": {
+    "classes": ["US_AGGREGATE", "US_STATE_SPECIFIC", "NON_US", "GLOBAL_UNQUALIFIED", "UNKNOWN"],
+    "current_three_book_class": "US_AGGREGATE_AT_MOST",
+    "regions_parameter_proves_state": false,
+    "bookmakers_filter_precedence_noted": true,
+    "state_equivalence": "UNKNOWN"
+  },
+  "draftkings_execution": {
+    "consensus_and_execution_same_atomic_object": true,
+    "later_or_favorable_replacement": false,
+    "named_execution_state": null,
+    "state_equivalence": "UNKNOWN",
+    "blocking": true
+  },
+  "retention": {
+    "normalized_observation_required": true,
+    "sanitized_provenance_required": true,
+    "canonical_hash_required": true,
+    "api_key_retained": false,
+    "raw_payload_git_allowed": false,
+    "raw_archival_permission": "UNKNOWN",
+    "pre_activation_gate": true,
+    "current_write_before_validation_compatible": false
+  },
+  "implementation_gaps": [
+    {"area": "append_only_and_hashing", "classification": "READY"},
+    {"area": "numeric_and_timezone_parsing", "classification": "READY"},
+    {"area": "capture_window_arithmetic", "classification": "READY"},
+    {"area": "core_three_identity_and_universe", "classification": "NEW_COMPONENT"},
+    {"area": "exact_provider_keys", "classification": "SMALL_CHANGE"},
+    {"area": "provider_event_adapter", "classification": "NEW_COMPONENT"},
+    {"area": "three_market_normalization", "classification": "NEW_COMPONENT"},
+    {"area": "latest_observation_selection", "classification": "BLOCKER"},
+    {"area": "automatic_raw_retention", "classification": "BLOCKER"},
+    {"area": "event_reconciliation", "classification": "NEW_COMPONENT"},
+    {"area": "kickoff_authority", "classification": "BLOCKER"},
+    {"area": "reschedule_void_lifecycle", "classification": "NEW_COMPONENT"},
+    {"area": "freshness_semantics", "classification": "BLOCKER"},
+    {"area": "atomic_capture", "classification": "NEW_COMPONENT"},
+    {"area": "three_book_consensus", "classification": "NEW_COMPONENT"},
+    {"area": "draftkings_state_provenance", "classification": "SMALL_CHANGE"},
+    {"area": "core_three_evidence_boundary", "classification": "SMALL_CHANGE"}
+  ],
+  "required_tests": [
+    "exactly_three_books", "missing_book", "extra_book", "unknown_alias", "duplicate_bookmaker",
+    "duplicate_market", "alternate_line", "conflicting_line", "suspended_market", "stale_quote",
+    "malformed_quote", "event_mismatch", "kickoff_mismatch", "postponed_game", "rescheduled_game",
+    "cancelled_game", "timestamp_normalization", "core_three_consensus", "draftkings_execution_separation",
+    "no_raw_write_without_permission", "no_evidence_leakage", "original_protocol_regression"
+  ],
+  "gates": [
+    {"id": 1, "gate": "Core-Three identity", "status": "PASS", "blocking": true, "resolution": "Later freeze decision"},
+    {"id": 2, "gate": "provider mappings", "status": "PARTIAL", "blocking": true, "resolution": "Written feed classification and adapter tests"},
+    {"id": 3, "gate": "market contract", "status": "PASS", "blocking": true, "resolution": "Implement and audit"},
+    {"id": 4, "gate": "consensus definition", "status": "PASS", "blocking": true, "resolution": "Independent mathematical and implementation audit"},
+    {"id": 5, "gate": "atomic capture", "status": "PASS_DESIGN", "blocking": true, "resolution": "Implement timeout retry and adapter"},
+    {"id": 6, "gate": "event identity", "status": "PARTIAL", "blocking": true, "resolution": "Implement mapping and prove uniqueness"},
+    {"id": 7, "gate": "kickoff authority", "status": "FAIL", "blocking": true, "resolution": "Official acquisition hashing and revalidation"},
+    {"id": 8, "gate": "kickoff discrepancy", "status": "FAIL", "blocking": true, "resolution": "Provider correction or documented deterministic resolution"},
+    {"id": 9, "gate": "rescheduling", "status": "PARTIAL", "blocking": true, "resolution": "Implement and audit append-only lifecycle"},
+    {"id": 10, "gate": "timestamps", "status": "UNKNOWN", "blocking": true, "resolution": "Written provider semantics"},
+    {"id": 11, "gate": "freshness", "status": "PARTIAL", "blocking": true, "resolution": "Close timestamp semantics and test"},
+    {"id": 12, "gate": "jurisdiction", "status": "PARTIAL", "blocking": true, "resolution": "Written state feed evidence and governance choice"},
+    {"id": 13, "gate": "DraftKings execution state", "status": "UNKNOWN", "blocking": true, "resolution": "Name state and prove equivalence"},
+    {"id": 14, "gate": "raw retention", "status": "UNKNOWN", "blocking": true, "resolution": "Written permission or approved reduced provenance"},
+    {"id": 15, "gate": "missing stale conflict", "status": "PASS_DESIGN", "blocking": true, "resolution": "Implement and adversarially test"},
+    {"id": 16, "gate": "implementation", "status": "FAIL", "blocking": true, "resolution": "Build separate Core-Three components"},
+    {"id": 17, "gate": "testing", "status": "FAIL", "blocking": true, "resolution": "Implement test plan and regressions"},
+    {"id": 18, "gate": "effective timestamp", "status": "FAIL", "blocking": true, "resolution": "Record after every prior gate passes"},
+    {"id": 19, "gate": "governance approval", "status": "FAIL", "blocking": true, "resolution": "Independent review and explicit freeze"},
+    {"id": 20, "gate": "paid-provider requirement", "status": "PASS", "blocking": false, "resolution": null}
+  ],
+  "readiness": ["BLOCKED_ON_PROVIDER", "BLOCKED_ON_GOVERNANCE", "BLOCKED_ON_ENGINEERING"],
+  "safety": {
+    "money_spent_usd": 0,
+    "plan_purchased": false,
+    "prospective_evidence_count": 0,
+    "manifest_touched": false,
+    "ledger_touched": false,
+    "candidate_changed": false,
+    "coefficients_changed": false,
+    "thresholds_changed": false,
+    "residual_cap_changed": false,
+    "execution_venue_changed": false,
+    "original_seven_book_protocol_changed": false,
+    "api_requests": 0,
+    "credits_used": 0,
+    "events_tested_new": 0,
+    "activation_allowed": false
+  }
+}
