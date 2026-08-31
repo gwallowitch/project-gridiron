@@ -216,10 +216,26 @@ def test_timestamp_semantics_gate_is_explicit() -> None:
 def test_every_external_activation_gate_fails_closed() -> None:
     with pytest.raises(CoreThreeError, match="EXTERNAL_GATES_BLOCKED"):
         assert_external_gates(
+            timestamp_semantics_approved=False,
             jurisdiction_approved=False,
             draftkings_execution_state_approved=False,
             retention_approved=False,
             authoritative_kickoff_approved=False,
             governance_approved=False,
             effective_timestamp=None,
+        )
+
+def test_timestamp_semantics_alone_blocks_activation() -> None:
+    with pytest.raises(
+        CoreThreeError,
+        match="TIMESTAMP_SEMANTICS_UNAPPROVED",
+    ):
+        assert_external_gates(
+            timestamp_semantics_approved=False,
+            jurisdiction_approved=True,
+            draftkings_execution_state_approved=True,
+            retention_approved=True,
+            authoritative_kickoff_approved=True,
+            governance_approved=True,
+            effective_timestamp="2026-09-01T00:00:00Z",
         )

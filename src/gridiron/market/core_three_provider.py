@@ -103,6 +103,7 @@ def normalize_event_response(
 
 def assert_external_gates(
     *,
+    timestamp_semantics_approved: bool,
     jurisdiction_approved: bool,
     draftkings_execution_state_approved: bool,
     retention_approved: bool,
@@ -112,6 +113,7 @@ def assert_external_gates(
 ) -> None:
     """Refuse activation until every external gate has explicit evidence."""
     gates = {
+        "TIMESTAMP_SEMANTICS_UNAPPROVED": timestamp_semantics_approved,
         "JURISDICTION_UNAPPROVED": jurisdiction_approved,
         "DRAFTKINGS_EXECUTION_STATE_UNAPPROVED": draftkings_execution_state_approved,
         "RETENTION_UNAPPROVED": retention_approved,
