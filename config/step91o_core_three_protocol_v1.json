@@ -5,6 +5,7 @@
   "evidence_class_if_activated": "REAL PROSPECTIVE DATA — STEP91O CORE-THREE V1",
   "candidate": {
     "id": "market-plus-def-epa-capped-0425-v1",
+    "variant_id": "market-plus-def-epa-capped-0425-core-three-v1",
     "market_coefficient": 4.980172,
     "def_epa_coefficient": 1.044827,
     "intercept": -2.514766,
@@ -14,7 +15,8 @@
   "provider": {
     "name": "The Odds API",
     "sport_key": "americanfootball_nfl",
-    "jurisdiction": "US_AGGREGATE_UNRESOLVED",
+    "jurisdiction": "US_AGGREGATE",
+    "jurisdiction_equivalence": "UNRESOLVED",
     "exact_bookmaker_keys": ["betmgm", "fanduel", "draftkings"],
     "aliases_allowed": false,
     "backup": null

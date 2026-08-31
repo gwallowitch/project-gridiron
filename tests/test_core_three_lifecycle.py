@@ -7,7 +7,6 @@ import pytest
 from gridiron.market.core_three_lifecycle import append_event, validate_chain
 from gridiron.market.core_three_types import CoreThreeError
 
-
 GAME = "2026_01_NE_SEA"
 
 
@@ -28,7 +27,7 @@ def test_postponed_rescheduled_and_cancelled_are_append_only() -> None:
             "game_id": GAME,
             "old_kickoff_at": "2026-09-10T00:20:00Z",
             "new_kickoff_at": "2026-09-11T00:20:00Z",
-            "detected_at": "t2",
+            "detected_at": "2026-09-09T23:00:00Z",
         },
     )
     cancelled = append_event(
@@ -67,9 +66,7 @@ def test_accepted_schedule_change_requires_void_and_no_reacceptance() -> None:
     )
     assert voided[-1]["event_type"] == "DECISION_VOID_SCHEDULE_CHANGE"
     with pytest.raises(CoreThreeError, match="ACCEPTED_CAPTURE_IMMUTABLE"):
-        append_event(
-            voided, {"event_type": "CAPTURE_ACCEPTED", "game_id": GAME}
-        )
+        append_event(voided, {"event_type": "CAPTURE_ACCEPTED", "game_id": GAME})
 
 
 def test_void_without_acceptance_rejects() -> None:

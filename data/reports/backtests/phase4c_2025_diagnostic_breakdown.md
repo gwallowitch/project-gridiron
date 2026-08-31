@@ -4,7 +4,8 @@
 
 ## Population
 
-- Diagnostic rows: 256
+- Input diagnostic rows: 256
+- Non-tied scoring rows (all calculations): 255
 - Week 1 excluded: 16 (no prior-season DEF EPA feature)
 - Ties excluded: 1
 
@@ -24,18 +25,18 @@
 
 ## DEF EPA Adjustment
 
-- Mean absolute probability change: 0.024128
-- Median absolute probability change: 0.022870
+- Mean absolute probability change: 0.024135
+- Median absolute probability change: 0.022923
 - Maximum absolute probability change: 0.042500
 - Positive adjustments: 120
-- Negative adjustments: 136
+- Negative adjustments: 135
 - Zero adjustments: 0
 
 ## Candidate Probability Calibration
 
 | Band | N | Predicted | Observed |
 |---|---:|---:|---:|
-| 0%-50% | 109 | 0.3262 | 0.3761 |
+| 0%-50% | 108 | 0.3274 | 0.3796 |
 | 50%-60% | 34 | 0.5601 | 0.4412 |
 | 60%-70% | 40 | 0.6499 | 0.5500 |
 | 70%-80% | 38 | 0.7534 | 0.7632 |
@@ -46,7 +47,7 @@
 
 | Band | N | Predicted | Observed |
 |---|---:|---:|---:|
-| 0%-50% | 107 | 0.3438 | 0.3645 |
+| 0%-50% | 106 | 0.3451 | 0.3679 |
 | 50%-60% | 37 | 0.5523 | 0.4865 |
 | 60%-70% | 43 | 0.6426 | 0.5814 |
 | 70%-80% | 41 | 0.7439 | 0.6829 |
@@ -59,7 +60,7 @@
 |---:|---:|---:|---:|---:|---:|
 | 2 | 16 | 0.6250 | 0.6250 | 0.1741 | 0.1774 |
 | 3 | 16 | 0.7500 | 0.7500 | 0.2074 | 0.2060 |
-| 4 | 16 | 0.6875 | 0.6875 | 0.1906 | 0.1889 |
+| 4 | 15 | 0.6667 | 0.6667 | 0.2010 | 0.1986 |
 | 5 | 14 | 0.2857 | 0.2857 | 0.3569 | 0.3296 |
 | 6 | 15 | 0.7333 | 0.7333 | 0.1982 | 0.2030 |
 | 7 | 15 | 0.7333 | 0.8000 | 0.1753 | 0.1751 |

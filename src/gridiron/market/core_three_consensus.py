@@ -7,7 +7,10 @@ from typing import Any
 from gridiron.market.core_three_types import (
     BOOK_KEYS,
     CANDIDATE_ID,
+    CANDIDATE_VARIANT_ID,
+    EVIDENCE_ID,
     EXECUTION_BOOK_KEY,
+    PROTOCOL_ID,
     AtomicObservation,
     CoreThreeError,
 )
@@ -21,6 +24,7 @@ RESIDUAL_CAP = 0.0425
 
 def build_consensus_preview(observation: AtomicObservation) -> dict[str, Any]:
     """Build a non-evidence equal-weight preview from all three books."""
+    observation.validate()
     if tuple(book.key for book in observation.books) != BOOK_KEYS:
         raise CoreThreeError("EXACT_THREE_BOOK_ORDER_REQUIRED")
     fair_by_book: dict[str, float] = {}
@@ -40,6 +44,10 @@ def build_consensus_preview(observation: AtomicObservation) -> dict[str, Any]:
     return {
         "classification": "NON_PROSPECTIVE_CONSENSUS_PREVIEW",
         "candidate_id": CANDIDATE_ID,
+        "candidate_variant_id": CANDIDATE_VARIANT_ID,
+        "evidence_id": EVIDENCE_ID,
+        "protocol_id": PROTOCOL_ID,
+        "response_id": observation.response_id,
         "market_consensus_home_probability": consensus,
         "book_home_probabilities": fair_by_book,
         "weight_per_book": 1.0 / 3.0,

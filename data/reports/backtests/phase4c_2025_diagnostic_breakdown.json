@@ -3,7 +3,8 @@
   "season": 2025,
   "population": {
     "source": "data\\reports\\backtests\\phase4b_2025_frozen_core_three_diagnostic_rows.csv",
-    "rows": 256,
+    "rows": 255,
+    "input_rows": 256,
     "week_1_excluded": 16,
     "ties_excluded": 1
   },
@@ -29,25 +30,25 @@
   },
   "candidate_vs_market": {
     "count": 4,
-    "rate": 0.015625,
+    "rate": 0.01568627450980392,
     "candidate_correct": 1,
     "market_correct": 3
   },
   "def_epa_adjustment": {
-    "mean_absolute_probability_change": 0.024128472437848006,
-    "median_absolute_probability_change": 0.022870131101609043,
+    "mean_absolute_probability_change": 0.02413487712875344,
+    "median_absolute_probability_change": 0.022922914873056754,
     "maximum_absolute_probability_change": 0.04250000000000001,
-    "mean_probability_change": -0.0018585713437199202,
+    "mean_probability_change": -0.001777643089158186,
     "positive_adjustments": 120,
-    "negative_adjustments": 136,
+    "negative_adjustments": 135,
     "zero_adjustments": 0
   },
   "candidate_probability_bands": [
     {
       "band": "0%-50%",
-      "n": 109,
-      "predicted": 0.32615078525241603,
-      "observed": 0.3761467889908257
+      "n": 108,
+      "predicted": 0.3274496730619087,
+      "observed": 0.37962962962962965
     },
     {
       "band": "50%-60%",
@@ -83,9 +84,9 @@
   "market_probability_bands": [
     {
       "band": "0%-50%",
-      "n": 107,
-      "predicted": 0.3438327857270816,
-      "observed": 0.3644859813084112
+      "n": 106,
+      "predicted": 0.34511077259163736,
+      "observed": 0.36792452830188677
     },
     {
       "band": "50%-60%",
@@ -137,11 +138,11 @@
     },
     {
       "week": 4,
-      "n": 16,
-      "candidate_accuracy": 0.6875,
-      "market_accuracy": 0.6875,
-      "candidate_brier": 0.19062774922430942,
-      "market_brier": 0.1889121688448001
+      "n": 15,
+      "candidate_accuracy": 0.6666666666666666,
+      "market_accuracy": 0.6666666666666666,
+      "candidate_brier": 0.20103306636285947,
+      "market_brier": 0.19861188248982659
     },
     {
       "week": 5,

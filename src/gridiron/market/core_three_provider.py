@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import math
 from collections.abc import Mapping
+from copy import deepcopy
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
@@ -11,12 +14,15 @@ from gridiron.market.core_three_types import (
     BOOK_KEYS,
     CANONICAL_BOOKS,
     MARKET_KEYS,
+    PROTOCOL_ID,
     AtomicObservation,
     Book,
     CoreThreeError,
     Market,
     Outcome,
-    PROTOCOL_ID,
+    validate_identity,
+    validate_jurisdiction,
+    validate_safe_strings,
 )
 
 MAX_QUOTE_AGE = timedelta(minutes=10)
@@ -43,11 +49,32 @@ def normalize_event_response(
     *,
     receipt_at: str,
     timestamp_semantics_approved: bool,
-    jurisdiction: str = "US_AGGREGATE_UNRESOLVED",
+    jurisdiction: str = "US_AGGREGATE",
+    response_id: str | None = None,
 ) -> AtomicObservation:
     """Validate one provider response; never persist its raw representation."""
-    if not timestamp_semantics_approved:
+    if timestamp_semantics_approved is not True:
         raise CoreThreeError("TIMESTAMP_SEMANTICS_UNAPPROVED")
+    response = deepcopy(dict(response))
+    authoritative_event = deepcopy(dict(authoritative_event))
+    validate_safe_strings(response)
+    validate_safe_strings(authoritative_event)
+    validate_jurisdiction(jurisdiction)
+    if response.get("sport_key", "americanfootball_nfl") != "americanfootball_nfl":
+        raise CoreThreeError("SPORT_MISMATCH")
+    try:
+        digest = hashlib.sha256(
+            json.dumps(
+                response, sort_keys=True, separators=(",", ":"), allow_nan=False
+            ).encode()
+        ).hexdigest()
+    except (TypeError, ValueError) as exc:
+        raise CoreThreeError("MALFORMED_RESPONSE") from exc
+    # The fallback is a content identity, not an authenticated acquisition-attempt ID.
+    acquisition_id = _string(
+        digest if response_id is None else response_id, "response_id"
+    )
+    _validate_acquisition(response, acquisition_id, receipt_at)
     receipt = parse_timestamp(receipt_at, "receipt_at")
     provider_id = _string(response.get("id"), "event.id")
     expected_provider_id = _string(
@@ -74,15 +101,17 @@ def normalize_event_response(
     raw_books = response.get("bookmakers")
     if not isinstance(raw_books, list):
         raise CoreThreeError("BOOKMAKERS_MALFORMED")
-    keys = [item.get("key") for item in raw_books if isinstance(item, Mapping)]
+    keys = [
+        _string(item.get("key"), "book.key")
+        for item in raw_books
+        if isinstance(item, Mapping)
+    ]
     if len(keys) != len(raw_books):
         raise CoreThreeError("BOOKMAKER_MALFORMED")
     if len(keys) != len(set(keys)):
         raise CoreThreeError("DUPLICATE_BOOKMAKER")
     if set(keys) != set(BOOK_KEYS):
-        missing = sorted(set(BOOK_KEYS) - set(keys))
-        extra = sorted(set(keys) - set(BOOK_KEYS))
-        raise CoreThreeError(f"BOOK_UNIVERSE_MISMATCH missing={missing} extra={extra}")
+        raise CoreThreeError("BOOK_UNIVERSE_MISMATCH")
     normalized = {
         item["key"]: _normalize_book(item, home=home, away=away, receipt=receipt)
         for item in raw_books
@@ -98,6 +127,9 @@ def normalize_event_response(
         receipt_at=receipt,
         jurisdiction=jurisdiction,
         books=tuple(normalized[key] for key in BOOK_KEYS),
+        response_id=acquisition_id,
+        response_digest=digest,
+        receipt_at_text=receipt_at,
     )
 
 
@@ -111,7 +143,7 @@ def assert_external_gates(
     governance_approved: bool,
     effective_timestamp: str | None,
 ) -> None:
-    """Refuse activation until every external gate has explicit evidence."""
+    """Check caller assertions only; never authenticate or authorize activation."""
     gates = {
         "TIMESTAMP_SEMANTICS_UNAPPROVED": timestamp_semantics_approved,
         "JURISDICTION_UNAPPROVED": jurisdiction_approved,
@@ -121,22 +153,30 @@ def assert_external_gates(
         "GOVERNANCE_UNAPPROVED": governance_approved,
         "EFFECTIVE_TIMESTAMP_MISSING": effective_timestamp is not None,
     }
-    failed = [name for name, passed in gates.items() if not passed]
+    failed = [name for name, passed in gates.items() if passed is not True]
     if failed:
         raise CoreThreeError("EXTERNAL_GATES_BLOCKED: " + ",".join(failed))
     parse_timestamp(effective_timestamp, "effective_timestamp")
+    raise CoreThreeError(
+        "EXTERNAL_AUTHORIZATION_NOT_AUTHENTICATED_ACTIVATION_PROHIBITED"
+    )
 
 
 def _normalize_book(
     raw: Mapping[str, Any], *, home: str, away: str, receipt: datetime
 ) -> Book:
+    _validate_availability(raw)
     key = raw.get("key")
     if key not in BOOK_KEYS:
         raise CoreThreeError("UNKNOWN_BOOKMAKER")
     markets = raw.get("markets")
     if not isinstance(markets, list):
         raise CoreThreeError(f"{key}: MARKETS_MALFORMED")
-    market_keys = [item.get("key") for item in markets if isinstance(item, Mapping)]
+    market_keys = [
+        _string(item.get("key"), "market.key")
+        for item in markets
+        if isinstance(item, Mapping)
+    ]
     if len(market_keys) != len(markets):
         raise CoreThreeError(f"{key}: MARKET_MALFORMED")
     if len(market_keys) != len(set(market_keys)):
@@ -168,8 +208,7 @@ def _normalize_market(
     market_key = raw.get("key")
     if market_key not in MARKET_KEYS:
         raise CoreThreeError(f"{book_key}: ALTERNATE_OR_UNKNOWN_MARKET")
-    if raw.get("suspended") is True or raw.get("active") is False:
-        raise CoreThreeError(f"{book_key}.{market_key}: SUSPENDED_MARKET")
+    _validate_availability(raw)
     timestamp_text = _string(raw.get("last_update"), "last_update")
     updated = parse_timestamp(timestamp_text, f"{book_key}.{market_key}.last_update")
     if updated > receipt:
@@ -180,8 +219,7 @@ def _normalize_market(
     if not isinstance(raw_outcomes, list) or len(raw_outcomes) != 2:
         raise CoreThreeError(f"{book_key}.{market_key}: INCOMPLETE_OUTCOMES")
     outcomes = tuple(
-        _normalize_outcome(item, f"{book_key}.{market_key}")
-        for item in raw_outcomes
+        _normalize_outcome(item, f"{book_key}.{market_key}") for item in raw_outcomes
     )
     names = [item.name for item in outcomes]
     if len(set(names)) != 2:
@@ -192,17 +230,13 @@ def _normalize_market(
         raise CoreThreeError(f"{book_key}.h2h: UNEXPECTED_POINT")
     if market_key == "spreads":
         points = [item.point for item in outcomes]
-        if any(point is None for point in points) or not math.isclose(
-            float(points[0]), -float(points[1]), abs_tol=1e-12
-        ):
+        if any(point is None for point in points) or points[0] != -points[1]:
             raise CoreThreeError(f"{book_key}.spreads: CONFLICTING_LINE")
     if market_key == "totals":
         if set(names) != {"Over", "Under"}:
             raise CoreThreeError(f"{book_key}.totals: OUTCOME_MISMATCH")
         points = [item.point for item in outcomes]
-        if any(point is None for point in points) or not math.isclose(
-            float(points[0]), float(points[1]), abs_tol=1e-12
-        ):
+        if any(point is None for point in points) or points[0] != points[1]:
             raise CoreThreeError(f"{book_key}.totals: CONFLICTING_LINE")
     return Market(
         key=market_key,
@@ -215,13 +249,10 @@ def _normalize_market(
 def _normalize_outcome(raw: object, field: str) -> Outcome:
     if not isinstance(raw, Mapping):
         raise CoreThreeError(f"{field}: MALFORMED_OUTCOME")
+    _validate_availability(raw)
     name = _string(raw.get("name"), f"{field}.name")
     price = raw.get("price")
-    if (
-        isinstance(price, bool)
-        or not isinstance(price, int)
-        or -100 < price < 100
-    ):
+    if isinstance(price, bool) or not isinstance(price, int) or -100 < price < 100:
         raise CoreThreeError(f"{field}.{name}: MALFORMED_PRICE")
     point = raw.get("point")
     if point is not None and (
@@ -241,7 +272,35 @@ def _normalize_outcome(raw: object, field: str) -> Outcome:
 def _string(value: object, field: str) -> str:
     if not isinstance(value, str) or not value:
         raise CoreThreeError(f"{field}: NONEMPTY_STRING_REQUIRED")
+    validate_safe_strings(value)
     return value
+
+
+def _validate_availability(raw: Mapping[str, Any]) -> None:
+    for key in ("suspended", "locked", "active"):
+        if key not in raw:
+            continue
+        if type(raw[key]) is not bool:
+            raise CoreThreeError("MALFORMED_AVAILABILITY")
+        if raw[key] is (key != "active"):
+            raise CoreThreeError("SUSPENDED_MARKET_OR_UNAVAILABLE_COMPONENT")
+
+
+def _validate_acquisition(value: Any, response_id: str, receipt_at: str) -> None:
+    """Reject conflicting supplied component provenance; not origin authentication."""
+    if isinstance(value, dict):
+        validate_identity(value)
+        if "response_id" in value and value["response_id"] != response_id:
+            raise CoreThreeError("RESPONSE_IDENTITY_MISMATCH")
+        if "receipt_at" in value and parse_timestamp(
+            value["receipt_at"], "receipt_at"
+        ) != (parse_timestamp(receipt_at, "receipt_at")):
+            raise CoreThreeError("RESPONSE_RECEIPT_MISMATCH")
+        for item in value.values():
+            _validate_acquisition(item, response_id, receipt_at)
+    elif isinstance(value, list):
+        for item in value:
+            _validate_acquisition(item, response_id, receipt_at)
 
 
 def _optional_string(value: object, field: str) -> str | None:

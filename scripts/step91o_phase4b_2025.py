@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import json
 import math
@@ -6,7 +6,6 @@ from pathlib import Path
 
 import polars as pl
 from openpyxl import load_workbook
-
 
 ROOT = Path(__file__).resolve().parents[1]
 TRANSFER = ROOT / "step90g_transfer"
@@ -80,9 +79,7 @@ def sigmoid(value: float) -> float:
 
 def frozen_probability(market: float, def_epa: float) -> float:
     raw = sigmoid(
-        INTERCEPT
-        + MARKET_COEFFICIENT * market
-        + DEF_EPA_COEFFICIENT * def_epa
+        INTERCEPT + MARKET_COEFFICIENT * market + DEF_EPA_COEFFICIENT * def_epa
     )
     lower = max(0.0, market - RESIDUAL_CAP)
     upper = min(1.0, market + RESIDUAL_CAP)
@@ -101,9 +98,9 @@ def brier(prob: float, home_win: bool) -> float:
 
 def metrics(rows: list[dict], probability_key: str) -> dict:
     usable = [
-        r for r in rows
-        if r["outcome"] in ("HOME", "AWAY")
-        and r[probability_key] is not None
+        r
+        for r in rows
+        if r["outcome"] in ("HOME", "AWAY") and r[probability_key] is not None
     ]
 
     if not usable:
@@ -156,8 +153,7 @@ def main() -> None:
     source_rows = [dict(zip(headers, row)) for row in values[1:]]
 
     regular = [
-        r for r in source_rows
-        if isinstance(r["week"], int) and 1 <= r["week"] <= 18
+        r for r in source_rows if isinstance(r["week"], int) and 1 <= r["week"] <= 18
     ]
 
     features = pl.read_parquet(feature_path).select(
@@ -171,10 +167,7 @@ def main() -> None:
         ]
     )
 
-    feature_rows = {
-        row["game_id"]: row
-        for row in features.to_dicts()
-    }
+    feature_rows = {row["game_id"]: row for row in features.to_dicts()}
 
     legacy = pl.read_parquet(legacy_prediction_path)
 
@@ -302,15 +295,10 @@ def main() -> None:
                 "market_home_probability": market,
                 "def_epa_trend_advantage": float(def_epa),
                 "candidate_home_probability": candidate,
-                "candidate_predicted_winner": (
-                    home if candidate >= 0.5 else away
-                ),
-                "market_predicted_winner": (
-                    home if market >= 0.5 else away
-                ),
+                "candidate_predicted_winner": (home if candidate >= 0.5 else away),
+                "market_predicted_winner": (home if market >= 0.5 else away),
                 "legacy_v2_home_probability": (
-                    legacy_row["home_win_probability"]
-                    if legacy_row else None
+                    legacy_row["home_win_probability"] if legacy_row else None
                 ),
             }
         )
@@ -347,7 +335,8 @@ def main() -> None:
         "classification": "HISTORICAL_DIAGNOSTIC_NOT_PROSPECTIVE_EVIDENCE",
         "protocol": "Step 91O Phase 4B",
         "season": 2025,
-        "population": "REG Weeks 1-18",
+        "population": "REG Weeks 2-18 complete-feature diagnostic; not frozen Weeks 1-16 replay",
+        "population_boundary": "Source Weeks 1-18; all 16 Week 1 games excluded for missing DEF EPA; Weeks 17-18 included. No eligibility change to the frozen protocol.",
         "source_games": len(source_rows),
         "regular_season_games": len(regular),
         "diagnostic_rows": len(diagnostics),
@@ -370,6 +359,7 @@ def main() -> None:
         "weekly": week_metrics,
         "exclusions": exclusions,
         "limitations": [
+            "Complete-feature Weeks 2-18 diagnostic only; not a frozen Weeks 1-16 eligibility replay. Week 1 missing DEF EPA is excluded here, not the frozen neutral-feature policy.",
             "Historical sportsbook timestamps and feed identity are not preserved.",
             "Historical Core-Three prices are not a conformed prospective atomic provider response.",
             "Historical EPA source-vintage provenance is unresolved.",
@@ -401,6 +391,8 @@ def main() -> None:
         f"- Diagnostic rows: {len(diagnostics)}",
         f"- Excluded rows: {len(exclusions)}",
         f"- Ties: {ties}",
+        "- Population: complete-feature Weeks 2-18; all 16 Week 1 games excluded.",
+        "- Includes Weeks 17-18; NOT a frozen Weeks 1-16 eligibility replay.",
         "",
         "## Frozen Candidate",
         "",
@@ -434,12 +426,16 @@ def main() -> None:
             "",
             "## Interpretation Boundary",
             "",
-            "This replay applies the frozen candidate mechanically. "
-            "No model was fitted or recalibrated.",
+            (
+                "This complete-feature Weeks 2-18 diagnostic applies only the frozen numerical transformation, not the frozen Weeks 1-16 eligibility population or Week 1 neutral-feature policy. "
+                "No model was fitted or recalibrated."
+            ),
             "",
-            "The historical market and EPA provenance limitations identified "
-            "by Step 91O Phase 4A remain unresolved. Therefore these results "
-            "must not be treated as leakage-safe validation or prospective evidence.",
+            (
+                "The historical market and EPA provenance limitations identified "
+                "by Step 91O Phase 4A remain unresolved. Therefore these results "
+                "must not be treated as leakage-safe validation or prospective evidence."
+            ),
             "",
             "## Files",
             "",

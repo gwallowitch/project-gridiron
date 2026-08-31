@@ -1,4 +1,4 @@
-﻿"""Step 91O Phase 4C — 2025 historical diagnostic breakdown.
+"""Step 91O Phase 4C — 2025 historical diagnostic breakdown.
 
 This is diagnostic only. It does not modify the frozen candidate,
 historical source data, protocol, manifest, ledger, or prospective evidence.
@@ -7,11 +7,9 @@ historical source data, protocol, manifest, ledger, or prospective evidence.
 from __future__ import annotations
 
 import json
-import math
 from pathlib import Path
 
 import polars as pl
-
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -24,19 +22,11 @@ INPUT = (
 )
 
 OUT_JSON = (
-    ROOT
-    / "data"
-    / "reports"
-    / "backtests"
-    / "phase4c_2025_diagnostic_breakdown.json"
+    ROOT / "data" / "reports" / "backtests" / "phase4c_2025_diagnostic_breakdown.json"
 )
 
 OUT_MD = (
-    ROOT
-    / "data"
-    / "reports"
-    / "backtests"
-    / "phase4c_2025_diagnostic_breakdown.md"
+    ROOT / "data" / "reports" / "backtests" / "phase4c_2025_diagnostic_breakdown.md"
 )
 
 
@@ -55,11 +45,7 @@ def accuracy(
     away_team: pl.Expr,
     actual_home: pl.Expr,
 ) -> pl.Expr:
-    expected_winner = (
-        pl.when(actual_home)
-        .then(home_team)
-        .otherwise(away_team)
-    )
+    expected_winner = pl.when(actual_home).then(home_team).otherwise(away_team)
     return (predicted == expected_winner).cast(pl.Float64)
 
 
@@ -80,9 +66,7 @@ def summarize_model(
         .mean()
         .alias("accuracy"),
         brier(pl.col(probability), actual.cast(pl.Float64)).mean().alias("brier"),
-        log_loss(pl.col(probability), actual.cast(pl.Float64))
-        .mean()
-        .alias("log_loss"),
+        log_loss(pl.col(probability), actual.cast(pl.Float64)).mean().alias("log_loss"),
     ).row(0)
 
     return {
@@ -123,21 +107,14 @@ def main() -> None:
         [
             (pl.col("outcome") == "HOME").alias("actual_home"),
             (
-                pl.col("candidate_home_probability")
-                - pl.col("market_home_probability")
+                pl.col("candidate_home_probability") - pl.col("market_home_probability")
             ).alias("candidate_market_delta"),
             (
                 pl.col("candidate_predicted_winner")
                 != pl.col("market_predicted_winner")
             ).alias("prediction_disagreement"),
-            (
-                pl.col("candidate_home_probability")
-                >= 0.5
-            ).alias("candidate_home_pick"),
-            (
-                pl.col("market_home_probability")
-                >= 0.5
-            ).alias("market_home_pick"),
+            (pl.col("candidate_home_probability") >= 0.5).alias("candidate_home_pick"),
+            (pl.col("market_home_probability") >= 0.5).alias("market_home_pick"),
         ]
     )
 
@@ -149,12 +126,17 @@ def main() -> None:
     if tie_count != 1:
         raise ValueError(f"Expected exactly one historical tie, got {tie_count}")
 
-    scoring_df = df.filter(pl.col("outcome") != "TIE")
+    input_rows = df.height
+    if df.filter(
+        ~pl.col("outcome").is_in(["HOME", "AWAY", "TIE"]) | pl.col("outcome").is_null()
+    ).height:
+        raise ValueError("Unknown outcome in diagnostic input")
+    # All subsequent calculations share the same binary scoring population.
+    df = df.filter(pl.col("outcome").is_in(["HOME", "AWAY"]))
+    scoring_df = df
 
     if scoring_df.height != 255:
-        raise ValueError(
-            f"Expected 255 non-tied scoring rows, got {scoring_df.height}"
-        )
+        raise ValueError(f"Expected 255 non-tied scoring rows, got {scoring_df.height}")
 
     overall = {
         "frozen_candidate": summarize_model(
@@ -203,8 +185,7 @@ def main() -> None:
                     == pl.when(pl.col("actual_home"))
                     .then(pl.col("home_team"))
                     .otherwise(pl.col("away_team"))
-                )
-                .sum()
+                ).sum()
             ).item()
         )
 
@@ -215,8 +196,7 @@ def main() -> None:
                     == pl.when(pl.col("actual_home"))
                     .then(pl.col("home_team"))
                     .otherwise(pl.col("away_team"))
-                )
-                .sum()
+                ).sum()
             ).item()
         )
 
@@ -264,9 +244,7 @@ def main() -> None:
         )
 
     candidate_bands = (
-        df.with_columns(
-            band_column("candidate_home_probability").alias("band")
-        )
+        df.with_columns(band_column("candidate_home_probability").alias("band"))
         .group_by("band")
         .agg(
             pl.len().alias("n"),
@@ -277,9 +255,7 @@ def main() -> None:
     )
 
     market_bands = (
-        df.with_columns(
-            band_column("market_home_probability").alias("band")
-        )
+        df.with_columns(band_column("market_home_probability").alias("band"))
         .group_by("band")
         .agg(
             pl.len().alias("n"),
@@ -326,10 +302,7 @@ def main() -> None:
             .pow(2)
             .mean()
             .alias("candidate_brier"),
-            (
-                pl.col("market_home_probability")
-                - pl.col("actual_home").cast(pl.Float64)
-            )
+            (pl.col("market_home_probability") - pl.col("actual_home").cast(pl.Float64))
             .pow(2)
             .mean()
             .alias("market_brier"),
@@ -358,9 +331,7 @@ def main() -> None:
             ]
         )
         .with_columns(
-            pl.col("candidate_market_delta")
-            .abs()
-            .alias("absolute_probability_change")
+            pl.col("candidate_market_delta").abs().alias("absolute_probability_change")
         )
         .sort("absolute_probability_change", descending=True)
         .head(20)
@@ -376,6 +347,7 @@ def main() -> None:
         "population": {
             "source": str(INPUT.relative_to(ROOT)),
             "rows": df.height,
+            "input_rows": input_rows,
             "week_1_excluded": 16,
             "ties_excluded": 1,
         },
@@ -406,7 +378,8 @@ def main() -> None:
         "",
         "## Population",
         "",
-        f"- Diagnostic rows: {df.height}",
+        f"- Input diagnostic rows: {input_rows}",
+        f"- Non-tied scoring rows (all calculations): {df.height}",
         "- Week 1 excluded: 16 (no prior-season DEF EPA feature)",
         "- Ties excluded: 1",
         "",
@@ -429,18 +402,18 @@ def main() -> None:
             "",
             "## Candidate vs Core-Three Market",
             "",
-            f"- Prediction disagreements: {disagreement_result['count']} "
-            f"({disagreement_result['rate']:.1%})",
+            (
+                f"- Prediction disagreements: {disagreement_result['count']} "
+                f"({disagreement_result['rate']:.1%})"
+            ),
         ]
     )
 
     if disagreements.height:
         md.extend(
             [
-                f"- Candidate correct on disagreements: "
-                f"{disagreement_result['candidate_correct']}",
-                f"- Market correct on disagreements: "
-                f"{disagreement_result['market_correct']}",
+                f"- Candidate correct on disagreements: {disagreement_result['candidate_correct']}",
+                f"- Market correct on disagreements: {disagreement_result['market_correct']}",
             ]
         )
 
@@ -449,12 +422,9 @@ def main() -> None:
             "",
             "## DEF EPA Adjustment",
             "",
-            f"- Mean absolute probability change: "
-            f"{adjustment_result['mean_absolute_probability_change']:.6f}",
-            f"- Median absolute probability change: "
-            f"{adjustment_result['median_absolute_probability_change']:.6f}",
-            f"- Maximum absolute probability change: "
-            f"{adjustment_result['maximum_absolute_probability_change']:.6f}",
+            f"- Mean absolute probability change: {adjustment_result['mean_absolute_probability_change']:.6f}",
+            f"- Median absolute probability change: {adjustment_result['median_absolute_probability_change']:.6f}",
+            f"- Maximum absolute probability change: {adjustment_result['maximum_absolute_probability_change']:.6f}",
             f"- Positive adjustments: {adjustment_result['positive_adjustments']}",
             f"- Negative adjustments: {adjustment_result['negative_adjustments']}",
             f"- Zero adjustments: {adjustment_result['zero_adjustments']}",

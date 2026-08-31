@@ -130,13 +130,15 @@
     }
   ],
   "limitations": [
+    "Complete-feature Weeks 2-18 diagnostic only; not a frozen Weeks 1-16 eligibility replay. Week 1 missing DEF EPA is excluded here, not the frozen neutral-feature policy.",
     "Historical sportsbook timestamps and feed identity are not preserved.",
     "Historical Core-Three prices are not a conformed prospective atomic provider response.",
     "Historical EPA source-vintage provenance is unresolved.",
     "No fitting, recalibration, optimization, or coefficient changes were performed.",
     "Results are diagnostic only and are not prospective evidence."
   ],
-  "population": "REG Weeks 1-18",
+  "population": "REG Weeks 2-18 complete-feature diagnostic; not frozen Weeks 1-16 replay",
+  "population_boundary": "Source Weeks 1-18; all 16 Week 1 games excluded for missing DEF EPA; Weeks 17-18 included. No eligibility change to the frozen protocol.",
   "protocol": "Step 91O Phase 4B",
   "regular_season_games": 272,
   "results": {

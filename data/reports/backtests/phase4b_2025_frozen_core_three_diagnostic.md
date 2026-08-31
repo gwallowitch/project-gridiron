@@ -9,6 +9,8 @@
 - Diagnostic rows: 256
 - Excluded rows: 16
 - Ties: 1
+- Population: complete-feature Weeks 2-18; all 16 Week 1 games excluded.
+- Includes Weeks 17-18; NOT a frozen Weeks 1-16 eligibility replay.
 
 ## Frozen Candidate
 
@@ -29,7 +31,7 @@
 
 ## Interpretation Boundary
 
-This replay applies the frozen candidate mechanically. No model was fitted or recalibrated.
+This complete-feature Weeks 2-18 diagnostic applies only the frozen numerical transformation, not the frozen Weeks 1-16 eligibility population or Week 1 neutral-feature policy. No model was fitted or recalibrated.
 
 The historical market and EPA provenance limitations identified by Step 91O Phase 4A remain unresolved. Therefore these results must not be treated as leakage-safe validation or prospective evidence.
 
