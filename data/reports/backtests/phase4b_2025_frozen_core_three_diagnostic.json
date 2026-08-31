@@ -1,0 +1,455 @@
+{
+  "candidate": {
+    "def_epa_coefficient": 1.044827,
+    "id": "market-plus-def-epa-capped-0425-v1",
+    "intercept": -2.514766,
+    "market_coefficient": 4.980172,
+    "market_universe": [
+      "betmgm",
+      "fanduel",
+      "draftkings"
+    ],
+    "residual_cap": 0.0425,
+    "weight_per_book": 0.3333333333333333
+  },
+  "classification": "HISTORICAL_DIAGNOSTIC_NOT_PROSPECTIVE_EVIDENCE",
+  "diagnostic_rows": 256,
+  "excluded_rows": 16,
+  "exclusions": [
+    {
+      "away_team": "DAL",
+      "game_id": "2025_01_DAL_PHI",
+      "home_team": "PHI",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "KC",
+      "game_id": "2025_01_KC_LAC",
+      "home_team": "LAC",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "CAR",
+      "game_id": "2025_01_CAR_JAX",
+      "home_team": "JAX",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "PIT",
+      "game_id": "2025_01_PIT_NYJ",
+      "home_team": "NYJ",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "CIN",
+      "game_id": "2025_01_CIN_CLE",
+      "home_team": "CLE",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "MIA",
+      "game_id": "2025_01_MIA_IND",
+      "home_team": "IND",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "ARI",
+      "game_id": "2025_01_ARI_NO",
+      "home_team": "NO",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "TB",
+      "game_id": "2025_01_TB_ATL",
+      "home_team": "ATL",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "NYG",
+      "game_id": "2025_01_NYG_WAS",
+      "home_team": "WAS",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "LV",
+      "game_id": "2025_01_LV_NE",
+      "home_team": "NE",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "TEN",
+      "game_id": "2025_01_TEN_DEN",
+      "home_team": "DEN",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "SF",
+      "game_id": "2025_01_SF_SEA",
+      "home_team": "SEA",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "HOU",
+      "game_id": "2025_01_HOU_LA",
+      "home_team": "LA",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "DET",
+      "game_id": "2025_01_DET_GB",
+      "home_team": "GB",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "BAL",
+      "game_id": "2025_01_BAL_BUF",
+      "home_team": "BUF",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    },
+    {
+      "away_team": "MIN",
+      "game_id": "2025_01_MIN_CHI",
+      "home_team": "CHI",
+      "reason": "INVALID_DEF_EPA",
+      "week": 1
+    }
+  ],
+  "limitations": [
+    "Historical sportsbook timestamps and feed identity are not preserved.",
+    "Historical Core-Three prices are not a conformed prospective atomic provider response.",
+    "Historical EPA source-vintage provenance is unresolved.",
+    "No fitting, recalibration, optimization, or coefficient changes were performed.",
+    "Results are diagnostic only and are not prospective evidence."
+  ],
+  "population": "REG Weeks 1-18",
+  "protocol": "Step 91O Phase 4B",
+  "regular_season_games": 272,
+  "results": {
+    "frozen_candidate": {
+      "accuracy": 0.6392156862745098,
+      "brier": 0.214690631914114,
+      "log_loss": 0.6140740479502457,
+      "n": 255
+    },
+    "legacy_v2_reference": {
+      "accuracy": 0.6,
+      "brier": 0.2359255380405058,
+      "log_loss": 0.6689296394798553,
+      "n": 255
+    },
+    "three_book_market_only": {
+      "accuracy": 0.6470588235294118,
+      "brier": 0.21325510760453079,
+      "log_loss": 0.6101390679619142,
+      "n": 255
+    }
+  },
+  "season": 2025,
+  "source_games": 285,
+  "ties": 1,
+  "weekly": {
+    "1": {
+      "candidate": {
+        "accuracy": null,
+        "brier": null,
+        "log_loss": null,
+        "n": 0
+      },
+      "games": 0,
+      "market": {
+        "accuracy": null,
+        "brier": null,
+        "log_loss": null,
+        "n": 0
+      },
+      "ties": 0
+    },
+    "10": {
+      "candidate": {
+        "accuracy": 0.7142857142857143,
+        "brier": 0.20273587295683063,
+        "log_loss": 0.5911554026374526,
+        "n": 14
+      },
+      "games": 14,
+      "market": {
+        "accuracy": 0.7142857142857143,
+        "brier": 0.20459853041212053,
+        "log_loss": 0.5968032161054351,
+        "n": 14
+      },
+      "ties": 0
+    },
+    "11": {
+      "candidate": {
+        "accuracy": 0.7333333333333333,
+        "brier": 0.18070426565426728,
+        "log_loss": 0.5384752397859011,
+        "n": 15
+      },
+      "games": 15,
+      "market": {
+        "accuracy": 0.7333333333333333,
+        "brier": 0.1816950782934237,
+        "log_loss": 0.5436946884037419,
+        "n": 15
+      },
+      "ties": 0
+    },
+    "12": {
+      "candidate": {
+        "accuracy": 0.7142857142857143,
+        "brier": 0.16406174428543333,
+        "log_loss": 0.49252941900456365,
+        "n": 14
+      },
+      "games": 14,
+      "market": {
+        "accuracy": 0.7857142857142857,
+        "brier": 0.1586867807114428,
+        "log_loss": 0.48324102457327456,
+        "n": 14
+      },
+      "ties": 0
+    },
+    "13": {
+      "candidate": {
+        "accuracy": 0.5625,
+        "brier": 0.25532797492453724,
+        "log_loss": 0.7162578423236823,
+        "n": 16
+      },
+      "games": 16,
+      "market": {
+        "accuracy": 0.5625,
+        "brier": 0.24944225094683012,
+        "log_loss": 0.6959759723078288,
+        "n": 16
+      },
+      "ties": 0
+    },
+    "14": {
+      "candidate": {
+        "accuracy": 0.5,
+        "brier": 0.24182134606562508,
+        "log_loss": 0.6734831831208867,
+        "n": 14
+      },
+      "games": 14,
+      "market": {
+        "accuracy": 0.5714285714285714,
+        "brier": 0.24270732476164333,
+        "log_loss": 0.6768369454404877,
+        "n": 14
+      },
+      "ties": 0
+    },
+    "15": {
+      "candidate": {
+        "accuracy": 0.625,
+        "brier": 0.19696790443425452,
+        "log_loss": 0.5605402113871242,
+        "n": 16
+      },
+      "games": 16,
+      "market": {
+        "accuracy": 0.625,
+        "brier": 0.19677903960386667,
+        "log_loss": 0.5639791162142479,
+        "n": 16
+      },
+      "ties": 0
+    },
+    "16": {
+      "candidate": {
+        "accuracy": 0.6875,
+        "brier": 0.20922583047484752,
+        "log_loss": 0.60008214628243,
+        "n": 16
+      },
+      "games": 16,
+      "market": {
+        "accuracy": 0.625,
+        "brier": 0.2253683703331888,
+        "log_loss": 0.6359806668695351,
+        "n": 16
+      },
+      "ties": 0
+    },
+    "17": {
+      "candidate": {
+        "accuracy": 0.5625,
+        "brier": 0.2340011160648389,
+        "log_loss": 0.653971863795228,
+        "n": 16
+      },
+      "games": 16,
+      "market": {
+        "accuracy": 0.5625,
+        "brier": 0.2383948786883937,
+        "log_loss": 0.6623520160037248,
+        "n": 16
+      },
+      "ties": 0
+    },
+    "18": {
+      "candidate": {
+        "accuracy": 0.625,
+        "brier": 0.2100734548597455,
+        "log_loss": 0.5926983038648822,
+        "n": 16
+      },
+      "games": 16,
+      "market": {
+        "accuracy": 0.625,
+        "brier": 0.19902042321788235,
+        "log_loss": 0.5632314829482996,
+        "n": 16
+      },
+      "ties": 0
+    },
+    "2": {
+      "candidate": {
+        "accuracy": 0.625,
+        "brier": 0.1741244228122671,
+        "log_loss": 0.5218225514437963,
+        "n": 16
+      },
+      "games": 16,
+      "market": {
+        "accuracy": 0.625,
+        "brier": 0.1773586119463682,
+        "log_loss": 0.5290542931807094,
+        "n": 16
+      },
+      "ties": 0
+    },
+    "3": {
+      "candidate": {
+        "accuracy": 0.75,
+        "brier": 0.2073556440338466,
+        "log_loss": 0.603125753930196,
+        "n": 16
+      },
+      "games": 16,
+      "market": {
+        "accuracy": 0.75,
+        "brier": 0.2060211046498173,
+        "log_loss": 0.5980340986116992,
+        "n": 16
+      },
+      "ties": 0
+    },
+    "4": {
+      "candidate": {
+        "accuracy": 0.6666666666666666,
+        "brier": 0.20103306636285947,
+        "log_loss": 0.58174324119177,
+        "n": 15
+      },
+      "games": 16,
+      "market": {
+        "accuracy": 0.6666666666666666,
+        "brier": 0.19861188248982659,
+        "log_loss": 0.5769992149339142,
+        "n": 15
+      },
+      "ties": 1
+    },
+    "5": {
+      "candidate": {
+        "accuracy": 0.2857142857142857,
+        "brier": 0.3568707941414927,
+        "log_loss": 0.9267724811481656,
+        "n": 14
+      },
+      "games": 14,
+      "market": {
+        "accuracy": 0.2857142857142857,
+        "brier": 0.3296496763558471,
+        "log_loss": 0.8601815530956737,
+        "n": 14
+      },
+      "ties": 0
+    },
+    "6": {
+      "candidate": {
+        "accuracy": 0.7333333333333333,
+        "brier": 0.19818981885681428,
+        "log_loss": 0.5814346513938488,
+        "n": 15
+      },
+      "games": 15,
+      "market": {
+        "accuracy": 0.7333333333333333,
+        "brier": 0.20303995480296974,
+        "log_loss": 0.5924955034439653,
+        "n": 15
+      },
+      "ties": 0
+    },
+    "7": {
+      "candidate": {
+        "accuracy": 0.7333333333333333,
+        "brier": 0.1753258475341837,
+        "log_loss": 0.5318227669035116,
+        "n": 15
+      },
+      "games": 15,
+      "market": {
+        "accuracy": 0.8,
+        "brier": 0.17506905698524097,
+        "log_loss": 0.5311931193954362,
+        "n": 15
+      },
+      "ties": 0
+    },
+    "8": {
+      "candidate": {
+        "accuracy": 0.7692307692307693,
+        "brier": 0.1734413521104216,
+        "log_loss": 0.526290272846654,
+        "n": 13
+      },
+      "games": 13,
+      "market": {
+        "accuracy": 0.7692307692307693,
+        "brier": 0.1764700020883646,
+        "log_loss": 0.5332421777224396,
+        "n": 13
+      },
+      "ties": 0
+    },
+    "9": {
+      "candidate": {
+        "accuracy": 0.5714285714285714,
+        "brier": 0.2751786013272126,
+        "log_loss": 0.7638446157134496,
+        "n": 14
+      },
+      "games": 14,
+      "market": {
+        "accuracy": 0.5714285714285714,
+        "brier": 0.2666111129913134,
+        "log_loss": 0.7407839600039737,
+        "n": 14
+      },
+      "ties": 0
+    }
+  }
+}

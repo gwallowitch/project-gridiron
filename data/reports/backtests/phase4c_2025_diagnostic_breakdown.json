@@ -1,0 +1,547 @@
+{
+  "classification": "HISTORICAL_DIAGNOSTIC_NOT_PROSPECTIVE_EVIDENCE",
+  "season": 2025,
+  "population": {
+    "source": "data\\reports\\backtests\\phase4b_2025_frozen_core_three_diagnostic_rows.csv",
+    "rows": 256,
+    "week_1_excluded": 16,
+    "ties_excluded": 1
+  },
+  "overall": {
+    "frozen_candidate": {
+      "n": 255,
+      "accuracy": 0.6392156862745098,
+      "brier": 0.21469063191411406,
+      "log_loss": 0.6140740479502457
+    },
+    "core_three_market": {
+      "n": 255,
+      "accuracy": 0.6470588235294118,
+      "brier": 0.21325510760453076,
+      "log_loss": 0.6101390679619142
+    },
+    "legacy_v2": {
+      "n": 255,
+      "accuracy": 0.6,
+      "brier": 0.23592553804050578,
+      "log_loss": 0.6689296394798553
+    }
+  },
+  "candidate_vs_market": {
+    "count": 4,
+    "rate": 0.015625,
+    "candidate_correct": 1,
+    "market_correct": 3
+  },
+  "def_epa_adjustment": {
+    "mean_absolute_probability_change": 0.024128472437848006,
+    "median_absolute_probability_change": 0.022870131101609043,
+    "maximum_absolute_probability_change": 0.04250000000000001,
+    "mean_probability_change": -0.0018585713437199202,
+    "positive_adjustments": 120,
+    "negative_adjustments": 136,
+    "zero_adjustments": 0
+  },
+  "candidate_probability_bands": [
+    {
+      "band": "0%-50%",
+      "n": 109,
+      "predicted": 0.32615078525241603,
+      "observed": 0.3761467889908257
+    },
+    {
+      "band": "50%-60%",
+      "n": 34,
+      "predicted": 0.5601045591041822,
+      "observed": 0.4411764705882353
+    },
+    {
+      "band": "60%-70%",
+      "n": 40,
+      "predicted": 0.6499115680559384,
+      "observed": 0.55
+    },
+    {
+      "band": "70%-80%",
+      "n": 38,
+      "predicted": 0.7533952113300246,
+      "observed": 0.7631578947368421
+    },
+    {
+      "band": "80%-90%",
+      "n": 34,
+      "predicted": 0.8552065766753452,
+      "observed": 0.8529411764705882
+    },
+    {
+      "band": "90%-100%",
+      "n": 1,
+      "predicted": 0.9024350044055046,
+      "observed": 1.0
+    }
+  ],
+  "market_probability_bands": [
+    {
+      "band": "0%-50%",
+      "n": 107,
+      "predicted": 0.3438327857270816,
+      "observed": 0.3644859813084112
+    },
+    {
+      "band": "50%-60%",
+      "n": 37,
+      "predicted": 0.5522594651302171,
+      "observed": 0.4864864864864865
+    },
+    {
+      "band": "60%-70%",
+      "n": 43,
+      "predicted": 0.6426220386442649,
+      "observed": 0.5813953488372093
+    },
+    {
+      "band": "70%-80%",
+      "n": 41,
+      "predicted": 0.743943599244584,
+      "observed": 0.6829268292682927
+    },
+    {
+      "band": "80%-90%",
+      "n": 23,
+      "predicted": 0.8595163749369341,
+      "observed": 0.9565217391304348
+    },
+    {
+      "band": "90%-100%",
+      "n": 5,
+      "predicted": 0.9095408186593943,
+      "observed": 1.0
+    }
+  ],
+  "weekly": [
+    {
+      "week": 2,
+      "n": 16,
+      "candidate_accuracy": 0.625,
+      "market_accuracy": 0.625,
+      "candidate_brier": 0.1741244228122671,
+      "market_brier": 0.1773586119463682
+    },
+    {
+      "week": 3,
+      "n": 16,
+      "candidate_accuracy": 0.75,
+      "market_accuracy": 0.75,
+      "candidate_brier": 0.2073556440338466,
+      "market_brier": 0.2060211046498173
+    },
+    {
+      "week": 4,
+      "n": 16,
+      "candidate_accuracy": 0.6875,
+      "market_accuracy": 0.6875,
+      "candidate_brier": 0.19062774922430942,
+      "market_brier": 0.1889121688448001
+    },
+    {
+      "week": 5,
+      "n": 14,
+      "candidate_accuracy": 0.2857142857142857,
+      "market_accuracy": 0.2857142857142857,
+      "candidate_brier": 0.3568707941414927,
+      "market_brier": 0.3296496763558471
+    },
+    {
+      "week": 6,
+      "n": 15,
+      "candidate_accuracy": 0.7333333333333333,
+      "market_accuracy": 0.7333333333333333,
+      "candidate_brier": 0.19818981885681428,
+      "market_brier": 0.20303995480296974
+    },
+    {
+      "week": 7,
+      "n": 15,
+      "candidate_accuracy": 0.7333333333333333,
+      "market_accuracy": 0.8,
+      "candidate_brier": 0.1753258475341837,
+      "market_brier": 0.17506905698524097
+    },
+    {
+      "week": 8,
+      "n": 13,
+      "candidate_accuracy": 0.7692307692307693,
+      "market_accuracy": 0.7692307692307693,
+      "candidate_brier": 0.1734413521104216,
+      "market_brier": 0.1764700020883646
+    },
+    {
+      "week": 9,
+      "n": 14,
+      "candidate_accuracy": 0.5714285714285714,
+      "market_accuracy": 0.5714285714285714,
+      "candidate_brier": 0.27517860132721267,
+      "market_brier": 0.2666111129913134
+    },
+    {
+      "week": 10,
+      "n": 14,
+      "candidate_accuracy": 0.7142857142857143,
+      "market_accuracy": 0.7142857142857143,
+      "candidate_brier": 0.20273587295683063,
+      "market_brier": 0.20459853041212053
+    },
+    {
+      "week": 11,
+      "n": 15,
+      "candidate_accuracy": 0.7333333333333333,
+      "market_accuracy": 0.7333333333333333,
+      "candidate_brier": 0.18070426565426728,
+      "market_brier": 0.18169507829342374
+    },
+    {
+      "week": 12,
+      "n": 14,
+      "candidate_accuracy": 0.7142857142857143,
+      "market_accuracy": 0.7857142857142857,
+      "candidate_brier": 0.16406174428543333,
+      "market_brier": 0.1586867807114428
+    },
+    {
+      "week": 13,
+      "n": 16,
+      "candidate_accuracy": 0.5625,
+      "market_accuracy": 0.5625,
+      "candidate_brier": 0.25532797492453724,
+      "market_brier": 0.24944225094683012
+    },
+    {
+      "week": 14,
+      "n": 14,
+      "candidate_accuracy": 0.5,
+      "market_accuracy": 0.5714285714285714,
+      "candidate_brier": 0.24182134606562508,
+      "market_brier": 0.24270732476164333
+    },
+    {
+      "week": 15,
+      "n": 16,
+      "candidate_accuracy": 0.625,
+      "market_accuracy": 0.625,
+      "candidate_brier": 0.19696790443425452,
+      "market_brier": 0.19677903960386667
+    },
+    {
+      "week": 16,
+      "n": 16,
+      "candidate_accuracy": 0.6875,
+      "market_accuracy": 0.625,
+      "candidate_brier": 0.20922583047484752,
+      "market_brier": 0.2253683703331888
+    },
+    {
+      "week": 17,
+      "n": 16,
+      "candidate_accuracy": 0.5625,
+      "market_accuracy": 0.5625,
+      "candidate_brier": 0.2340011160648389,
+      "market_brier": 0.2383948786883937
+    },
+    {
+      "week": 18,
+      "n": 16,
+      "candidate_accuracy": 0.625,
+      "market_accuracy": 0.625,
+      "candidate_brier": 0.2100734548597455,
+      "market_brier": 0.19902042321788235
+    }
+  ],
+  "largest_def_epa_moves": [
+    {
+      "game_id": "2025_06_LA_BAL",
+      "week": 6,
+      "away_team": "LA",
+      "home_team": "BAL",
+      "market_home_probability": 0.27863267225733707,
+      "def_epa_trend_advantage": -0.08303359679980714,
+      "candidate_home_probability": 0.23613267225733706,
+      "candidate_market_delta": -0.04250000000000001,
+      "market_predicted_winner": "LA",
+      "candidate_predicted_winner": "LA",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04250000000000001
+    },
+    {
+      "game_id": "2025_10_DET_WAS",
+      "week": 10,
+      "away_team": "DET",
+      "home_team": "WAS",
+      "market_home_probability": 0.21365035453038742,
+      "def_epa_trend_advantage": -0.29976729907669375,
+      "candidate_home_probability": 0.1711503545303874,
+      "candidate_market_delta": -0.04250000000000001,
+      "market_predicted_winner": "DET",
+      "candidate_predicted_winner": "DET",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04250000000000001
+    },
+    {
+      "game_id": "2025_11_GB_NYG",
+      "week": 11,
+      "away_team": "GB",
+      "home_team": "NYG",
+      "market_home_probability": 0.249187788683902,
+      "def_epa_trend_advantage": -0.18943838892090856,
+      "candidate_home_probability": 0.206687788683902,
+      "candidate_market_delta": -0.04250000000000001,
+      "market_predicted_winner": "GB",
+      "candidate_predicted_winner": "GB",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04250000000000001
+    },
+    {
+      "game_id": "2025_11_HOU_TEN",
+      "week": 11,
+      "away_team": "HOU",
+      "home_team": "TEN",
+      "market_home_probability": 0.2826832246447339,
+      "def_epa_trend_advantage": -0.06870010204229966,
+      "candidate_home_probability": 0.24018322464473388,
+      "candidate_market_delta": -0.04250000000000001,
+      "market_predicted_winner": "HOU",
+      "candidate_predicted_winner": "HOU",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04250000000000001
+    },
+    {
+      "game_id": "2025_11_BAL_CLE",
+      "week": 11,
+      "away_team": "BAL",
+      "home_team": "CLE",
+      "market_home_probability": 0.2150927218449216,
+      "def_epa_trend_advantage": -0.15924671275861318,
+      "candidate_home_probability": 0.17259272184492158,
+      "candidate_market_delta": -0.04250000000000001,
+      "market_predicted_winner": "BAL",
+      "candidate_predicted_winner": "BAL",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04250000000000001
+    },
+    {
+      "game_id": "2025_13_JAX_TEN",
+      "week": 13,
+      "away_team": "JAX",
+      "home_team": "TEN",
+      "market_home_probability": 0.2922477089067443,
+      "def_epa_trend_advantage": -0.11881638891922006,
+      "candidate_home_probability": 0.24974770890674428,
+      "candidate_market_delta": -0.04250000000000001,
+      "market_predicted_winner": "JAX",
+      "candidate_predicted_winner": "JAX",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04250000000000001
+    },
+    {
+      "game_id": "2025_13_DEN_WAS",
+      "week": 13,
+      "away_team": "DEN",
+      "home_team": "WAS",
+      "market_home_probability": 0.2807191256532979,
+      "def_epa_trend_advantage": -0.15198994506597507,
+      "candidate_home_probability": 0.23821912565329786,
+      "candidate_market_delta": -0.04250000000000001,
+      "market_predicted_winner": "DEN",
+      "candidate_predicted_winner": "DEN",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04250000000000001
+    },
+    {
+      "game_id": "2025_14_SEA_ATL",
+      "week": 14,
+      "away_team": "SEA",
+      "home_team": "ATL",
+      "market_home_probability": 0.25603455912088174,
+      "def_epa_trend_advantage": -0.1493240063600721,
+      "candidate_home_probability": 0.21353455912088173,
+      "candidate_market_delta": -0.04250000000000001,
+      "market_predicted_winner": "SEA",
+      "candidate_predicted_winner": "SEA",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04250000000000001
+    },
+    {
+      "game_id": "2025_16_PHI_WAS",
+      "week": 16,
+      "away_team": "PHI",
+      "home_team": "WAS",
+      "market_home_probability": 0.24443843929265632,
+      "def_epa_trend_advantage": -0.153656325286881,
+      "candidate_home_probability": 0.2019384392926563,
+      "candidate_market_delta": -0.04250000000000001,
+      "market_predicted_winner": "PHI",
+      "candidate_predicted_winner": "PHI",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04250000000000001
+    },
+    {
+      "game_id": "2025_05_DEN_PHI",
+      "week": 5,
+      "away_team": "DEN",
+      "home_team": "PHI",
+      "market_home_probability": 0.640676638560503,
+      "def_epa_trend_advantage": 0.12567267663938586,
+      "candidate_home_probability": 0.683176638560503,
+      "candidate_market_delta": 0.04249999999999998,
+      "market_predicted_winner": "PHI",
+      "candidate_predicted_winner": "PHI",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04249999999999998
+    },
+    {
+      "game_id": "2025_05_WAS_LAC",
+      "week": 5,
+      "away_team": "WAS",
+      "home_team": "LAC",
+      "market_home_probability": 0.6348107170783296,
+      "def_epa_trend_advantage": 0.2021512613273475,
+      "candidate_home_probability": 0.6773107170783296,
+      "candidate_market_delta": 0.04249999999999998,
+      "market_predicted_winner": "LAC",
+      "candidate_predicted_winner": "LAC",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04249999999999998
+    },
+    {
+      "game_id": "2025_05_KC_JAX",
+      "week": 5,
+      "away_team": "KC",
+      "home_team": "JAX",
+      "market_home_probability": 0.363988631939883,
+      "def_epa_trend_advantage": -0.1468463269713442,
+      "candidate_home_probability": 0.32148863193988303,
+      "candidate_market_delta": -0.04249999999999998,
+      "market_predicted_winner": "KC",
+      "candidate_predicted_winner": "KC",
+      "outcome": "HOME",
+      "absolute_probability_change": 0.04249999999999998
+    },
+    {
+      "game_id": "2025_06_NE_NO",
+      "week": 6,
+      "away_team": "NE",
+      "home_team": "NO",
+      "market_home_probability": 0.37733664951380436,
+      "def_epa_trend_advantage": -0.04979676072386219,
+      "candidate_home_probability": 0.3348366495138044,
+      "candidate_market_delta": -0.04249999999999998,
+      "market_predicted_winner": "NE",
+      "candidate_predicted_winner": "NE",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04249999999999998
+    },
+    {
+      "game_id": "2025_06_BUF_ATL",
+      "week": 6,
+      "away_team": "BUF",
+      "home_team": "ATL",
+      "market_home_probability": 0.3558667536497464,
+      "def_epa_trend_advantage": -0.1298016053332383,
+      "candidate_home_probability": 0.3133667536497464,
+      "candidate_market_delta": -0.04249999999999998,
+      "market_predicted_winner": "BUF",
+      "candidate_predicted_winner": "BUF",
+      "outcome": "HOME",
+      "absolute_probability_change": 0.04249999999999998
+    },
+    {
+      "game_id": "2025_07_PIT_CIN",
+      "week": 7,
+      "away_team": "PIT",
+      "home_team": "CIN",
+      "market_home_probability": 0.31584486653233923,
+      "def_epa_trend_advantage": -0.15069014307093836,
+      "candidate_home_probability": 0.27334486653233925,
+      "candidate_market_delta": -0.04249999999999998,
+      "market_predicted_winner": "PIT",
+      "candidate_predicted_winner": "PIT",
+      "outcome": "HOME",
+      "absolute_probability_change": 0.04249999999999998
+    },
+    {
+      "game_id": "2025_07_LA_JAX",
+      "week": 7,
+      "away_team": "LA",
+      "home_team": "JAX",
+      "market_home_probability": 0.40159556815018815,
+      "def_epa_trend_advantage": -0.11699173851678527,
+      "candidate_home_probability": 0.35909556815018817,
+      "candidate_market_delta": -0.04249999999999998,
+      "market_predicted_winner": "LA",
+      "candidate_predicted_winner": "LA",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04249999999999998
+    },
+    {
+      "game_id": "2025_07_PHI_MIN",
+      "week": 7,
+      "away_team": "PHI",
+      "home_team": "MIN",
+      "market_home_probability": 0.43324601225618914,
+      "def_epa_trend_advantage": -0.18157841662364355,
+      "candidate_home_probability": 0.39074601225618916,
+      "candidate_market_delta": -0.04249999999999998,
+      "market_predicted_winner": "PHI",
+      "candidate_predicted_winner": "PHI",
+      "outcome": "AWAY",
+      "absolute_probability_change": 0.04249999999999998
+    },
+    {
+      "game_id": "2025_07_TB_DET",
+      "week": 7,
+      "away_team": "TB",
+      "home_team": "DET",
+      "market_home_probability": 0.7082165214852761,
+      "def_epa_trend_advantage": 0.12655117158258608,
+      "candidate_home_probability": 0.7507165214852761,
+      "candidate_market_delta": 0.04249999999999998,
+      "market_predicted_winner": "DET",
+      "candidate_predicted_winner": "DET",
+      "outcome": "HOME",
+      "absolute_probability_change": 0.04249999999999998
+    },
+    {
+      "game_id": "2025_07_HOU_SEA",
+      "week": 7,
+      "away_team": "HOU",
+      "home_team": "SEA",
+      "market_home_probability": 0.6018008997181503,
+      "def_epa_trend_advantage": -0.2687856792648181,
+      "candidate_home_probability": 0.5593008997181503,
+      "candidate_market_delta": -0.04249999999999998,
+      "market_predicted_winner": "SEA",
+      "candidate_predicted_winner": "SEA",
+      "outcome": "HOME",
+      "absolute_probability_change": 0.04249999999999998
+    },
+    {
+      "game_id": "2025_08_CHI_BAL",
+      "week": 8,
+      "away_team": "CHI",
+      "home_team": "BAL",
+      "market_home_probability": 0.4955738268197412,
+      "def_epa_trend_advantage": -0.14006286451740044,
+      "candidate_home_probability": 0.45307382681974123,
+      "candidate_market_delta": -0.04249999999999998,
+      "market_predicted_winner": "CHI",
+      "candidate_predicted_winner": "CHI",
+      "outcome": "HOME",
+      "absolute_probability_change": 0.04249999999999998
+    }
+  ],
+  "interpretation_boundary": [
+    "No model was fitted or recalibrated.",
+    "The frozen candidate coefficients were unchanged.",
+    "Historical market and EPA provenance limitations from Phase 4A remain unresolved.",
+    "Results are diagnostic only and are not leakage-safe validation or prospective evidence."
+  ]
+}
