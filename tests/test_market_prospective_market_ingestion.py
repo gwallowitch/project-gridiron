@@ -315,6 +315,52 @@ def test_cli_preview_prints_canonical_json_without_ledger(tmp_path: Path) -> Non
     ) + "\n"
 
 
+def test_cli_report_presents_exact_preview_without_touching_ledger(
+    tmp_path: Path,
+) -> None:
+    source = tmp_path / "snapshot.json"
+    ledger = tmp_path / "ledger.jsonl"
+    ledger.write_bytes(b"existing ledger")
+    _write(source, _snapshot())
+    event = preview_market_decision(_snapshot())
+
+    result = _run("--input", str(source), "report")
+
+    assert result.returncode == 0
+    assert result.stderr == ""
+    assert "GRIDIRON WEEK 1 MARKET PREVIEW" in result.stdout
+    assert "NON-PROSPECTIVE — PREVIEW ONLY" in result.stdout
+    assert "Game: BUF @ NYJ" in result.stdout
+    assert f"Candidate: {event['candidate_id']}" in result.stdout
+    assert f"Model home probability: {event['candidate_home_probability']:.2%}" in result.stdout
+    assert f"Model away probability: {1.0 - event['candidate_home_probability']:.2%}" in result.stdout
+    assert f"Market home probability: {event['market_home_probability']:.2%}" in result.stdout
+    assert f"Selected edge: {event['edge']:.2%}" in result.stdout
+    execution = event["execution_prices"]
+    assert f"DraftKings home odds: {execution['home_odds']:+d}" in result.stdout
+    assert f"DraftKings away odds: {execution['away_odds']:+d}" in result.stdout
+    assert f"Selected side: {event['selected_side']}" in result.stdout
+    assert f"Is bet: {event['is_bet']}" in result.stdout
+    assert "Final decision:" in result.stdout
+    assert "No prospective ledger written." in result.stdout
+    assert "No prospective evidence created." in result.stdout
+    assert ledger.read_bytes() == b"existing ledger"
+
+
+def test_cli_report_validation_error_has_no_traceback(tmp_path: Path) -> None:
+    source = tmp_path / "snapshot.json"
+    raw = _snapshot()
+    raw["offers"][0]["home_odds"] = 0
+    _write(source, raw)
+
+    result = _run("--input", str(source), "report")
+
+    assert result.returncode != 0
+    assert "error:" in result.stderr
+    assert "Traceback" not in result.stderr
+    assert result.stdout == ""
+
+
 def test_cli_capture_requires_ledger_and_appends_one(tmp_path: Path) -> None:
     source = tmp_path / "snapshot.json"
     ledger = tmp_path / "ledger.jsonl"
