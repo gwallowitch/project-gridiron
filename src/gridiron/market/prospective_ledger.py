@@ -12,6 +12,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from gridiron.market.model_math import (
+    calculate_capped_model_position,
+    calculate_edge_decision,
+)
+
 CANDIDATE_ID = "market-plus-def-epa-capped-0425-v1"
 PROTOCOL_ID = "step91b-prospective-validation-v1"
 MARKET_COEFFICIENT = 4.980172
@@ -190,27 +195,20 @@ def build_decision(payload: Mapping[str, Any]) -> dict[str, Any]:
         raise LedgerError("def_epa must be finite")
 
     market_home = _consensus_home_probability(observations)
-    raw_home = 1.0 / (
-        1.0
-        + math.exp(
-            -(
-                INTERCEPT
-                + MARKET_COEFFICIENT * market_home
-                + DEF_EPA_COEFFICIENT * def_epa
-            )
-        )
+    position = calculate_capped_model_position(
+        market_home,
+        def_epa,
+        market_coefficient=MARKET_COEFFICIENT,
+        def_epa_coefficient=DEF_EPA_COEFFICIENT,
+        intercept=INTERCEPT,
+        residual_cap=RESIDUAL_CAP,
     )
-    candidate_home = min(
-        market_home + RESIDUAL_CAP,
-        max(market_home - RESIDUAL_CAP, raw_home),
-    )
-    side = "HOME" if candidate_home >= market_home else "AWAY"
-    candidate_probability = candidate_home if side == "HOME" else 1.0 - candidate_home
     execution = _execution_prices(payload.get("execution_prices"), observations)
-    selected_odds = execution["home_odds"] if side == "HOME" else execution["away_odds"]
-    break_even = None if selected_odds is None else implied_probability(selected_odds)
-    edge = None if break_even is None else candidate_probability - break_even
-    is_bet = edge is not None and edge > 0.0
+    decision = calculate_edge_decision(
+        position,
+        home_odds=execution["home_odds"],
+        away_odds=execution["away_odds"],
+    )
 
     observation_material = {
         "protocol_id": PROTOCOL_ID,
@@ -235,12 +233,12 @@ def build_decision(payload: Mapping[str, Any]) -> dict[str, Any]:
         "execution_prices": execution,
         "def_epa": def_epa,
         "market_home_probability": market_home,
-        "candidate_home_probability": candidate_home,
-        "selected_side": side,
-        "selected_execution_odds": selected_odds,
-        "break_even_probability": break_even,
-        "edge": edge,
-        "is_bet": is_bet,
+        "candidate_home_probability": decision.model_home_probability,
+        "selected_side": decision.selected_side,
+        "selected_execution_odds": decision.selected_odds,
+        "break_even_probability": decision.break_even_probability,
+        "edge": decision.edge,
+        "is_bet": decision.is_bet,
         "observation_id": _identity(observation_material),
     }
     event["event_id"] = _identity(event)
