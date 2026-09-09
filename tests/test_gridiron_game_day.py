@@ -665,3 +665,71 @@ def test_cli_week2_passes_automatic_nflverse_def_epa_source(
         received["def_epa_source"]
         == "automatic nflverse frozen feature"
     )
+
+
+def test_automatic_def_epa_fails_closed_when_immediately_prior_week_missing(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    game = {
+        "game_id": "2026_04_NE_SEA",
+        "season": 2026,
+        "week": 4,
+        "season_type": "REG",
+        "home_team": "SEA",
+        "away_team": "NE",
+        "kickoff_at": "2026-10-01T00:20:00Z",
+    }
+
+    pbp = pl.DataFrame(
+        {
+            "game_id": ["g1", "g1", "g2", "g2"],
+            "season": [2026] * 4,
+            "week": [1, 1, 2, 2],
+            "posteam": ["SEA", "NE", "SEA", "NE"],
+            "defteam": ["NE", "SEA", "NE", "SEA"],
+            "play_type": ["pass"] * 4,
+            "epa": [0.30, -0.10, 0.20, -0.20],
+        }
+    )
+
+    monkeypatch.setattr(game_day.nfl, "clear_cache", lambda _pattern: None)
+    monkeypatch.setattr(game_day.nfl, "load_pbp", lambda _season: pbp)
+
+    with pytest.raises(
+        game_day.GameDayInputError,
+        match="missing immediately prior week 3",
+    ):
+        game_day.automatic_def_epa_for_game(game)
+
+
+def test_automatic_def_epa_accepts_immediately_prior_week(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    game = {
+        "game_id": "2026_04_NE_SEA",
+        "season": 2026,
+        "week": 4,
+        "season_type": "REG",
+        "home_team": "SEA",
+        "away_team": "NE",
+        "kickoff_at": "2026-10-01T00:20:00Z",
+    }
+
+    pbp = pl.DataFrame(
+        {
+            "game_id": ["g1", "g1", "g3", "g3"],
+            "season": [2026] * 4,
+            "week": [1, 1, 3, 3],
+            "posteam": ["SEA", "NE", "SEA", "NE"],
+            "defteam": ["NE", "SEA", "NE", "SEA"],
+            "play_type": ["pass"] * 4,
+            "epa": [0.30, -0.10, 0.10, -0.30],
+        }
+    )
+
+    monkeypatch.setattr(game_day.nfl, "clear_cache", lambda _pattern: None)
+    monkeypatch.setattr(game_day.nfl, "load_pbp", lambda _season: pbp)
+
+    value = game_day.automatic_def_epa_for_game(game)
+
+    assert isinstance(value, float)

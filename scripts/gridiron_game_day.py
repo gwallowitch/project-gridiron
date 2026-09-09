@@ -312,6 +312,17 @@ def automatic_def_epa_for_game(
             f"no prior-week nflverse play-by-play available for Week {week}"
         )
 
+    immediately_prior_week = week - 1
+    immediately_prior = prior.filter(
+        pl.col("week") == immediately_prior_week
+    )
+
+    if immediately_prior.is_empty():
+        raise GameDayInputError(
+            f"nflverse play-by-play is missing immediately prior "
+            f"week {immediately_prior_week} for {season} Week {week}"
+        )
+
     schedule = pl.DataFrame(
         {
             "game_id": [str(game["game_id"])],
