@@ -471,3 +471,54 @@ def test_cli_live_path_records_api_provider(
 
     assert result == 0
     assert received["provider"] == "the-odds-api-operational"
+
+
+def test_automatic_def_epa_refreshes_current_season_pbp(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    game = {
+        "game_id": "2026_04_NE_SEA",
+        "season": 2026,
+        "week": 4,
+        "season_type": "REG",
+        "home_team": "SEA",
+        "away_team": "NE",
+        "kickoff_at": "2026-10-01T00:20:00Z",
+    }
+
+    calls: list[tuple[str, object]] = []
+
+    pbp = pl.DataFrame(
+        {
+            "game_id": ["g1", "g1", "g2", "g2", "g3", "g3"],
+            "season": [2026] * 6,
+            "week": [1, 1, 2, 2, 3, 3],
+            "posteam": ["SEA", "NE", "SEA", "NE", "SEA", "NE"],
+            "defteam": ["NE", "SEA", "NE", "SEA", "NE", "SEA"],
+            "play_type": ["pass"] * 6,
+            "epa": [0.30, -0.10, 0.20, -0.20, 0.10, -0.30],
+        }
+    )
+
+    monkeypatch.setattr(
+        game_day.nfl,
+        "clear_cache",
+        lambda pattern: calls.append(("clear", pattern)),
+    )
+
+    def fake_load_pbp(season: int) -> pl.DataFrame:
+        calls.append(("load", season))
+        return pbp
+
+    monkeypatch.setattr(
+        game_day.nfl,
+        "load_pbp",
+        fake_load_pbp,
+    )
+
+    game_day.automatic_def_epa_for_game(game)
+
+    assert calls == [
+        ("clear", "play_by_play_2026"),
+        ("load", 2026),
+    ]

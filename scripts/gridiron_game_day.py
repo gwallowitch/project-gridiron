@@ -279,10 +279,11 @@ def automatic_def_epa_for_game(
         return 0.0
 
     try:
+        nfl.clear_cache(f"play_by_play_{season}")
         pbp = nfl.load_pbp(season)
     except Exception as exc:
         raise GameDayInputError(
-            f"could not load nflverse {season} play-by-play: {exc}"
+            f"could not refresh/load nflverse {season} play-by-play: {exc}"
         ) from exc
 
     required_pbp = {
