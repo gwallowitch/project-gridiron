@@ -126,7 +126,7 @@ def format_operational_prediction(result: dict[str, object]) -> str:
     """Render a concise explicitly non-prospective prediction."""
     lines = [
         "GRIDIRON OPERATIONAL PREDICTION",
-        "NON-PROSPECTIVE â€” LIVE DECISION SUPPORT",
+        "NON-PROSPECTIVE - LIVE DECISION SUPPORT",
         "",
         f"Game: {result['away_team']} @ {result['home_team']}",
         f"Game ID: {result['game_id']}",

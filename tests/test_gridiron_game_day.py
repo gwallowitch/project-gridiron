@@ -159,22 +159,43 @@ def test_deterministic_prediction_and_no_prospective_writes(
     assert first["def_epa"] == 0.125
 
 
-def test_cli_requires_human_def_epa_when_not_supplied(
+def test_cli_week1_uses_frozen_neutral_def_epa(
     schedule_path: Path,
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    values = iter(["120", "-140", "122", "-142", "121", "-141"])
+    observed = {
+        "BetMGM": "2026-09-09T18:19:00Z",
+        "FanDuel": "2026-09-09T18:19:00Z",
+        "DraftKings": "2026-09-09T18:19:00Z",
+    }
 
-    def entered_value(_prompt: str) -> str:
-        try:
-            return next(values)
-        except StopIteration as exc:
-            raise EOFError from exc
+    monkeypatch.setenv("GRIDIRON_ODDS_API_KEY", "test-key")
+    monkeypatch.setattr(
+        game_day,
+        "fetch_live_prices",
+        lambda _game: (PRICES, observed),
+    )
+    monkeypatch.setattr(
+        game_day,
+        "build_operational_prediction",
+        lambda snapshot, *, def_epa: {
+            "game_id": snapshot["game"]["game_id"],
+            "def_epa": def_epa,
+        },
+    )
+    monkeypatch.setattr(
+        game_day,
+        "format_operational_prediction",
+        lambda result: f"def_epa={result['def_epa']}",
+    )
 
-    monkeypatch.setattr("builtins.input", entered_value)
     result = game_day.main(
         ["--game", GAME["game_id"], "--schedule", str(schedule_path)]
     )
-    assert result == 2
-    assert "invalid def_epa_trend_advantage" in capsys.readouterr().err
+
+    output = capsys.readouterr()
+
+    assert result == 0
+    assert "DEF EPA: +0.000000" in output.out
+    assert "def_epa=0.0" in output.out
