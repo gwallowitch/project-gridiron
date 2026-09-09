@@ -1,4 +1,4 @@
-"""Run Gridiron from a game ID and six manually observed sportsbook prices."""
+"""Run Gridiron from a game ID using live or explicit sportsbook prices."""
 
 from __future__ import annotations
 
@@ -406,6 +406,7 @@ def build_game_day_snapshot(
     *,
     captured_at: datetime,
     observed_at: dict[str, str] | None = None,
+    provider: str = "manual-game-day-entry",
 ) -> dict[str, object]:
     """Create the existing operational snapshot shape."""
     if captured_at.tzinfo is None:
@@ -430,7 +431,7 @@ def build_game_day_snapshot(
         )
     return {
         "schema_version": 1,
-        "provider": "manual-game-day-entry",
+        "provider": provider,
         "captured_at": timestamp,
         "game": {
             field: game[field]
@@ -505,8 +506,10 @@ def main(argv: list[str] | None = None) -> int:
         observed_at = None
         if complete_manual:
             prices = supplied_prices
+            provider = "manual-game-day-entry"
             print("Odds source: explicit CLI values")
         else:
+            provider = "the-odds-api-operational"
             print(
                 "Fetching live BetMGM / FanDuel / "
                 "DraftKings moneylines..."
@@ -544,6 +547,7 @@ def main(argv: list[str] | None = None) -> int:
             prices,
             captured_at=datetime.now(UTC),
             observed_at=observed_at,
+            provider=provider,
         )
         result = build_operational_prediction(snapshot, def_epa=def_epa)
     except (GameDayInputError, OperationalPredictionError) as exc:

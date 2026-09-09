@@ -303,3 +303,171 @@ def test_automatic_def_epa_fails_closed_when_history_missing(
         match="no prior-week nflverse play-by-play",
     ):
         game_day.automatic_def_epa_for_game(game)
+
+
+def test_live_snapshot_provider_is_truthful() -> None:
+    observed = {
+        "BetMGM": "2026-09-09T18:19:00Z",
+        "FanDuel": "2026-09-09T18:19:00Z",
+        "DraftKings": "2026-09-09T18:19:00Z",
+    }
+
+    snapshot = game_day.build_game_day_snapshot(
+        GAME,
+        PRICES,
+        captured_at=CAPTURED,
+        observed_at=observed,
+        provider="the-odds-api-operational",
+    )
+
+    assert snapshot["provider"] == "the-odds-api-operational"
+
+
+def test_manual_snapshot_provider_remains_manual() -> None:
+    snapshot = game_day.build_game_day_snapshot(
+        GAME,
+        PRICES,
+        captured_at=CAPTURED,
+    )
+
+    assert snapshot["provider"] == "manual-game-day-entry"
+
+
+def test_live_odds_missing_required_book_fails_closed(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("GRIDIRON_ODDS_API_KEY", "test-key")
+
+    payload = [
+        {
+            "home_team": "Seattle Seahawks",
+            "away_team": "New England Patriots",
+            "bookmakers": [
+                {
+                    "key": "betmgm",
+                    "last_update": "2026-09-09T18:19:00Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "outcomes": [
+                                {
+                                    "name": "Seattle Seahawks",
+                                    "price": -175,
+                                },
+                                {
+                                    "name": "New England Patriots",
+                                    "price": 145,
+                                },
+                            ],
+                        }
+                    ],
+                },
+                {
+                    "key": "draftkings",
+                    "last_update": "2026-09-09T18:19:00Z",
+                    "markets": [
+                        {
+                            "key": "h2h",
+                            "outcomes": [
+                                {
+                                    "name": "Seattle Seahawks",
+                                    "price": -170,
+                                },
+                                {
+                                    "name": "New England Patriots",
+                                    "price": 142,
+                                },
+                            ],
+                        }
+                    ],
+                },
+            ],
+        }
+    ]
+
+    monkeypatch.setattr(
+        game_day,
+        "_fetch_json",
+        lambda _url: payload,
+    )
+
+    with pytest.raises(
+        game_day.GameDayInputError,
+        match="FanDuel",
+    ):
+        game_day.fetch_live_prices(GAME)
+
+
+def test_stale_live_bookmaker_timestamp_fails_closed() -> None:
+    observed = {
+        "BetMGM": "2026-09-09T17:50:00Z",
+        "FanDuel": "2026-09-09T18:19:00Z",
+        "DraftKings": "2026-09-09T18:19:00Z",
+    }
+
+    snapshot = game_day.build_game_day_snapshot(
+        GAME,
+        PRICES,
+        captured_at=CAPTURED,
+        observed_at=observed,
+        provider="the-odds-api-operational",
+    )
+
+    with pytest.raises(
+        game_day.OperationalPredictionError,
+        match="fresh complete market data required",
+    ):
+        game_day.build_operational_prediction(
+            snapshot,
+            def_epa=0.0,
+        )
+
+
+def test_cli_live_path_records_api_provider(
+    schedule_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    observed = {
+        "BetMGM": "2026-09-09T18:19:00Z",
+        "FanDuel": "2026-09-09T18:19:00Z",
+        "DraftKings": "2026-09-09T18:19:00Z",
+    }
+    received: dict[str, object] = {}
+
+    monkeypatch.setenv("GRIDIRON_ODDS_API_KEY", "test-key")
+    monkeypatch.setattr(
+        game_day,
+        "fetch_live_prices",
+        lambda _game: (PRICES, observed),
+    )
+
+    def fake_runner(
+        snapshot: dict[str, object],
+        *,
+        def_epa: float,
+    ) -> dict[str, object]:
+        received["provider"] = snapshot["provider"]
+        return {"def_epa": def_epa}
+
+    monkeypatch.setattr(
+        game_day,
+        "build_operational_prediction",
+        fake_runner,
+    )
+    monkeypatch.setattr(
+        game_day,
+        "format_operational_prediction",
+        lambda _result: "ok",
+    )
+
+    result = game_day.main(
+        [
+            "--game",
+            GAME["game_id"],
+            "--schedule",
+            str(schedule_path),
+        ]
+    )
+
+    assert result == 0
+    assert received["provider"] == "the-odds-api-operational"
