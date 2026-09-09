@@ -1,4 +1,4 @@
-﻿"""Run non-prospective decision support from three sportsbook prices."""
+"""Run non-prospective decision support from three sportsbook prices."""
 
 from __future__ import annotations
 
@@ -39,7 +39,10 @@ class OperationalPredictionError(ValueError):
 
 
 def build_operational_prediction(
-    snapshot: dict[str, object], *, def_epa: float
+    snapshot: dict[str, object],
+    *,
+    def_epa: float,
+    def_epa_source: str = "caller-supplied",
 ) -> dict[str, object]:
     """Build deterministic live decision support without prospective side effects."""
     if isinstance(def_epa, bool) or not isinstance(def_epa, (int, float)):
@@ -101,6 +104,7 @@ def build_operational_prediction(
         **view,
         "operational_identity": OPERATIONAL_IDENTITY,
         "def_epa": def_epa,
+        "def_epa_source": def_epa_source,
         "market_home_probability": market_home,
         "market_away_probability": 1.0 - market_home,
         "model_home_probability": decision.model_home_probability,
@@ -149,7 +153,8 @@ def format_operational_prediction(result: dict[str, object]) -> str:
         (
             "",
             f"Operational identity: {result['operational_identity']}",
-            "Caller-supplied DEF EPA: " + str(result["def_epa"]),
+            "DEF EPA source: " + str(result["def_epa_source"]),
+            "DEF EPA value: " + f'{float(result["def_epa"]):+.6f}',
             "Frozen coefficients reused: YES",
             "Residual cap reused: 4.25%",
             "Formal Step 91B prospective protocol: NO",

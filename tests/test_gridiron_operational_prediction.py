@@ -93,7 +93,8 @@ def test_deterministic_output_and_frozen_values_are_explicit(tmp_path: Path) -> 
     assert first.stdout == second.stdout
     assert "Market books: BetMGM + FanDuel + DraftKings" in first.stdout
     assert "THREE-BOOK OPERATIONAL CONSENSUS" in first.stdout
-    assert "Caller-supplied DEF EPA: 0.2" in first.stdout
+    assert "DEF EPA source: caller-supplied" in first.stdout
+    assert "DEF EPA value: +0.200000" in first.stdout
     assert "Frozen coefficients reused: YES" in first.stdout
     assert "Residual cap reused: 4.25%" in first.stdout
     assert "Formal Step 91B prospective protocol: NO" in first.stdout

@@ -119,8 +119,17 @@ def test_existing_operational_runner_is_reused(
 ) -> None:
     received: dict[str, object] = {}
 
-    def fake_runner(snapshot: dict[str, object], *, def_epa: float) -> dict[str, object]:
-        received.update(snapshot=snapshot, def_epa=def_epa)
+    def fake_runner(
+        snapshot: dict[str, object],
+        *,
+        def_epa: float,
+        def_epa_source: str = "caller-supplied",
+    ) -> dict[str, object]:
+        received.update(
+            snapshot=snapshot,
+            def_epa=def_epa,
+            def_epa_source=def_epa_source,
+        )
         return {"sentinel": True}
 
     monkeypatch.setattr(game_day, "build_operational_prediction", fake_runner)
@@ -180,9 +189,10 @@ def test_cli_week1_uses_frozen_neutral_def_epa(
     monkeypatch.setattr(
         game_day,
         "build_operational_prediction",
-        lambda snapshot, *, def_epa: {
+        lambda snapshot, *, def_epa, def_epa_source="caller-supplied": {
             "game_id": snapshot["game"]["game_id"],
             "def_epa": def_epa,
+            "def_epa_source": def_epa_source,
         },
     )
     monkeypatch.setattr(
@@ -445,9 +455,14 @@ def test_cli_live_path_records_api_provider(
         snapshot: dict[str, object],
         *,
         def_epa: float,
+        def_epa_source: str = "caller-supplied",
     ) -> dict[str, object]:
         received["provider"] = snapshot["provider"]
-        return {"def_epa": def_epa}
+        received["def_epa_source"] = def_epa_source
+        return {
+            "def_epa": def_epa,
+            "def_epa_source": def_epa_source,
+        }
 
     monkeypatch.setattr(
         game_day,
@@ -522,3 +537,131 @@ def test_automatic_def_epa_refreshes_current_season_pbp(
         ("clear", "play_by_play_2026"),
         ("load", 2026),
     ]
+
+
+def test_cli_week1_passes_neutral_def_epa_source(
+    schedule_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    observed = {
+        "BetMGM": "2026-09-09T18:19:00Z",
+        "FanDuel": "2026-09-09T18:19:00Z",
+        "DraftKings": "2026-09-09T18:19:00Z",
+    }
+    received: dict[str, object] = {}
+
+    monkeypatch.setenv("GRIDIRON_ODDS_API_KEY", "test-key")
+    monkeypatch.setattr(
+        game_day,
+        "fetch_live_prices",
+        lambda _game: (PRICES, observed),
+    )
+
+    def fake_runner(
+        snapshot: dict[str, object],
+        *,
+        def_epa: float,
+        def_epa_source: str = "caller-supplied",
+    ) -> dict[str, object]:
+        received["def_epa"] = def_epa
+        received["def_epa_source"] = def_epa_source
+        return {
+            "def_epa": def_epa,
+            "def_epa_source": def_epa_source,
+        }
+
+    monkeypatch.setattr(
+        game_day,
+        "build_operational_prediction",
+        fake_runner,
+    )
+    monkeypatch.setattr(
+        game_day,
+        "format_operational_prediction",
+        lambda _result: "ok",
+    )
+
+    result = game_day.main(
+        [
+            "--game",
+            GAME["game_id"],
+            "--schedule",
+            str(schedule_path),
+        ]
+    )
+
+    assert result == 0
+    assert received["def_epa"] == 0.0
+    assert received["def_epa_source"] == "frozen Week 1 neutral rule"
+
+
+def test_cli_week2_passes_automatic_nflverse_def_epa_source(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    game = dict(GAME)
+    game["game_id"] = "2026_02_NE_SEA"
+    game["week"] = 2
+    game["kickoff_at"] = "2026-09-17T00:20:00Z"
+
+    schedule = tmp_path / "schedule.json"
+    schedule.write_text(json.dumps([game]), encoding="utf-8")
+
+    observed = {
+        "BetMGM": "2026-09-16T18:19:00Z",
+        "FanDuel": "2026-09-16T18:19:00Z",
+        "DraftKings": "2026-09-16T18:19:00Z",
+    }
+    received: dict[str, object] = {}
+
+    monkeypatch.setenv("GRIDIRON_ODDS_API_KEY", "test-key")
+    monkeypatch.setattr(
+        game_day,
+        "fetch_live_prices",
+        lambda _game: (PRICES, observed),
+    )
+    monkeypatch.setattr(
+        game_day,
+        "automatic_def_epa_for_game",
+        lambda _game: 0.123456,
+    )
+
+    def fake_runner(
+        snapshot: dict[str, object],
+        *,
+        def_epa: float,
+        def_epa_source: str = "caller-supplied",
+    ) -> dict[str, object]:
+        received["def_epa"] = def_epa
+        received["def_epa_source"] = def_epa_source
+        return {
+            "def_epa": def_epa,
+            "def_epa_source": def_epa_source,
+        }
+
+    monkeypatch.setattr(
+        game_day,
+        "build_operational_prediction",
+        fake_runner,
+    )
+    monkeypatch.setattr(
+        game_day,
+        "format_operational_prediction",
+        lambda _result: "ok",
+    )
+
+    result = game_day.main(
+        [
+            "--game",
+            game["game_id"],
+            "--schedule",
+            str(schedule),
+        ]
+    )
+
+    assert result == 0
+    assert received["def_epa"] == pytest.approx(0.123456)
+    assert (
+        received["def_epa_source"]
+        == "automatic nflverse frozen feature"
+    )

@@ -529,19 +529,22 @@ def main(argv: list[str] | None = None) -> int:
         if def_epa is None:
             def_epa = automatic_def_epa_for_game(game)
             if int(game["week"]) == 1:
+                def_epa_source = "frozen Week 1 neutral rule"
                 print(
                     f"DEF EPA: {def_epa:+.6f} "
-                    "(frozen Week 1 neutral rule)"
+                    f"({def_epa_source})"
                 )
             else:
+                def_epa_source = "automatic nflverse frozen feature"
                 print(
                     f"DEF EPA: {def_epa:+.6f} "
-                    "(automatic nflverse frozen feature)"
+                    f"({def_epa_source})"
                 )
         else:
+            def_epa_source = "explicit CLI override"
             print(
                 f"DEF EPA: {def_epa:+.6f} "
-                "(explicit CLI override)"
+                f"({def_epa_source})"
             )
         snapshot = build_game_day_snapshot(
             game,
@@ -550,7 +553,11 @@ def main(argv: list[str] | None = None) -> int:
             observed_at=observed_at,
             provider=provider,
         )
-        result = build_operational_prediction(snapshot, def_epa=def_epa)
+        result = build_operational_prediction(
+            snapshot,
+            def_epa=def_epa,
+            def_epa_source=def_epa_source,
+        )
     except (GameDayInputError, OperationalPredictionError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
