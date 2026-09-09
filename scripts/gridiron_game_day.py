@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import sys
 import urllib.error
@@ -12,6 +13,9 @@ from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
 
+import nflreadpy as nfl
+import polars as pl
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = REPO_ROOT / "src"
 
@@ -19,6 +23,8 @@ for import_root in (REPO_ROOT, SRC_ROOT):
     import_text = str(import_root)
     if import_text not in sys.path:
         sys.path.insert(0, import_text)
+
+from gridiron.features.recent_form.features import build_recent_form_features
 
 try:
     from scripts.gridiron_operational_prediction import (
@@ -257,11 +263,97 @@ def fetch_live_prices(
     return prices, observed_at
 
 
-def frozen_def_epa_for_game(game: dict[str, object]) -> float | None:
-    """Return only frozen protocol-defined automatic DEF EPA values."""
-    if game.get("season_type") == "REG" and int(game["week"]) == 1:
+def automatic_def_epa_for_game(
+    game: dict[str, object],
+) -> float:
+    """Resolve frozen DEF EPA input from leakage-safe nflverse history."""
+    season = int(game["season"])
+    week = int(game["week"])
+
+    if game.get("season_type") != "REG":
+        raise GameDayInputError(
+            "automatic DEF EPA currently supports regular season only"
+        )
+
+    if week == 1:
         return 0.0
-    return None
+
+    try:
+        pbp = nfl.load_pbp(season)
+    except Exception as exc:
+        raise GameDayInputError(
+            f"could not load nflverse {season} play-by-play: {exc}"
+        ) from exc
+
+    required_pbp = {
+        "game_id",
+        "season",
+        "week",
+        "posteam",
+        "defteam",
+        "play_type",
+        "epa",
+    }
+    missing_pbp = required_pbp.difference(pbp.columns)
+    if missing_pbp:
+        raise GameDayInputError(
+            "nflverse play-by-play missing required columns: "
+            + ", ".join(sorted(missing_pbp))
+        )
+
+    prior = pbp.filter(
+        (pl.col("season") == season)
+        & (pl.col("week") < week)
+    )
+
+    if prior.is_empty():
+        raise GameDayInputError(
+            f"no prior-week nflverse play-by-play available for Week {week}"
+        )
+
+    schedule = pl.DataFrame(
+        {
+            "game_id": [str(game["game_id"])],
+            "season": [season],
+            "week": [week],
+            "home_team": [str(game["home_team"])],
+            "away_team": [str(game["away_team"])],
+        }
+    )
+
+    try:
+        features = build_recent_form_features(schedule, prior)
+    except (ValueError, pl.exceptions.PolarsError) as exc:
+        raise GameDayInputError(
+            f"could not compute frozen DEF EPA feature: {exc}"
+        ) from exc
+
+    if features.height != 1:
+        raise GameDayInputError(
+            "frozen DEF EPA feature builder did not return exactly one game"
+        )
+
+    value = features["def_epa_trend_advantage"][0]
+
+    if value is None:
+        raise GameDayInputError(
+            f"DEF EPA unavailable for Week {week}; refusing to guess"
+        )
+
+    try:
+        result = float(value)
+    except (TypeError, ValueError) as exc:
+        raise GameDayInputError(
+            "DEF EPA feature is not numeric"
+        ) from exc
+
+    if not math.isfinite(result):
+        raise GameDayInputError(
+            "DEF EPA feature is not finite"
+        )
+
+    return result
+
 
 
 def load_schedule(path: Path | str = SCHEDULE_PATH) -> tuple[dict[str, object], ...]:
@@ -431,11 +523,22 @@ def main(argv: list[str] | None = None) -> int:
 
         def_epa = args.def_epa
         if def_epa is None:
-            def_epa = frozen_def_epa_for_game(game)
-        if def_epa is None:
-            def_epa = _prompt_value("def_epa_trend_advantage", float)
+            def_epa = automatic_def_epa_for_game(game)
+            if int(game["week"]) == 1:
+                print(
+                    f"DEF EPA: {def_epa:+.6f} "
+                    "(frozen Week 1 neutral rule)"
+                )
+            else:
+                print(
+                    f"DEF EPA: {def_epa:+.6f} "
+                    "(automatic nflverse frozen feature)"
+                )
         else:
-            print(f"DEF EPA: {def_epa:+.6f} (frozen Week 1 neutral rule)")
+            print(
+                f"DEF EPA: {def_epa:+.6f} "
+                "(explicit CLI override)"
+            )
         snapshot = build_game_day_snapshot(
             game,
             prices,

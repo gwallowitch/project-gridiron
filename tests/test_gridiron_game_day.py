@@ -4,6 +4,7 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 
+import polars as pl
 import pytest
 
 from scripts import gridiron_game_day as game_day
@@ -199,3 +200,106 @@ def test_cli_week1_uses_frozen_neutral_def_epa(
     assert result == 0
     assert "DEF EPA: +0.000000" in output.out
     assert "def_epa=0.0" in output.out
+
+
+def test_automatic_def_epa_week1_is_zero() -> None:
+    game = dict(GAME)
+    game["week"] = 1
+    game["season_type"] = "REG"
+
+    assert game_day.automatic_def_epa_for_game(game) == 0.0
+
+
+def test_automatic_def_epa_uses_only_prior_weeks(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    game = {
+        "game_id": "2026_04_NE_SEA",
+        "season": 2026,
+        "week": 4,
+        "season_type": "REG",
+        "home_team": "SEA",
+        "away_team": "NE",
+        "kickoff_at": "2026-10-01T00:20:00Z",
+    }
+
+    pbp = pl.DataFrame(
+        {
+            "game_id": [
+                "g1", "g1",
+                "g2", "g2",
+                "g3", "g3",
+                "future", "future",
+            ],
+            "season": [2026] * 8,
+            "week": [1, 1, 2, 2, 3, 3, 4, 4],
+            "posteam": [
+                "SEA", "NE",
+                "SEA", "NE",
+                "SEA", "NE",
+                "SEA", "NE",
+            ],
+            "defteam": [
+                "NE", "SEA",
+                "NE", "SEA",
+                "NE", "SEA",
+                "NE", "SEA",
+            ],
+            "play_type": ["pass"] * 8,
+            "epa": [
+                0.30, -0.10,
+                0.20, -0.20,
+                0.10, -0.30,
+                999.0, -999.0,
+            ],
+        }
+    )
+
+    monkeypatch.setattr(
+        game_day.nfl,
+        "load_pbp",
+        lambda season: pbp,
+    )
+
+    value = game_day.automatic_def_epa_for_game(game)
+
+    # Week 4 rows must be excluded entirely.
+    assert value == pytest.approx(0.0)
+
+
+def test_automatic_def_epa_fails_closed_when_history_missing(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    game = {
+        "game_id": "2026_02_NE_SEA",
+        "season": 2026,
+        "week": 2,
+        "season_type": "REG",
+        "home_team": "SEA",
+        "away_team": "NE",
+        "kickoff_at": "2026-09-17T00:20:00Z",
+    }
+
+    empty = pl.DataFrame(
+        schema={
+            "game_id": pl.String,
+            "season": pl.Int64,
+            "week": pl.Int64,
+            "posteam": pl.String,
+            "defteam": pl.String,
+            "play_type": pl.String,
+            "epa": pl.Float64,
+        }
+    )
+
+    monkeypatch.setattr(
+        game_day.nfl,
+        "load_pbp",
+        lambda season: empty,
+    )
+
+    with pytest.raises(
+        game_day.GameDayInputError,
+        match="no prior-week nflverse play-by-play",
+    ):
+        game_day.automatic_def_epa_for_game(game)
