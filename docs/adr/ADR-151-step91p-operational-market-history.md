@@ -45,3 +45,37 @@ validation rejects them if found in a stored row.
 Future closing-line-value research may consume this dataset. CLV calculation,
 closing-price collection, background scheduling, and outcome analysis are not
 part of Step 91P.
+
+## Step 91P.1 amendment: two-sided execution observation
+
+Step 91P.1 increments the operational-history schema to version 2 and requires
+one bounded `two_sided_execution` object in every new row. No schema-version-1
+history existed when this amendment was adopted, so the reader rejects version
+1 rather than silently accepting incomplete observations. No row is migrated or
+rewritten, and completed 2026 games must not be backfilled.
+
+The challenger identity is `two-sided-execution-observation-v1`, classified as
+`NON_PROSPECTIVE_TWO_SIDED_EXECUTION_OBSERVATION`. It exists because historical
+data lack sufficient decision-time provenance for a credible retrospective
+two-sided execution study. It uses only the model probabilities and DraftKings
+prices from the same completed in-memory prediction already being retained.
+There is no second fetch.
+
+HOME and AWAY edges are independently calculated as model probability minus
+that side's DraftKings break-even probability. Positive means strictly greater
+than zero. The larger numeric edge is the observational best side; an exact tie
+is represented as `TIE` and never defaults to HOME. `both_sides_positive`
+retains the unusual but mathematically possible underround case. A missed
+opposite-side opportunity is true only when the frozen result is NO BET and the
+side opposite its selected side has strictly positive edge.
+
+The frozen directional strategy remains authoritative. Challenger values cannot
+change selected side, selected odds, frozen edge, `is_bet`, or the operational
+decision. They are non-prospective research observations, not wagering advice.
+The reader independently recomputes every challenger field from canonical row
+inputs and rejects even correctly re-hashed inconsistencies.
+
+No 2026 result may be used to tune this challenger. Any future evaluation must
+compare untouched pre-kickoff observations only after outcomes occur. The
+Step 91B protocol, formal candidate, prospective manifest, ledger, and evidence
+remain outside this facility and unchanged.

@@ -23,11 +23,15 @@ from gridiron.market.prospective_ledger import (
     RESIDUAL_CAP,
 )
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 RECORD_TYPE = "OPERATIONAL_MARKET_OBSERVATION"
 CLASSIFICATION = "NON_PROSPECTIVE_OPERATIONAL_MARKET_HISTORY"
 BOOKS = ("BetMGM", "FanDuel", "DraftKings")
 OPERATIONAL_IDENTITY = "market-plus-def-epa-capped-0425-operational-three-book-v1"
+TWO_SIDED_EXECUTION_IDENTITY = "two-sided-execution-observation-v1"
+TWO_SIDED_EXECUTION_CLASSIFICATION = (
+    "NON_PROSPECTIVE_TWO_SIDED_EXECUTION_OBSERVATION"
+)
 MAX_QUOTE_AGE_MINUTES = 10.0
 BLOCKING_WARNING_MARKERS = (
     ":STALE_PRICE_",
@@ -121,6 +125,119 @@ def _american_odds(value: Any, field: str) -> int:
         raise OperationalHistoryError(f"{field} must be <= -100 or >= +100")
     american_odds_to_implied_probability(value)
     return value
+
+
+def calculate_two_sided_execution_observation(
+    *,
+    model_home_probability: float,
+    model_away_probability: float,
+    draftkings_home_odds: int,
+    draftkings_away_odds: int,
+    frozen_selected_side: str,
+    frozen_is_bet: bool,
+) -> dict[str, Any]:
+    """Derive a non-prospective challenger from one completed prediction."""
+    model_home = _probability(model_home_probability, "model_home_probability")
+    model_away = _probability(model_away_probability, "model_away_probability")
+    _same(model_away, 1.0 - model_home, "model_away_probability")
+    home_odds = _american_odds(draftkings_home_odds, "draftkings_home_odds")
+    away_odds = _american_odds(draftkings_away_odds, "draftkings_away_odds")
+    if frozen_selected_side not in {"HOME", "AWAY"}:
+        raise OperationalHistoryError("frozen_selected_side must be HOME or AWAY")
+    if not isinstance(frozen_is_bet, bool):
+        raise OperationalHistoryError("frozen_is_bet must be boolean")
+
+    home_break_even = american_odds_to_implied_probability(home_odds)
+    away_break_even = american_odds_to_implied_probability(away_odds)
+    home_edge = model_home - home_break_even
+    away_edge = model_away - away_break_even
+    home_positive = home_edge > 0.0
+    away_positive = away_edge > 0.0
+    if home_edge > away_edge:
+        best_side = "HOME"
+        best_edge = home_edge
+    elif away_edge > home_edge:
+        best_side = "AWAY"
+        best_edge = away_edge
+    else:
+        best_side = "TIE"
+        best_edge = home_edge
+
+    opposite_side = "AWAY" if frozen_selected_side == "HOME" else "HOME"
+    opposite_edge = away_edge if opposite_side == "AWAY" else home_edge
+    opposite_positive = opposite_edge > 0.0
+    return {
+        "classification": TWO_SIDED_EXECUTION_CLASSIFICATION,
+        "identity": TWO_SIDED_EXECUTION_IDENTITY,
+        "draftkings": {
+            "home_break_even_probability": home_break_even,
+            "away_break_even_probability": away_break_even,
+        },
+        "home": {
+            "model_probability": model_home,
+            "edge": home_edge,
+            "positive_edge": home_positive,
+        },
+        "away": {
+            "model_probability": model_away,
+            "edge": away_edge,
+            "positive_edge": away_positive,
+        },
+        "best_side": best_side,
+        "best_edge": best_edge,
+        "both_sides_positive": home_positive and away_positive,
+        "frozen_selected_side": frozen_selected_side,
+        "frozen_is_bet": frozen_is_bet,
+        "opposite_side": opposite_side,
+        "opposite_side_edge": opposite_edge,
+        "opposite_side_positive": opposite_positive,
+        "missed_opposite_side_positive_edge": (
+            not frozen_is_bet and opposite_positive
+        ),
+    }
+
+
+def _validate_two_sided_execution(
+    value: Any, expected: Mapping[str, Any]
+) -> None:
+    actual = _mapping(value, "two_sided_execution")
+    if set(actual) != set(expected):
+        raise OperationalHistoryError("two_sided_execution fields are invalid")
+    for field in ("classification", "identity", "best_side", "opposite_side"):
+        if actual.get(field) != expected[field]:
+            raise OperationalHistoryError(f"two_sided_execution.{field} is inconsistent")
+    for field in (
+        "both_sides_positive",
+        "frozen_is_bet",
+        "opposite_side_positive",
+        "missed_opposite_side_positive_edge",
+    ):
+        if not isinstance(actual.get(field), bool) or actual[field] is not expected[field]:
+            raise OperationalHistoryError(f"two_sided_execution.{field} is inconsistent")
+    for field in ("best_edge", "opposite_side_edge"):
+        number = _number(_required(actual, field), f"two_sided_execution.{field}")
+        _same(number, expected[field], f"two_sided_execution.{field}")
+    for section in ("draftkings", "home", "away"):
+        actual_section = _mapping(_required(actual, section), f"two_sided_execution.{section}")
+        expected_section = expected[section]
+        if set(actual_section) != set(expected_section):
+            raise OperationalHistoryError(
+                f"two_sided_execution.{section} fields are invalid"
+            )
+        for field, expected_value in expected_section.items():
+            actual_value = _required(
+                actual_section, field
+            )
+            qualified = f"two_sided_execution.{section}.{field}"
+            if isinstance(expected_value, bool):
+                if not isinstance(actual_value, bool) or actual_value is not expected_value:
+                    raise OperationalHistoryError(f"{qualified} is inconsistent")
+            else:
+                _same(_number(actual_value, qualified), expected_value, qualified)
+    if actual.get("frozen_selected_side") != expected["frozen_selected_side"]:
+        raise OperationalHistoryError(
+            "two_sided_execution.frozen_selected_side is inconsistent"
+        )
 
 
 def _validate_record_semantics(record: Mapping[str, Any]) -> None:
@@ -290,6 +407,18 @@ def _validate_record_semantics(record: Mapping[str, Any]) -> None:
     if stored_decision.get("decision") != ("BET" if is_bet else "NO BET"):
         raise OperationalHistoryError("decision label is inconsistent with is_bet")
 
+    expected_two_sided = calculate_two_sided_execution_observation(
+        model_home_probability=model_home,
+        model_away_probability=model_away,
+        draftkings_home_odds=draftkings["home_odds"],
+        draftkings_away_odds=draftkings["away_odds"],
+        frozen_selected_side=decision.selected_side,
+        frozen_is_bet=is_bet,
+    )
+    _validate_two_sided_execution(
+        _required(record, "two_sided_execution"), expected_two_sided
+    )
+
     warnings = record.get("warnings")
     if not isinstance(warnings, list) or not all(
         isinstance(warning, str) for warning in warnings
@@ -328,6 +457,16 @@ def build_operational_history_record(
     minutes = float(_required(result, "minutes_to_kickoff"))
     if not math.isfinite(minutes) or minutes <= 0.0:
         raise OperationalHistoryError("observation must be strictly pre-kickoff")
+
+    draftkings = next(book for book in books if book["book"] == "DraftKings")
+    two_sided_execution = calculate_two_sided_execution_observation(
+        model_home_probability=_required(result, "model_home_probability"),
+        model_away_probability=_required(result, "model_away_probability"),
+        draftkings_home_odds=draftkings["home_odds"],
+        draftkings_away_odds=draftkings["away_odds"],
+        frozen_selected_side=_required(result, "selected_side"),
+        frozen_is_bet=_required(result, "is_bet"),
+    )
 
     base: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
@@ -378,6 +517,7 @@ def build_operational_history_record(
             "is_bet": _required(result, "is_bet"),
             "decision": "BET" if result["is_bet"] else "NO BET",
         },
+        "two_sided_execution": two_sided_execution,
         "warnings": list(result.get("warnings", ())),
     }
     _validate_record_semantics(base)

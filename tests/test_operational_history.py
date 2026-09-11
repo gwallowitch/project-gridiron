@@ -179,7 +179,7 @@ def test_semantically_invalid_existing_history_blocks_append_without_mutation(
 @pytest.mark.parametrize(
     ("field", "value", "message"),
     [
-        ("schema_version", 2, "schema_version"),
+        ("schema_version", 1, "schema_version"),
         ("record_type", "OTHER", "record_type"),
         ("classification", "PROSPECTIVE", "classification"),
         ("prospective_evidence", True, "exactly false"),
@@ -347,5 +347,5 @@ def test_serialized_record_is_canonical_json(tmp_path: Path) -> None:
     history = tmp_path / "operational.jsonl"
     append_operational_observation(history, prediction())
     line = history.read_text(encoding="utf-8").strip()
-    assert json.loads(line)["schema_version"] == 1
+    assert json.loads(line)["schema_version"] == 2
     assert line.startswith('{"books":')
