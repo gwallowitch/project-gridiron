@@ -25,6 +25,10 @@ for import_root in (REPO_ROOT, SRC_ROOT):
         sys.path.insert(0, import_text)
 
 from gridiron.features.recent_form.features import build_recent_form_features
+from gridiron.market.operational_history import (
+    OperationalHistoryError,
+    append_operational_observation,
+)
 
 try:
     from scripts.gridiron_operational_prediction import (
@@ -46,6 +50,7 @@ SCHEDULE_PATH = (
     / "schedules"
     / "step91i_schedules_2026_reg_weeks_01_16.json"
 )
+HISTORY_PATH = REPO_ROOT / "data" / "operational" / "market_history_v1.jsonl"
 BOOK_ARGUMENTS = (
     ("BetMGM", "betmgm"),
     ("FanDuel", "fanduel"),
@@ -486,6 +491,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--game", required=True, help="canonical 2026 game_id")
     parser.add_argument("--schedule", type=Path, default=SCHEDULE_PATH)
+    parser.add_argument(
+        "--record-history",
+        action="store_true",
+        help="append this exact valid result to non-prospective operational history",
+    )
+    parser.add_argument("--history-path", type=Path, default=HISTORY_PATH)
     for _, argument in BOOK_ARGUMENTS:
         parser.add_argument(f"--{argument}-home", type=int)
         parser.add_argument(f"--{argument}-away", type=int)
@@ -569,7 +580,14 @@ def main(argv: list[str] | None = None) -> int:
             def_epa=def_epa,
             def_epa_source=def_epa_source,
         )
-    except (GameDayInputError, OperationalPredictionError) as exc:
+        if args.record_history:
+            record = append_operational_observation(args.history_path, result)
+            print(f"Operational history recorded: {record['observation_id']}")
+    except (
+        GameDayInputError,
+        OperationalPredictionError,
+        OperationalHistoryError,
+    ) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
     report = format_operational_prediction(result).replace(

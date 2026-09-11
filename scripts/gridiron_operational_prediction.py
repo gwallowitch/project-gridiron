@@ -74,7 +74,7 @@ def build_operational_prediction(
     if view["minutes_to_kickoff"] <= 0.0:
         raise OperationalPredictionError("prediction timestamp must be pre-kickoff")
     prices = view["prices"]
-    fair_home: list[float] = []
+    book_probabilities: dict[str, dict[str, float]] = {}
     for book in BOOKS:
         offer = prices[book]
         home_odds = offer["home_odds"]
@@ -85,10 +85,14 @@ def build_operational_prediction(
             )
         if offer["observed_at"] is None:
             raise OperationalPredictionError(f"observed_at required for {book}")
-        fair_home.append(
-            remove_two_sided_vig(home_odds, away_odds).home_fair_probability
-        )
-    market_home = sum(fair_home) / len(BOOKS)
+        fair = remove_two_sided_vig(home_odds, away_odds)
+        book_probabilities[book] = {
+            "home": fair.home_fair_probability,
+            "away": fair.away_fair_probability,
+        }
+    market_home = sum(
+        probabilities["home"] for probabilities in book_probabilities.values()
+    ) / len(BOOKS)
     draftkings = prices["DraftKings"]
     decision = calculate_market_model_decision(
         market_home,
@@ -100,17 +104,24 @@ def build_operational_prediction(
         intercept=INTERCEPT,
         residual_cap=RESIDUAL_CAP,
     )
+    game = snapshot["game"]
     return {
         **view,
+        "season": game.get("season"),
+        "week": game.get("week"),
+        "season_type": game.get("season_type"),
+        "provider": snapshot.get("provider", "unspecified-operational-input"),
         "operational_identity": OPERATIONAL_IDENTITY,
         "def_epa": def_epa,
         "def_epa_source": def_epa_source,
         "market_home_probability": market_home,
         "market_away_probability": 1.0 - market_home,
+        "book_probabilities": book_probabilities,
         "model_home_probability": decision.model_home_probability,
         "model_away_probability": 1.0 - decision.model_home_probability,
         "selected_side": decision.selected_side,
         "selected_odds": decision.selected_odds,
+        "break_even_probability": decision.break_even_probability,
         "edge": decision.edge,
         "is_bet": decision.is_bet,
         "coefficients": {

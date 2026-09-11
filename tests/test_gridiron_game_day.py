@@ -595,6 +595,47 @@ def test_cli_week1_passes_neutral_def_epa_source(
     assert received["def_epa_source"] == "frozen Week 1 neutral rule"
 
 
+def test_cli_history_persistence_does_not_fetch_twice(
+    schedule_path: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    observed = {
+        "BetMGM": "2026-09-09T18:19:00Z",
+        "FanDuel": "2026-09-09T18:19:00Z",
+        "DraftKings": "2026-09-09T18:19:00Z",
+    }
+    fetches = 0
+
+    def fetch_once(_game: dict[str, object]):
+        nonlocal fetches
+        fetches += 1
+        return PRICES, observed
+
+    class FixedDateTime(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return CAPTURED
+
+    history = tmp_path / "operational.jsonl"
+    monkeypatch.setattr(game_day, "fetch_live_prices", fetch_once)
+    monkeypatch.setattr(game_day, "datetime", FixedDateTime)
+    result = game_day.main(
+        [
+            "--game",
+            GAME["game_id"],
+            "--schedule",
+            str(schedule_path),
+            "--record-history",
+            "--history-path",
+            str(history),
+        ]
+    )
+    assert result == 0
+    assert fetches == 1
+    assert len(history.read_text(encoding="utf-8").splitlines()) == 1
+
+
 def test_cli_week2_passes_automatic_nflverse_def_epa_source(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
