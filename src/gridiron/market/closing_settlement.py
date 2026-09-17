@@ -23,6 +23,7 @@ EXECUTION_CLASSIFICATION = "NON_PROSPECTIVE_RECORDED_EXECUTION"
 FINAL_RESULT_CLASSIFICATION = "NON_PROSPECTIVE_FINAL_RESULT_INPUT"
 SETTLEMENT_CLASSIFICATION = "NON_PROSPECTIVE_EXECUTION_SETTLEMENT"
 BOOKS = ("BetMGM", "FanDuel", "DraftKings")
+FUNDING_TYPES = ("CASH", "BONUS_BET")
 GAME_ID_PATTERN = re.compile(r"^2026_(?:0[1-9]|1[0-6])_[A-Z0-9]+_[A-Z0-9]+$")
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 
@@ -176,6 +177,7 @@ def build_execution(
     *, game_id: str, kickoff_at: str, executed_at: str, side: str,
     american_odds: int, stake: float, currency: str, source_book: str,
     related_observation_id: str | None = None,
+    funding_type: str | None = "CASH",
 ) -> dict[str, Any]:
     kickoff = _timestamp(kickoff_at, "kickoff_at")
     executed = _timestamp(executed_at, "executed_at")
@@ -193,8 +195,10 @@ def build_execution(
     currency_text = _text(currency, "currency").upper()
     if len(currency_text) != 3 or not currency_text.isalpha():
         raise ClosingSettlementError("currency must be a three-letter code")
+    if funding_type is not None and funding_type not in FUNDING_TYPES:
+        raise ClosingSettlementError("funding_type must be CASH or BONUS_BET")
     base = {
-        "schema_version": 1,
+        "schema_version": 1 if funding_type is None else 2,
         "record_type": "RECORDED_EXECUTION",
         "classification": EXECUTION_CLASSIFICATION,
         "prospective_evidence": False,
@@ -208,6 +212,8 @@ def build_execution(
         "source_book": _text(source_book, "source_book"),
         "related_observation_id": related_observation_id,
     }
+    if funding_type is not None:
+        base["funding_type"] = funding_type
     return {**base, "execution_id": _identity(base)}
 
 
@@ -243,12 +249,16 @@ def _validate_identity(record: Mapping[str, Any], identity_field: str) -> None:
 
 def validate_execution(record: Mapping[str, Any]) -> None:
     _validate_identity(record, "execution_id")
+    schema_version = record.get("schema_version")
+    if schema_version not in {1, 2}:
+        raise ClosingSettlementError("unsupported execution schema_version")
     expected = build_execution(
         game_id=record.get("game_id"), kickoff_at=record.get("kickoff_at"),
         executed_at=record.get("executed_at"), side=record.get("side"),
         american_odds=record.get("american_odds"), stake=record.get("stake"),
         currency=record.get("currency"), source_book=record.get("source_book"),
         related_observation_id=record.get("related_observation_id"),
+        funding_type=None if schema_version == 1 else record.get("funding_type"),
     )
     if dict(record) != expected:
         raise ClosingSettlementError("execution fields or semantics are invalid")
@@ -338,7 +348,20 @@ def build_settlement(
     home_score, away_score = final_result["home_score"], final_result["away_score"]
     winning_side = "PUSH" if home_score == away_score else ("HOME" if home_score > away_score else "AWAY")
     outcome = "PUSH" if winning_side == "PUSH" else ("WIN" if execution["side"] == winning_side else "LOSS")
-    net_profit = 0.0 if outcome == "PUSH" else (_profit(execution["stake"], execution["american_odds"]) if outcome == "WIN" else -execution["stake"])
+    funding_type = execution.get("funding_type", "CASH")
+    if funding_type == "BONUS_BET" and outcome == "PUSH":
+        raise ClosingSettlementError(
+            "BONUS_BET push requires explicit sportsbook reissue handling"
+        )
+    net_profit = (
+        0.0
+        if outcome == "PUSH"
+        else (
+            _profit(execution["stake"], execution["american_odds"])
+            if outcome == "WIN"
+            else (-execution["stake"] if funding_type == "CASH" else 0.0)
+        )
+    )
     execution_break_even = american_odds_to_implied_probability(execution["american_odds"])
     close_odds = close_break_even = close_consensus = None
     closing_id = None
@@ -356,7 +379,7 @@ def build_settlement(
     if _timestamp(settled_text, "settled_at") < _timestamp(final_result["acquired_at"], "final_result.acquired_at"):
         raise ClosingSettlementError("settlement cannot precede final-result acquisition")
     base = {
-        "schema_version": 1,
+        "schema_version": 1 if execution["schema_version"] == 1 else 2,
         "record_type": "EXECUTION_SETTLEMENT",
         "classification": SETTLEMENT_CLASSIFICATION,
         "prospective_evidence": False,
@@ -380,6 +403,24 @@ def build_settlement(
         "draftkings_clv_probability": None if close_break_even is None else close_break_even - execution_break_even,
         "consensus_clv_probability": None if close_consensus is None else close_consensus - execution_break_even,
     }
+    if execution["schema_version"] == 2:
+        bonus_proceeds = net_profit if funding_type == "BONUS_BET" else None
+        base.update(
+            {
+                "funding_type": funding_type,
+                "cash_staked": execution["stake"] if funding_type == "CASH" else 0.0,
+                "bonus_face_value_consumed": (
+                    execution["stake"] if funding_type == "BONUS_BET" else 0.0
+                ),
+                "bonus_cash_proceeds": bonus_proceeds,
+                "bonus_conversion_rate": (
+                    bonus_proceeds / execution["stake"]
+                    if funding_type == "BONUS_BET"
+                    else None
+                ),
+                "realized_cash_change": net_profit,
+            }
+        )
     return {**base, "settlement_id": _identity(base)}
 
 
