@@ -152,10 +152,8 @@ def _american_price(value: object, field: str) -> int:
     return price
 
 
-def fetch_live_prices(
-    game: dict[str, object],
-) -> tuple[dict[str, tuple[int, int]], dict[str, str]]:
-    """Fetch all three operational books using one Odds API request."""
+def fetch_live_moneyline_payload() -> object:
+    """Fetch one sanitized-at-source h2h payload without interpreting games."""
     api_key = os.environ.get("GRIDIRON_ODDS_API_KEY")
     if not api_key:
         raise GameDayInputError(
@@ -169,7 +167,14 @@ def fetch_live_prices(
         "&oddsFormat=american"
         "&bookmakers=draftkings,fanduel,betmgm"
     )
-    payload = _fetch_json(ODDS_API_URL + query)
+    return _fetch_json(ODDS_API_URL + query)
+
+
+def parse_live_prices(
+    payload: object,
+    game: dict[str, object],
+) -> tuple[dict[str, tuple[int, int]], dict[str, str]]:
+    """Parse one game from an already fetched Odds API h2h payload."""
 
     if not isinstance(payload, list):
         raise GameDayInputError("invalid Odds API response")
@@ -266,6 +271,13 @@ def fetch_live_prices(
         )
 
     return prices, observed_at
+
+
+def fetch_live_prices(
+    game: dict[str, object],
+) -> tuple[dict[str, tuple[int, int]], dict[str, str]]:
+    """Fetch all three operational books using one Odds API request."""
+    return parse_live_prices(fetch_live_moneyline_payload(), game)
 
 
 def automatic_def_epa_for_game(

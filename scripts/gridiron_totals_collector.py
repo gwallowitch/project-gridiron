@@ -46,8 +46,8 @@ def eligible_target(minutes: float) -> str | None:
     return next((label for label, (_, low, high) in TARGET_WINDOWS.items() if low <= minutes <= high), None)
 
 
-def fetch_live_totals(game: dict[str, object], collected_at: datetime) -> tuple[dict[str, Any], ...]:
-    """Make exactly one live totals request for one eligible game."""
+def fetch_live_totals_payload() -> object:
+    """Fetch one totals payload without selecting a scheduled game."""
     key = os.environ.get("GRIDIRON_ODDS_API_KEY")
     if not key:
         raise OperationalTotalsError("GRIDIRON_ODDS_API_KEY is not set")
@@ -58,12 +58,24 @@ def fetch_live_totals(game: dict[str, object], collected_at: datetime) -> tuple[
             payload = json.load(response)
     except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
         raise OperationalTotalsError("totals provider request failed") from exc
+    return payload
+
+
+def parse_live_totals(
+    payload: object, game: dict[str, object], collected_at: datetime
+) -> tuple[dict[str, Any], ...]:
+    """Parse one scheduled game from an already fetched totals payload."""
     return parse_totals_payload(
         payload,
         home_name=game_day.NFL_TEAM_NAMES[str(game["home_team"])],
         away_name=game_day.NFL_TEAM_NAMES[str(game["away_team"])],
         collected_at=collected_at,
     )
+
+
+def fetch_live_totals(game: dict[str, object], collected_at: datetime) -> tuple[dict[str, Any], ...]:
+    """Make exactly one live totals request for one eligible game."""
+    return parse_live_totals(fetch_live_totals_payload(), game, collected_at)
 
 
 def _automatic(history: tuple[dict[str, Any], ...]) -> dict[tuple[str, str], dict[str, Any]]:

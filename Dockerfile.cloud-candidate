@@ -1,0 +1,16 @@
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=8080
+
+WORKDIR /app
+COPY pyproject.toml requirements-cloud.txt README.md ./
+COPY src ./src
+COPY scripts ./scripts
+COPY data/raw/schedules/step91i_schedules_2026_reg_weeks_01_16.json \
+    ./data/raw/schedules/step91i_schedules_2026_reg_weeks_01_16.json
+RUN pip install --no-cache-dir . -r requirements-cloud.txt
+
+CMD ["functions-framework", "--source", "scripts/gridiron_cloud_candidate.py", \
+     "--target", "collect_candidate", "--port", "8080"]

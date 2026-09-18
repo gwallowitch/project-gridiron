@@ -17,6 +17,7 @@ dist/
 data/raw/
 data/curated/
 output/
+data/cloud_operational_cache/
 
 # Local databases
 database/*.duckdb
