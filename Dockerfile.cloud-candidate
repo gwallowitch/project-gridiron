@@ -11,6 +11,9 @@ COPY scripts ./scripts
 COPY data/raw/schedules/step91i_schedules_2026_reg_weeks_01_16.json \
     ./data/raw/schedules/step91i_schedules_2026_reg_weeks_01_16.json
 RUN pip install --no-cache-dir . -r requirements-cloud.txt
+RUN useradd --create-home --uid 10001 appuser
+
+USER appuser
 
 CMD ["functions-framework", "--source", "scripts/gridiron_cloud_candidate.py", \
      "--target", "collect_candidate", "--port", "8080"]

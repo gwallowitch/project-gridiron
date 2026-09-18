@@ -112,6 +112,8 @@ def _prepare_lane_slots(
         if minutes <= 0:
             counters["post_kickoff"] += 1
             continue
+        if minutes > max(window[2] for window in TARGET_WINDOWS.values()):
+            continue
         if lane == "MONEYLINE":
             targets = [
                 (window.label, window.minimum_minutes, _slot_for_moneyline(game, window), window)

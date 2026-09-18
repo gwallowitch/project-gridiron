@@ -259,6 +259,41 @@ def test_post_kickoff_candidate_performs_no_fetch_or_backfill(
     assert repository.enumerate_slots() == ()
 
 
+def test_far_future_games_perform_no_firestore_reads_or_provider_fetch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    schedule = tmp_path / "schedule.json"
+    schedule.write_text(
+        json.dumps(
+            [{
+                "game_id": "2026_02_NYG_DAL", "season": 2026, "week": 2,
+                "season_type": "REG", "home_team": "DAL", "away_team": "NYG",
+                "kickoff_at": "2026-09-17T22:00:00Z",
+            }]
+        )
+    )
+    monkeypatch.setenv("GRIDIRON_ODDS_API_KEY", "test-only")
+    monkeypatch.setattr(
+        candidate.game_day, "fetch_live_moneyline_payload",
+        lambda: pytest.fail("provider fetch must not occur"),
+    )
+    monkeypatch.setattr(
+        candidate.totals, "fetch_live_totals_payload",
+        lambda: pytest.fail("provider fetch must not occur"),
+    )
+
+    class NoReadRepository(InMemoryEvidenceRepository):
+        def inspect_slot(self, slot_id: str) -> dict[str, object] | None:
+            pytest.fail(f"far-future slot must not be read: {slot_id}")
+
+    repository = NoReadRepository()
+    result = candidate.run_cloud_candidate(
+        repository, now=NOW, owner="test", schedule_path=schedule
+    )
+    assert result["provider_calls"] == 0
+    assert repository.enumerate_slots() == ()
+
+
 def test_candidate_requires_api_key_before_any_state_change(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
