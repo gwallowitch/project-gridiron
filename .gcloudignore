@@ -16,6 +16,7 @@
 !scripts/gridiron_market_collector.py
 !scripts/gridiron_operational_prediction.py
 !scripts/gridiron_totals_collector.py
+!scripts/step91d_three_book_exploratory.py
 
 # Never upload generated Python/package artifacts reintroduced by source rules.
 src/**/__pycache__/
