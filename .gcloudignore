@@ -1,0 +1,32 @@
+# Deny by default. This is the Cloud Build source-upload boundary.
+**
+
+# Reviewed container definition and Python package metadata.
+!Dockerfile.cloud-candidate
+!pyproject.toml
+!requirements-cloud.txt
+!README.md
+
+# Runtime code copied by Dockerfile.cloud-candidate.
+!src/
+!src/**
+!scripts/
+!scripts/gridiron_cloud_candidate.py
+!scripts/gridiron_game_day.py
+!scripts/gridiron_market_collector.py
+!scripts/gridiron_operational_prediction.py
+!scripts/gridiron_totals_collector.py
+
+# Never upload generated Python/package artifacts reintroduced by source rules.
+src/**/__pycache__/
+src/**/*.py[cod]
+src/*.egg-info/
+src/**/*.egg-info/
+scripts/**/__pycache__/
+scripts/**/*.py[cod]
+
+# Retained schedule is the only permitted data artifact.
+!data/
+!data/raw/
+!data/raw/schedules/
+!data/raw/schedules/step91i_schedules_2026_reg_weeks_01_16.json
