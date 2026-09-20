@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 
 import pytest
 
@@ -67,6 +68,52 @@ def test_frozen_window_boundaries(label: str, low: int, high: int) -> None:
     assert collector.eligible_target(high - 0.01) == label
     assert collector.eligible_target(low - 0.01) != label
     assert collector.eligible_target(high + 0.01) != label
+
+
+@pytest.mark.parametrize("unsafe", [" ", "\n", "\r", "\t", "\0", "\x7f"])
+def test_totals_rejects_url_disallowed_api_key(
+    monkeypatch: pytest.MonkeyPatch, unsafe: str
+) -> None:
+    key = f"TEST{unsafe}KEY"
+    monkeypatch.setattr(
+        collector.game_day,
+        "validated_odds_api_key",
+        lambda: collector.game_day._validate_odds_api_key(key),
+    )
+    with pytest.raises(OperationalTotalsError) as error:
+        collector.fetch_live_totals_payload()
+    assert key not in str(error.value)
+
+
+def test_totals_url_uses_encoded_frozen_query(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: list[str] = []
+
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+    monkeypatch.setenv("GRIDIRON_ODDS_API_KEY", "TEST_KEY")
+    monkeypatch.setattr(
+        collector.urllib.request,
+        "urlopen",
+        lambda request, timeout: captured.append(request.full_url) or Response(),
+    )
+    monkeypatch.setattr(collector.json, "load", lambda _response: [])
+    assert collector.fetch_live_totals_payload() == []
+    parsed = urlsplit(captured[0])
+    assert f"{parsed.scheme}://{parsed.netloc}{parsed.path}" == collector.ODDS_URL
+    assert parse_qs(parsed.query) == {
+        "apiKey": ["TEST_KEY"],
+        "regions": ["us"],
+        "markets": ["totals"],
+        "oddsFormat": ["american"],
+        "bookmakers": ["draftkings,fanduel,betmgm"],
+    }
 
 
 def test_dry_run_and_outside_window_never_fetch_or_write(tmp_path: Path) -> None:

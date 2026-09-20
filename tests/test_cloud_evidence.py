@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import http.client
 import importlib
 import json
 from datetime import UTC, datetime, timedelta
@@ -304,6 +305,65 @@ def test_candidate_requires_api_key_before_any_state_change(
             repository, now=NOW, owner="test", schedule_path=tmp_path / "unused"
         )
     assert repository.enumerate_slots() == ()
+
+
+def test_entrypoint_rejects_malformed_key_before_firestore_or_external_work(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("GRIDIRON_ODDS_API_KEY", "TEST\nKEY")
+    monkeypatch.setattr(
+        candidate.FirestoreEvidenceRepository,
+        "from_default_client",
+        lambda: pytest.fail("Firestore client must not be created"),
+    )
+    monkeypatch.setattr(
+        candidate.game_day.nfl,
+        "load_pbp",
+        lambda _season: pytest.fail("nflverse must not be loaded"),
+    )
+    monkeypatch.setattr(
+        candidate.game_day,
+        "fetch_live_moneyline_payload",
+        lambda: pytest.fail("moneyline provider must not be called"),
+    )
+    monkeypatch.setattr(
+        candidate.totals,
+        "fetch_live_totals_payload",
+        lambda: pytest.fail("totals provider must not be called"),
+    )
+    body, status = candidate.collect_candidate(object())
+    assert status == 500
+    assert body["status"] == "FAILED_CLOSED"
+    assert body["error_type"] == "GameDayInputError"
+
+
+def test_invalid_url_cannot_create_accepted_evidence(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    schedule = tmp_path / "schedule.json"
+    schedule.write_text(
+        json.dumps(
+            [{
+                "game_id": "2026_01_DAL_PHI", "season": 2026, "week": 1,
+                "season_type": "REG", "home_team": "PHI", "away_team": "DAL",
+                "kickoff_at": "2026-09-10T19:00:00Z",
+            }]
+        )
+    )
+    monkeypatch.setenv("GRIDIRON_ODDS_API_KEY", "TEST_KEY")
+    monkeypatch.setattr(
+        candidate.game_day,
+        "fetch_live_moneyline_payload",
+        lambda: (_ for _ in ()).throw(http.client.InvalidURL("synthetic")),
+    )
+    repository = InMemoryEvidenceRepository()
+    with pytest.raises(http.client.InvalidURL, match="synthetic"):
+        candidate.run_cloud_candidate(
+            repository, now=NOW, owner="test", schedule_path=schedule
+        )
+    assert repository.raw_responses == {}
+    assert repository.collections["moneyline_observations"] == {}
+    assert repository.collections["totals_observations"] == {}
 
 
 def _event(home: str, away: str, event_id: str, *, totals: bool) -> dict[str, object]:

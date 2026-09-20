@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from collections.abc import Callable
 from datetime import UTC, datetime
@@ -48,10 +48,20 @@ def eligible_target(minutes: float) -> str | None:
 
 def fetch_live_totals_payload() -> object:
     """Fetch one totals payload without selecting a scheduled game."""
-    key = os.environ.get("GRIDIRON_ODDS_API_KEY")
-    if not key:
-        raise OperationalTotalsError("GRIDIRON_ODDS_API_KEY is not set")
-    url = ODDS_URL + f"?apiKey={key}&regions=us&markets=totals&oddsFormat=american&bookmakers=draftkings,fanduel,betmgm"
+    try:
+        key = game_day.validated_odds_api_key()
+    except game_day.GameDayInputError as exc:
+        raise OperationalTotalsError(str(exc)) from exc
+    query = urllib.parse.urlencode(
+        {
+            "apiKey": key,
+            "regions": "us",
+            "markets": "totals",
+            "oddsFormat": "american",
+            "bookmakers": "draftkings,fanduel,betmgm",
+        }
+    )
+    url = f"{ODDS_URL}?{query}"
     request = urllib.request.Request(url, headers={"User-Agent": "ProjectGridiron/1.0", "Accept": "application/json"})
     try:
         with urllib.request.urlopen(request, timeout=15) as response:

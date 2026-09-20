@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from datetime import UTC, datetime
 from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 
 import polars as pl
 import pytest
@@ -55,6 +56,36 @@ def test_duplicate_game_identity_is_rejected(tmp_path: Path) -> None:
     path.write_text(json.dumps([GAME, GAME]), encoding="utf-8")
     with pytest.raises(game_day.GameDayInputError, match="duplicate"):
         game_day.load_schedule(path)
+
+
+@pytest.mark.parametrize("unsafe", [" ", "\n", "\r", "\t", "\0", "\x7f"])
+def test_odds_api_key_rejects_url_disallowed_characters(
+    unsafe: str,
+) -> None:
+    key = f"TEST{unsafe}KEY"
+    with pytest.raises(game_day.GameDayInputError) as error:
+        game_day._validate_odds_api_key(key)
+    assert key not in str(error.value)
+
+
+def test_moneyline_url_uses_encoded_frozen_query(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: list[str] = []
+    monkeypatch.setenv("GRIDIRON_ODDS_API_KEY", "TEST_KEY")
+    monkeypatch.setattr(
+        game_day, "_fetch_json", lambda url: captured.append(url) or []
+    )
+    assert game_day.fetch_live_moneyline_payload() == []
+    parsed = urlsplit(captured[0])
+    assert f"{parsed.scheme}://{parsed.netloc}{parsed.path}" == game_day.ODDS_API_URL
+    assert parse_qs(parsed.query) == {
+        "apiKey": ["TEST_KEY"],
+        "regions": ["us"],
+        "markets": ["h2h"],
+        "oddsFormat": ["american"],
+        "bookmakers": ["draftkings,fanduel,betmgm"],
+    }
 
 
 def test_snapshot_maps_six_prices_and_fixed_clock() -> None:

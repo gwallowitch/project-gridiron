@@ -8,6 +8,7 @@ import math
 import os
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from collections.abc import Callable
 from datetime import UTC, datetime
@@ -60,6 +61,22 @@ BOOK_ARGUMENTS = (
 
 class GameDayInputError(ValueError):
     """Game-day input cannot be resolved without guessing."""
+
+
+def _validate_odds_api_key(api_key: str | None) -> str:
+    """Return the exact supplied key after fail-closed URL-safety checks."""
+    if not api_key:
+        raise GameDayInputError("GRIDIRON_ODDS_API_KEY is not set")
+    if any(ord(character) <= 0x20 or ord(character) == 0x7F for character in api_key):
+        raise GameDayInputError(
+            "GRIDIRON_ODDS_API_KEY contains a URL-disallowed character"
+        )
+    return api_key
+
+
+def validated_odds_api_key() -> str:
+    """Return the exact configured key after fail-closed URL-safety checks."""
+    return _validate_odds_api_key(os.environ.get("GRIDIRON_ODDS_API_KEY"))
 
 
 ODDS_API_URL = (
@@ -154,20 +171,16 @@ def _american_price(value: object, field: str) -> int:
 
 def fetch_live_moneyline_payload() -> object:
     """Fetch one sanitized-at-source h2h payload without interpreting games."""
-    api_key = os.environ.get("GRIDIRON_ODDS_API_KEY")
-    if not api_key:
-        raise GameDayInputError(
-            "GRIDIRON_ODDS_API_KEY is not set"
-        )
-
-    query = (
-        f"?apiKey={api_key}"
-        "&regions=us"
-        "&markets=h2h"
-        "&oddsFormat=american"
-        "&bookmakers=draftkings,fanduel,betmgm"
+    query = urllib.parse.urlencode(
+        {
+            "apiKey": validated_odds_api_key(),
+            "regions": "us",
+            "markets": "h2h",
+            "oddsFormat": "american",
+            "bookmakers": "draftkings,fanduel,betmgm",
+        }
     )
-    return _fetch_json(ODDS_API_URL + query)
+    return _fetch_json(f"{ODDS_API_URL}?{query}")
 
 
 def parse_live_prices(

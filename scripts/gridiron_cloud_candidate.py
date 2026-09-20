@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import os
 import sys
 import uuid
 from datetime import UTC, datetime, timedelta
@@ -335,8 +334,10 @@ def run_cloud_candidate(
     """Run both candidate lanes without changing local operational evidence."""
     if now.tzinfo is None:
         raise CloudEvidenceError("cloud invocation time must include a timezone")
-    if not os.environ.get("GRIDIRON_ODDS_API_KEY"):
-        raise CloudEvidenceError("GRIDIRON_ODDS_API_KEY is not set")
+    try:
+        game_day.validated_odds_api_key()
+    except game_day.GameDayInputError as exc:
+        raise CloudEvidenceError(str(exc)) from exc
     now = now.astimezone(UTC)
     schedule = game_day.load_schedule(schedule_path)
     counters = {
@@ -362,6 +363,7 @@ def run_cloud_candidate(
 def collect_candidate(_request: object) -> tuple[dict[str, Any], int]:
     """Functions Framework entrypoint for a private authenticated Cloud Run service."""
     try:
+        game_day.validated_odds_api_key()
         repository = FirestoreEvidenceRepository.from_default_client()
         result = run_cloud_candidate(
             repository, now=datetime.now(UTC), owner=f"cloud-run-{uuid.uuid4().hex}"
