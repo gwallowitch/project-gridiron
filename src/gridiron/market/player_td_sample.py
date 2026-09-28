@@ -21,6 +21,28 @@ ODDS_FORMAT = "american"
 MAX_REQUEST_COUNT = 6
 ESTIMATED_CREDITS_PER_REQUEST = 10
 PURPOSE = "SCHEMA_AND_COVERAGE_VALIDATION"
+FROZEN_SCHEDULE_SOURCE_ID = (
+    "nflverse-schedules-release-games-parquet-asset-584596352"
+)
+FROZEN_SCHEDULE_SHA256 = (
+    "3eafad9f2a04b03092d6adee72d2d20990b6438c6b088bda2b8b75a6ad741bd4"
+)
+FROZEN_SOURCE_SHA256 = (
+    "edde2cff36388e86dfe0f1087cf9d1735c2d95f46079f55fbc7825956b877530"
+)
+MANIFEST_FIELDS = frozenset({
+    "schema_version", "protocol_version", "selection_rule", "targets",
+    "maximum_request_count", "estimated_credits_per_request",
+    "estimated_maximum_credits", "bulk_acquisition_authorized", "items",
+    "manifest_sha256",
+})
+ITEM_FIELDS = frozenset({
+    "sample_schema_version", "sample_protocol_version", "canonical_game_id",
+    "provider_event_id", "season", "season_type", "week", "home_team",
+    "away_team", "kickoff_at", "snapshot_label", "requested_snapshot_at",
+    "sport", "market", "books", "region", "odds_format", "purpose",
+    "schedule_source_id", "schedule_artifact_sha256", "sample_item_id",
+})
 PROHIBITED_FIELD_TOKENS = (
     "score", "winner", "touchdown", "profit", "roi", "result", "injury",
 )
@@ -118,25 +140,36 @@ def build_sample_manifest(
 
 def validate_sample_manifest(manifest: Mapping[str, Any]) -> None:
     """Fail closed if the frozen six-request manifest is altered."""
-    required = {
-        "schema_version", "protocol_version", "selection_rule", "targets",
-        "maximum_request_count", "estimated_credits_per_request",
-        "estimated_maximum_credits", "bulk_acquisition_authorized", "items",
-        "manifest_sha256",
-    }
-    if set(manifest) != required:
+    if set(manifest) != MANIFEST_FIELDS:
         raise PlayerTDSampleError("sample manifest schema is invalid")
     items = manifest.get("items")
     if not isinstance(items, list) or len(items) != MAX_REQUEST_COUNT:
         raise PlayerTDSampleError("sample manifest must contain exactly six items")
     if manifest.get("bulk_acquisition_authorized") is not False:
         raise PlayerTDSampleError("sample manifest cannot authorize bulk acquisition")
+    expected_scope = {
+        "schema_version": SAMPLE_SCHEMA_VERSION,
+        "protocol_version": SAMPLE_PROTOCOL_VERSION,
+        "selection_rule": (
+            "first-REG-game-by-kickoff-then-canonical-game-id-per-2023-2024-2025"
+        ),
+        "targets": TARGETS,
+        "maximum_request_count": MAX_REQUEST_COUNT,
+        "estimated_credits_per_request": ESTIMATED_CREDITS_PER_REQUEST,
+        "estimated_maximum_credits": (
+            MAX_REQUEST_COUNT * ESTIMATED_CREDITS_PER_REQUEST
+        ),
+    }
+    if any(manifest.get(key) != value for key, value in expected_scope.items()):
+        raise PlayerTDSampleError("sample manifest planning scope is invalid")
     identities: set[str] = set()
     games_by_season: dict[int, set[str]] = {}
     snapshots_by_game: dict[str, set[str]] = {}
     for item in items:
         if not isinstance(item, Mapping):
             raise PlayerTDSampleError("sample item is invalid")
+        if set(item) != ITEM_FIELDS:
+            raise PlayerTDSampleError("sample item schema is invalid")
         material = dict(item)
         claimed = material.pop("sample_item_id", None)
         if claimed != _digest(material) or claimed in identities:
@@ -170,6 +203,74 @@ def validate_sample_manifest(manifest: Mapping[str, Any]) -> None:
         raise PlayerTDSampleError("sample manifest SHA-256 is invalid")
 
 
+def validate_frozen_sample_manifest(
+    manifest: Mapping[str, Any],
+    schedule: object,
+    provenance: Mapping[str, Any],
+) -> None:
+    """Bind a candidate to the independently pinned Step 93C authority."""
+    from gridiron.market.player_td_schedule import (  # avoid import cycle
+        ALLOWED_FIELDS,
+        SOURCE_ASSET_CREATED_AT,
+        SOURCE_ASSET_ID,
+        SOURCE_ASSET_UPDATED_AT,
+        SOURCE_ASSET_URL,
+        SOURCE_ID,
+        SOURCE_RELEASE_ID,
+        SOURCE_RELEASE_URL,
+        SOURCE_SIZE,
+        SOURCE_TAG_COMMIT,
+        TRANSFORM_VERSION,
+        validate_derived_schedule,
+    )
+
+    validate_derived_schedule(schedule)
+    schedule_sha = hashlib.sha256((_canonical(schedule) + "\n").encode()).hexdigest()
+    if schedule_sha != FROZEN_SCHEDULE_SHA256:
+        raise PlayerTDSampleError("frozen schedule identity is invalid")
+    provenance_fields = {
+        "schema_version", "source_provider", "source_release_url",
+        "source_asset_url", "source_release_id", "source_asset_id",
+        "source_tag_commit", "source_sha256", "source_asset_size",
+        "source_asset_created_at", "source_asset_updated_at", "retrieved_at",
+        "transform_version", "allowed_fields", "derived_schedule_sha256",
+        "raw_retained", "raw_retention_reason",
+    }
+    if set(provenance) != provenance_fields:
+        raise PlayerTDSampleError("frozen schedule provenance schema is invalid")
+    expected_provenance = {
+        "schema_version": 1,
+        "source_provider": "nflverse/nflverse-data",
+        "source_release_url": SOURCE_RELEASE_URL,
+        "source_asset_url": SOURCE_ASSET_URL,
+        "source_release_id": SOURCE_RELEASE_ID,
+        "source_asset_id": SOURCE_ASSET_ID,
+        "source_tag_commit": SOURCE_TAG_COMMIT,
+        "source_sha256": FROZEN_SOURCE_SHA256,
+        "source_asset_size": SOURCE_SIZE,
+        "source_asset_created_at": SOURCE_ASSET_CREATED_AT,
+        "source_asset_updated_at": SOURCE_ASSET_UPDATED_AT,
+        "transform_version": TRANSFORM_VERSION,
+        "allowed_fields": list(ALLOWED_FIELDS),
+        "derived_schedule_sha256": FROZEN_SCHEDULE_SHA256,
+        "raw_retained": False,
+        "raw_retention_reason": "outcome-bearing upstream verified then deleted",
+    }
+    if any(provenance.get(key) != value for key, value in expected_provenance.items()):
+        raise PlayerTDSampleError("frozen schedule provenance is invalid")
+    parse_timestamp(provenance.get("retrieved_at"), "retrieved_at")
+    if SOURCE_ID != FROZEN_SCHEDULE_SOURCE_ID:
+        raise PlayerTDSampleError("frozen schedule source identity is invalid")
+    expected = build_sample_manifest(
+        schedule,
+        schedule_source_id=FROZEN_SCHEDULE_SOURCE_ID,
+        schedule_artifact_sha256=FROZEN_SCHEDULE_SHA256,
+    )
+    validate_sample_manifest(manifest)
+    if _canonical(manifest) != _canonical(expected):
+        raise PlayerTDSampleError("manifest does not match frozen authority")
+
+
 def sample_manifest_json(manifest: Mapping[str, Any]) -> str:
     validate_sample_manifest(manifest)
     return _canonical(manifest)
@@ -183,5 +284,6 @@ __all__ = [
     "SampleReadiness",
     "build_sample_manifest",
     "sample_manifest_json",
+    "validate_frozen_sample_manifest",
     "validate_sample_manifest",
 ]

@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from collections.abc import Mapping
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -16,6 +16,7 @@ from gridiron.market.player_td_sample import (
     SAMPLE_SEASONS,
     build_sample_manifest,
     sample_manifest_json,
+    validate_frozen_sample_manifest,
 )
 
 SOURCE_TIMEZONE = ZoneInfo("America/New_York")
@@ -117,7 +118,7 @@ def validate_derived_schedule(rows: object) -> None:
     if not isinstance(rows, list):
         raise PlayerTDScheduleError("derived schedule must be an array")
     for row in rows:
-        if not isinstance(row, Mapping) or tuple(row) != ALLOWED_FIELDS:
+        if not isinstance(row, Mapping) or set(row) != set(ALLOWED_FIELDS):
             raise PlayerTDScheduleError("derived schedule violates the field allowlist")
         if any(
             token in str(field).casefold()
@@ -125,6 +126,43 @@ def validate_derived_schedule(rows: object) -> None:
             for token in PROHIBITED_FIELD_TOKENS
         ):
             raise PlayerTDScheduleError("derived schedule contains a prohibited field")
+    if len(rows) != 816:
+        raise PlayerTDScheduleError("derived schedule must contain exactly 816 games")
+    identities: set[str] = set()
+    counts = {season: 0 for season in SAMPLE_SEASONS}
+    previous: tuple[int, str, str] | None = None
+    for row in rows:
+        season = row["season"]
+        week = row["week"]
+        if (
+            isinstance(season, bool)
+            or not isinstance(season, int)
+            or season not in SAMPLE_SEASONS
+            or isinstance(week, bool)
+            or not isinstance(week, int)
+            or row["season_type"] != "REG"
+        ):
+            raise PlayerTDScheduleError("derived schedule population is invalid")
+        expected_id = f"{season}_{week:02d}_{row['away_team']}_{row['home_team']}"
+        if row["game_id"] != expected_id or expected_id in identities:
+            raise PlayerTDScheduleError("derived schedule game identity is invalid")
+        identities.add(expected_id)
+        kickoff = row["kickoff_at"]
+        if not isinstance(kickoff, str):
+            raise PlayerTDScheduleError("derived schedule kickoff is invalid")
+        try:
+            parsed = datetime.fromisoformat(kickoff)
+        except ValueError as exc:
+            raise PlayerTDScheduleError("derived schedule kickoff is invalid") from exc
+        if parsed.tzinfo is None or parsed.utcoffset() != timedelta(0):
+            raise PlayerTDScheduleError("derived schedule kickoff must be UTC")
+        identity = (season, kickoff, expected_id)
+        if previous is not None and identity <= previous:
+            raise PlayerTDScheduleError("derived schedule ordering is invalid")
+        previous = identity
+        counts[season] += 1
+    if any(count != 272 for count in counts.values()):
+        raise PlayerTDScheduleError("derived schedule must contain 272 games per season")
 
 
 def materialize_schedule_and_manifest(
@@ -142,7 +180,6 @@ def materialize_schedule_and_manifest(
         schedule, schedule_source_id=SOURCE_ID,
         schedule_artifact_sha256=schedule_sha,
     )
-    manifest_bytes = (sample_manifest_json(manifest) + "\n").encode()
     provenance = {
         "schema_version": 1, "source_provider": "nflverse/nflverse-data",
         "source_release_url": SOURCE_RELEASE_URL, "source_asset_url": SOURCE_ASSET_URL,
@@ -156,6 +193,8 @@ def materialize_schedule_and_manifest(
         "derived_schedule_sha256": schedule_sha, "raw_retained": False,
         "raw_retention_reason": "outcome-bearing upstream verified then deleted",
     }
+    validate_frozen_sample_manifest(manifest, schedule, provenance)
+    manifest_bytes = (sample_manifest_json(manifest) + "\n").encode()
     root = Path(output_root)
     root.mkdir(parents=True, exist_ok=True)
     artifacts = {
