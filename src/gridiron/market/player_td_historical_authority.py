@@ -1,9 +1,8 @@
 """Frozen, disabled authority contract for the Step 93C historical ATTD sample.
 
-This module defines research scope only. Project Gridiron has no active
-historical Player ATTD transport path in Step 93J.1. A future Step 93J.2 must
-explicitly pin the independently reviewed artifact hash and add a separately
-reviewed execution integration before any provider call is possible.
+This module keeps the frozen Step 93J.1 scope validator. Step 93J.2 adds a
+separately source-pinned, dual-authority execution integration; legacy
+caller-controlled invocation forms remain disabled.
 """
 
 from __future__ import annotations
@@ -151,12 +150,17 @@ def historical_execution_identity(artifact: Mapping[str, Any]) -> str:
     })
 
 
-def execute_historical_validation_sample_once(*args: object, **kwargs: object) -> None:
-    """Fail closed in Step 93J.1 pending an independently reviewed hash pin."""
-    del args, kwargs
-    raise ExecutionBoundaryError(
-        "historical Player ATTD acquisition is disabled pending Step 93J.2 review"
+def execute_historical_validation_sample_once(*args: object, **kwargs: object) -> object:
+    """Run only the fixed J.2 entry; legacy caller-controlled forms stay disabled."""
+    if args or kwargs:
+        raise ExecutionBoundaryError(
+            "caller-controlled historical Player ATTD acquisition is disabled"
+        )
+    from gridiron.market.player_td_historical_execution import (
+        execute_historical_validation_sample_once as execute_fixed_once,
     )
+
+    return execute_fixed_once()
 
 
 __all__ = [
