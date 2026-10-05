@@ -23,6 +23,21 @@ MANIFEST_PATH = ROOT / "step93c_player_td_sample_manifest.json"
 J1_PATH = ROOT / "step93j1_historical_authority.json"
 J1A_PATH = ROOT / "step93j1a_historical_event_resolution_authority.json"
 SCHEDULE_PATH = ROOT / "player_td_schedule_2023_2025_v1.json"
+J3_ROOT = Path("data/research/player_td_validation/step93c_sample")
+J3_RESPONSE = Path("event_resolution/2023_01_det_kc.response.json")
+J3_METADATA = Path("event_resolution/2023_01_det_kc.metadata.json")
+J3_CLAIM = Path(
+    "execution/e61e72001013bcd24a96ceb0e779cb6d4f7969901afc453bfbef6917120e1567.claimed"
+)
+J3_LEDGER = Path(
+    "execution/e61e72001013bcd24a96ceb0e779cb6d4f7969901afc453bfbef6917120e1567.jsonl"
+)
+J3_RESPONSE_SHA256 = (
+    "baaa10cb5138c0c4a4cc33387b61c6b01708e314faa2c6d42ed27250fa9f4215"
+)
+J3_METADATA_SHA256 = (
+    "634da7895c254dda77352314b275969b515c4ff1efa8b4d791b4321482ebc5fe"
+)
 PROVENANCE_PATH = ROOT / "schedule_provenance.json"
 
 
@@ -129,6 +144,31 @@ def test_caller_cannot_select_arbitrary_date_or_nonmember_destination():
         event_resolution_destination(artifact, "2025_02_OTHER_GAME")
 
 
+def _assert_j3_evidence_inventory(
+    repository_root: Path = Path("."),
+    *,
+    response_sha256: str = J3_RESPONSE_SHA256,
+    metadata_sha256: str = J3_METADATA_SHA256,
+) -> None:
+    root = repository_root / J3_ROOT
+    observed = {
+        path.relative_to(root)
+        for path in root.rglob("*")
+        if (path.is_file() or path.is_symlink())
+        and (not path.relative_to(root).parts or path.relative_to(root).parts[0] != "attempt2")
+    } if root.exists() else set()
+    if not observed:
+        return
+    permitted = {J3_RESPONSE, J3_METADATA, J3_CLAIM, J3_LEDGER}
+    assert observed == permitted
+    assert hashlib.sha256((root / J3_RESPONSE).read_bytes()).hexdigest() == (
+        response_sha256
+    )
+    assert hashlib.sha256((root / J3_METADATA).read_bytes()).hexdigest() == (
+        metadata_sha256
+    )
+
+
 def test_future_raw_destinations_are_deterministic_and_outside_operational():
     artifact = load(J1A_PATH)
     for game in artifact["games"]:
@@ -142,8 +182,106 @@ def test_future_raw_destinations_are_deterministic_and_outside_operational():
             "data/research/player_td_validation/step93c_sample/event_resolution/"
         )
         assert "operational" not in destination.response_path.parts
-        assert not destination.response_path.exists()
-        assert not destination.metadata_path.exists()
+        if game["canonical_game_id"] != "2023_01_DET_KC":
+            assert not destination.response_path.exists()
+            assert not destination.metadata_path.exists()
+    _assert_j3_evidence_inventory()
+
+
+def _write_synthetic_j3_inventory(root: Path) -> tuple[str, str]:
+    evidence = root / J3_ROOT
+    response = b"synthetic response"
+    metadata = b"synthetic metadata"
+    files = {
+        J3_RESPONSE: response,
+        J3_METADATA: metadata,
+        J3_CLAIM: b"synthetic claim",
+        J3_LEDGER: b"synthetic ledger",
+    }
+    for relative, content in files.items():
+        path = evidence / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(content)
+    return hashlib.sha256(response).hexdigest(), hashlib.sha256(metadata).hexdigest()
+
+
+def test_exact_j3_inventory_and_execution_state_are_accepted(tmp_path: Path):
+    response_sha, metadata_sha = _write_synthetic_j3_inventory(tmp_path)
+    _assert_j3_evidence_inventory(
+        tmp_path,
+        response_sha256=response_sha,
+        metadata_sha256=metadata_sha,
+    )
+    unrelated = tmp_path / "data/research/unrelated-project/artifact.json"
+    unrelated.parent.mkdir(parents=True)
+    unrelated.write_text("{}", encoding="utf-8")
+    _assert_j3_evidence_inventory(
+        tmp_path,
+        response_sha256=response_sha,
+        metadata_sha256=metadata_sha,
+    )
+
+
+@pytest.mark.parametrize(
+    "relative",
+    [
+        Path("event_resolution/2023_01_det_kc.extra.json"),
+        Path("event_resolution/2023_01_det_kc.response.bak"),
+        Path("event_resolution/unexpected.json"),
+        Path("event_resolution/2024_01_bal_kc.response.json"),
+        Path("event_resolution/2025_01_dal_phi.response.json"),
+        Path("event_resolution/another_game.response.json"),
+        Path("raw/unexpected.response.json"),
+        Path("raw/nested/unexpected.response.json"),
+    ],
+)
+def test_unexpected_j3_evidence_is_rejected(tmp_path: Path, relative: Path):
+    response_sha, metadata_sha = _write_synthetic_j3_inventory(tmp_path)
+    unexpected = tmp_path / J3_ROOT / relative
+    unexpected.parent.mkdir(parents=True, exist_ok=True)
+    unexpected.write_text("{}", encoding="utf-8")
+    with pytest.raises(AssertionError):
+        _assert_j3_evidence_inventory(
+            tmp_path,
+            response_sha256=response_sha,
+            metadata_sha256=metadata_sha,
+        )
+
+
+@pytest.mark.parametrize("relative", [J3_RESPONSE, J3_METADATA])
+def test_missing_j3_pair_member_is_rejected(tmp_path: Path, relative: Path):
+    response_sha, metadata_sha = _write_synthetic_j3_inventory(tmp_path)
+    (tmp_path / J3_ROOT / relative).unlink()
+    with pytest.raises(AssertionError):
+        _assert_j3_evidence_inventory(
+            tmp_path,
+            response_sha256=response_sha,
+            metadata_sha256=metadata_sha,
+        )
+
+
+@pytest.mark.parametrize("relative", [J3_RESPONSE, J3_METADATA])
+def test_wrong_j3_pair_bytes_are_rejected(tmp_path: Path, relative: Path):
+    response_sha, metadata_sha = _write_synthetic_j3_inventory(tmp_path)
+    (tmp_path / J3_ROOT / relative).write_bytes(b"wrong")
+    with pytest.raises(AssertionError):
+        _assert_j3_evidence_inventory(
+            tmp_path,
+            response_sha256=response_sha,
+            metadata_sha256=metadata_sha,
+        )
+
+
+def test_attempt2_namespace_is_outside_preserved_j3_inventory(tmp_path: Path):
+    response_sha, metadata_sha = _write_synthetic_j3_inventory(tmp_path)
+    attempt2 = tmp_path / J3_ROOT / "attempt2/raw/future.response.json"
+    attempt2.parent.mkdir(parents=True)
+    attempt2.write_text("{}", encoding="utf-8")
+    _assert_j3_evidence_inventory(
+        tmp_path,
+        response_sha256=response_sha,
+        metadata_sha256=metadata_sha,
+    )
 
 
 def test_environment_cannot_activate_or_change_authority(monkeypatch):
